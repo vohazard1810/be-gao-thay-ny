@@ -30,6 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.data.LearningData
+import com.example.model.CategoryType
 import com.example.model.FlashcardItem
 import com.example.model.FlashcardOption
 import com.example.ui.theme.PastelAmber
@@ -254,22 +256,23 @@ fun FlashcardQuizPopup(
             modifier = Modifier.testTag("flashcard_object_title")
           )
 
-          Spacer(modifier = Modifier.height(2.dp))
+          Spacer(modifier = Modifier.height(3.dp))
 
-          // Lời mô tả âm thanh ngắn gọn (<= 12 từ)
+          // Lời mô tả tự nhiên, ngắn gọn (<= 15 từ)
           Text(
-            text = "${card.nameVi} gáy ${card.soundEffectVi}",
+            text = LearningData.getFlashcardIntroSpeech(card),
             style = MaterialTheme.typography.bodyMedium.copy(
               fontWeight = FontWeight.SemiBold,
               color = Color(0xFF5D4037),
-              fontSize = 15.sp
+              fontSize = 15.sp,
+              lineHeight = 20.sp
             ),
             textAlign = TextAlign.Center
           )
 
           Spacer(modifier = Modifier.height(14.dp))
 
-          // 3. NÚT 1: 🔊 NGHE TIẾNG KÊU (Cao >= 56dp, Vùng chạm >= 56dp)
+          // 3. NÚT 1: 🔊 NGHE TIẾNG KÊU / GIỚI THIỆU (Cao >= 56dp, Vùng chạm >= 56dp)
           Surface(
             shape = RoundedCornerShape(18.dp),
             color = Color(0xFFFFF8E1),
@@ -289,8 +292,13 @@ fun FlashcardQuizPopup(
             ) {
               Text(text = "🔊", fontSize = 20.sp)
               Spacer(modifier = Modifier.width(8.dp))
+              val listenBtnLabel = if (card.category == CategoryType.ANIMALS) {
+                "Nghe tiếng ${LearningData.formatCleanName(card.nameVi).lowercase()}"
+              } else {
+                "Nghe giới thiệu"
+              }
               Text(
-                text = "Nghe tiếng ${card.nameVi.lowercase()}",
+                text = listenBtnLabel,
                 style = MaterialTheme.typography.titleMedium.copy(
                   fontWeight = FontWeight.Bold,
                   color = Color(0xFFE65100),
@@ -353,7 +361,7 @@ fun FlashcardQuizPopup(
           } else {
             // 1. CÂU HỎI LỚN (>= 22sp, ở đây dùng 23sp Black)
             Text(
-              text = "Đâu là ${card.nameVi.lowercase()}?",
+              text = "Đâu là ${LearningData.formatCleanName(card.nameVi).lowercase()}?",
               style = MaterialTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.Black,
                 color = Color(0xFF1565C0),
@@ -423,10 +431,6 @@ fun FlashcardQuizPopup(
 
                       if (opt.isCorrect) {
                         isCorrectAnswer = true
-                        coroutineScope.launch {
-                          delay(1800)
-                          onClose()
-                        }
                       } else {
                         isCorrectAnswer = false
                         wrongAttempts += 1
@@ -489,28 +493,60 @@ fun FlashcardQuizPopup(
               exit = fadeOut() + shrinkVertically()
             ) {
               if (isCorrectAnswer == true) {
-                Surface(
-                  shape = RoundedCornerShape(16.dp),
-                  color = Color(0xFFE8F5E9),
-                  border = BorderStroke(1.5.dp, Color(0xFF81C784)),
-                  modifier = Modifier.fillMaxWidth()
+                Column(
+                  modifier = Modifier.fillMaxWidth(),
+                  verticalArrangement = Arrangement.spacedBy(10.dp),
+                  horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                  Row(
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
+                  Surface(
+                    shape = RoundedCornerShape(16.dp),
+                    color = Color(0xFFE8F5E9),
+                    border = BorderStroke(1.5.dp, Color(0xFF81C784)),
+                    modifier = Modifier.fillMaxWidth()
                   ) {
-                    Text(text = "🌟", fontSize = 20.sp)
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text(
-                      text = "Đúng rồi! Đây là chú ${card.nameVi}!",
-                      style = MaterialTheme.typography.titleMedium.copy(
+                    Row(
+                      modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+                      verticalAlignment = Alignment.CenterVertically,
+                      horizontalArrangement = Arrangement.Center
+                    ) {
+                      Text(text = "🌟", fontSize = 20.sp)
+                      Spacer(modifier = Modifier.width(6.dp))
+                      Text(
+                        text = LearningData.getPraiseForCard(card),
+                        style = MaterialTheme.typography.titleMedium.copy(
+                          fontWeight = FontWeight.ExtraBold,
+                          color = Color(0xFF2E7D32),
+                          fontSize = 15.5.sp
+                        ),
+                        textAlign = TextAlign.Center
+                      )
+                    }
+                  }
+
+                  // Nút lớn "Chơi tiếp ⭐" cho bé hoặc phụ huynh bấm thủ công
+                  Button(
+                    onClick = onClose,
+                    shape = RoundedCornerShape(18.dp),
+                    colors = ButtonDefaults.buttonColors(
+                      containerColor = Color(0xFF2E7D32)
+                    ),
+                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 3.dp),
+                    modifier = Modifier
+                      .fillMaxWidth()
+                      .height(56.dp)
+                      .testTag("quiz_continue_button")
+                  ) {
+                    Row(
+                      verticalAlignment = Alignment.CenterVertically,
+                      horizontalArrangement = Arrangement.Center
+                    ) {
+                      Text(
+                        text = "Chơi tiếp ⭐",
+                        color = Color.White,
                         fontWeight = FontWeight.ExtraBold,
-                        color = Color(0xFF2E7D32),
-                        fontSize = 15.5.sp
-                      ),
-                      textAlign = TextAlign.Center
-                    )
+                        fontSize = 17.sp
+                      )
+                    }
                   }
                 }
               } else if (isCorrectAnswer == false) {
@@ -528,11 +564,11 @@ fun FlashcardQuizPopup(
                     Text(text = "😊", fontSize = 18.sp)
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
-                      text = "Bé nhìn lại một lần nữa nhé!",
+                      text = "Mình thử lại nhé! Bé nhìn kỹ từng hình nào.",
                       style = MaterialTheme.typography.bodyMedium.copy(
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFFE65100),
-                        fontSize = 14.5.sp
+                        fontSize = 14.sp
                       ),
                       textAlign = TextAlign.Center
                     )

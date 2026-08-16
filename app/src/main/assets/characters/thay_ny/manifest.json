@@ -1,0 +1,15 @@
+{
+  "characterId": "thay_ny",
+  "version": 1,
+  "style": "soft-watercolor-gouache",
+  "format": "png",
+  "background": "transparent",
+  "states": {
+    "idle": "thay_ny_idle.png",
+    "speaking": "thay_ny_speaking.png",
+    "pointing": "thay_ny_pointing.png",
+    "encouraging": "thay_ny_encouraging.png",
+    "celebrating": "thay_ny_celebrating.png",
+    "storytelling": "thay_ny_storytelling.png"
+  }
+}

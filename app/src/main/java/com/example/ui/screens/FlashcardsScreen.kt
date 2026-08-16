@@ -10,7 +10,9 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.item
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -40,7 +42,7 @@ import com.example.ui.components.FlashcardQuizPopup
 import com.example.ui.components.KidTopAppBar
 import com.example.ui.components.PastelBackgroundWithDots
 import com.example.ui.components.RealPhotoThumbnail
-import com.example.ui.components.ThayNyCartoonHalfBody
+import com.example.ui.components.ThayNyRaster
 import com.example.ui.components.TeacherMood
 import com.example.ui.theme.*
 
@@ -74,13 +76,12 @@ fun FlashcardsScreen(
   onHomeClick: () -> Unit,
   modifier: Modifier = Modifier
 ) {
-  // 8 Topics in 1 horizontal scrollable row
+  // Topics in 1 horizontal scrollable row
   val flatTopics = remember {
     listOf(
       FlatTopic("farm", "Nông Trại", "🐶", CategoryType.ANIMALS, "sub_farm", Color(0xFFFFB74D)),
       FlatTopic("wild", "Hoang Dã", "🦁", CategoryType.ANIMALS, "sub_wild", Color(0xFFFF8A65)),
       FlatTopic("water", "Dưới Nước", "🐬", CategoryType.ANIMALS, "sub_water", Color(0xFF4FC3F7)),
-      FlatTopic("insect", "Côn Trùng", "🦋", CategoryType.ANIMALS, "sub_insects", Color(0xFFBA68C8)),
       FlatTopic("fruit", "Trái Cây", "🍎", CategoryType.FRUITS, null, Color(0xFF81C784)),
       FlatTopic("color", "Màu Sắc", "🎨", CategoryType.COLORS, null, Color(0xFFFF8DA1)),
       FlatTopic("alphabet", "Chữ Cái", "🔤", CategoryType.LETTERS_NUMBERS, "sub_alphabet", Color(0xFF9575CD)),
@@ -98,12 +99,17 @@ fun FlashcardsScreen(
     } ?: flatTopics.first()
   }
 
-  val currentCards = remember(activeTopic) {
+  val allTopicCards = remember(activeTopic) {
     if (activeTopic.subCategoryId != null) {
       LearningData.flashcards.filter { it.category == activeTopic.category && it.subCategoryId == activeTopic.subCategoryId }
     } else {
       LearningData.flashcards.filter { it.category == activeTopic.category }
     }
+  }
+  var deckOffset by remember(activeTopic.id) { mutableIntStateOf(0) }
+  val currentCards = remember(allTopicCards, deckOffset) {
+    if (allTopicCards.size <= 6) allTopicCards
+    else List(6) { index -> allTopicCards[(deckOffset + index) % allTopicCards.size] }
   }
 
   val isAlphabetMode = activeTopic.id == "alphabet"
@@ -126,13 +132,14 @@ fun FlashcardsScreen(
 
       // 2. Single-row Horizontal Scroll Topic Bar
       val topicScrollState = rememberScrollState()
-      Row(
-        modifier = Modifier
-          .fillMaxWidth()
-          .horizontalScroll(topicScrollState)
-          .padding(horizontal = 12.dp, vertical = 2.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-      ) {
+      Box(modifier = Modifier.fillMaxWidth()) {
+        Row(
+          modifier = Modifier
+            .fillMaxWidth()
+            .horizontalScroll(topicScrollState)
+            .padding(start = 12.dp, end = 38.dp, top = 2.dp, bottom = 2.dp),
+          horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
         flatTopics.forEach { topic ->
           val isSelected = topic.id == activeTopic.id
           val interactionSource = remember { MutableInteractionSource() }
@@ -178,6 +185,22 @@ fun FlashcardsScreen(
               )
             }
           }
+          }
+        }
+        if (topicScrollState.canScrollForward) {
+          Surface(
+            shape = CircleShape,
+            color = Color(0xFFFFF3E0),
+            shadowElevation = 2.dp,
+            modifier = Modifier
+              .align(Alignment.CenterEnd)
+              .padding(end = 6.dp)
+              .size(30.dp)
+          ) {
+            Box(contentAlignment = Alignment.Center) {
+              Text(text = "›", fontSize = 25.sp, fontWeight = FontWeight.ExtraBold, color = PastelOrangeDark)
+            }
+          }
         }
       }
 
@@ -198,7 +221,7 @@ fun FlashcardsScreen(
           modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
           verticalAlignment = Alignment.CenterVertically
         ) {
-          ThayNyCartoonHalfBody(
+          ThayNyRaster(
             size = 32.dp,
             isSpeaking = isSpeaking,
             mood = if (isSpeaking) TeacherMood.TALKING else TeacherMood.HAPPY
@@ -247,6 +270,21 @@ fun FlashcardsScreen(
             isAlphabetMode = isAlphabetMode,
             onClick = { onSelectCard(card) }
           )
+        }
+        if (allTopicCards.size > 6) {
+          item(span = { GridItemSpan(maxLineSpan) }) {
+            Button(
+              onClick = { deckOffset = (deckOffset + 6) % allTopicCards.size },
+              shape = RoundedCornerShape(18.dp),
+              colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E7D32)),
+              modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp)
+                .testTag("flashcards_next_deck")
+            ) {
+              Text("Đổi bộ hình 🔄", fontSize = 16.sp, fontWeight = FontWeight.ExtraBold)
+            }
+          }
         }
       }
     }

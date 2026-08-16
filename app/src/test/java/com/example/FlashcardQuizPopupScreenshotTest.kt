@@ -58,7 +58,7 @@ class FlashcardQuizPopupScreenshotTest {
     composeTestRule.onNodeWithTag("btn_start_quiz", useUnmergedTree = true).assertIsDisplayed()
 
     // Capture screenshot of Step A: Khám Phá
-    composeTestRule.onRoot().captureRoboImage(filePath = "src/test/screenshots/flashcard_rooster_step_a_discovery.png")
+    composeTestRule.onRoot().captureRoboImage(filePath = "build/outputs/roborazzi/flashcard_rooster_step_a_discovery.png")
   }
 
   @Test
@@ -95,7 +95,7 @@ class FlashcardQuizPopupScreenshotTest {
     composeTestRule.onNodeWithTag("quiz_option_chicken", useUnmergedTree = true).assertIsDisplayed()
 
     // Capture screenshot of Step B: Chọn Hình (EASY mode - 2 big picture cards)
-    composeTestRule.onRoot().captureRoboImage(filePath = "src/test/screenshots/flashcard_rooster_step_b_quiz.png")
+    composeTestRule.onRoot().captureRoboImage(filePath = "build/outputs/roborazzi/flashcard_rooster_step_b_quiz.png")
   }
 }
 

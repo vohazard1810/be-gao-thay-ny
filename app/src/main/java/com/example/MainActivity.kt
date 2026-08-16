@@ -119,6 +119,7 @@ fun ToddlerAppNavigation(
           onNextScene = { viewModel.onSceneChanged(target.storyBook, it) },
           onPrevScene = { viewModel.onSceneChanged(target.storyBook, it) },
           onReplayScene = { viewModel.narrateScene(it) },
+          onHotspotTap = { viewModel.onHotspotTap(it) },
           onBackToMenu = { viewModel.backToStoryMenu() }
         )
       }
@@ -135,6 +136,7 @@ fun ToddlerAppNavigation(
           showCelebration = showCelebration,
           teacherMood = teacherMood,
           onSelectOption = { viewModel.answerQuiz(it) },
+          onNextQuestion = { viewModel.nextQuizQuestion() },
           onReplayQuestion = { viewModel.replayQuizQuestion() },
           onHomeClick = { viewModel.navigateToHome() }
         )

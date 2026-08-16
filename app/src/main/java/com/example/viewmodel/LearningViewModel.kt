@@ -111,23 +111,28 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
   fun selectFlashcard(card: FlashcardItem) {
     _selectedCard.value = card
     _teacherMood.value = TeacherMood.TALKING
+    voiceManager.stop()
     voiceManager.playPopTone()
-    val speech = "Đây là chú ${card.nameVi.lowercase()}. ${card.nameVi} gáy ${card.soundEffectVi}"
+    val speech = LearningData.getFlashcardIntroSpeech(card)
     voiceManager.speak(speech)
   }
 
   fun speakFlashcardSound(card: FlashcardItem) {
     _teacherMood.value = TeacherMood.TALKING
-    voiceManager.speak("${card.nameVi} gáy ${card.soundEffectVi} ${card.funFactVi}")
+    voiceManager.stop()
+    val soundSpeech = LearningData.getFlashcardSoundSpeech(card)
+    voiceManager.speak(soundSpeech)
   }
 
   fun startFlashcardQuiz(card: FlashcardItem) {
     _teacherMood.value = TeacherMood.TALKING
+    voiceManager.stop()
     voiceManager.playPopTone()
-    voiceManager.speak("Đâu là ${card.nameVi}?")
+    voiceManager.speak("Đâu là ${LearningData.formatCleanName(card.nameVi)}? Bé chạm vào hình đúng nhé!")
   }
 
   fun closeFlashcardDetail() {
+    voiceManager.stop()
     _selectedCard.value = null
     _showCelebration.value = false
     voiceManager.speak("Bé chọn thẻ khác nhé!")
@@ -140,8 +145,9 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
       _showCelebration.value = true
       _totalStars.value += 1
       _easyQuizCorrectCount.value += 1
+      voiceManager.stop()
       voiceManager.playSuccessChime()
-      val praiseText = "Đúng rồi! Đây là chú ${currentCard.nameVi}!"
+      val praiseText = LearningData.getPraiseForCard(currentCard)
       voiceManager.speak(praiseText) {
         viewModelScope.launch {
           delay(1500)
@@ -150,13 +156,15 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
       }
     } else {
       _teacherMood.value = TeacherMood.ENCOURAGING
+      voiceManager.stop()
       voiceManager.playEncourageTone()
-      voiceManager.speak("Bé nhìn lại một lần nữa nhé!")
+      voiceManager.speak("Mình thử lại nhé! Bé nhìn kỹ từng hình nào.")
     }
   }
 
   // ==================== KHO TRUYỆN TRANH & KỂ CHUYỆN ====================
   fun openStoryMenu() {
+    voiceManager.stop()
     _currentScreen.value = ScreenDestination.StoryMenu
     _teacherMood.value = TeacherMood.HAPPY
     voiceManager.playPopTone()
@@ -164,12 +172,12 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
   }
 
   fun selectStoryBook(storyBook: StoryBook) {
+    voiceManager.stop()
     _selectedStoryBook.value = storyBook
     _currentSceneIndex.value = 0
     _currentScreen.value = ScreenDestination.StoryPlay(storyBook)
     voiceManager.playPopTone()
-    val firstScene = storyBook.scenes.first()
-    narrateScene(firstScene)
+    // TTS is activated solely by LaunchedEffect in StorytellingScreen to eliminate double autoplay
   }
 
   fun backToStoryMenu() {
@@ -182,29 +190,71 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
 
   fun narrateScene(scene: SimpleStoryScene) {
     _teacherMood.value = TeacherMood.TALKING
+    voiceManager.stop()
     voiceManager.playPopTone()
-    val fullSpeech = if (scene.dialogueVi.isNotBlank()) {
-      "${scene.narrationVi} ${scene.dialogueVi}"
+    val mainSentence = if (scene.dialogueVi.isNotBlank()) {
+      scene.dialogueVi.trim('“', '”', '"', ' ')
     } else {
       scene.narrationVi
     }
-    voiceManager.speak(fullSpeech)
+    voiceManager.speak(mainSentence)
   }
 
   fun onSceneChanged(storyBook: StoryBook, newIndex: Int) {
+    voiceManager.stop()
     _currentSceneIndex.value = newIndex
     val scene = storyBook.scenes.getOrElse(newIndex) { storyBook.scenes.first() }
     narrateScene(scene)
   }
 
+  fun onHotspotTap(interactionKey: String) {
+    _teacherMood.value = TeacherMood.TALKING
+    voiceManager.stop()
+    voiceManager.playPopTone()
+    val speech = when (interactionKey) {
+      "hotspot_tho_bong", "hotspot_co_tho_bong" -> "Cảm ơn Bé Gạo!"
+      "hotspot_chiec_khan" -> "Bạn tìm thấy mình rồi!"
+      "hotspot_bui_hoa" -> "Bụi hoa thơm ngát nè!"
+      "hotspot_tay_dinh_dat" -> "Rửa tay cùng Thầy Ny nào!"
+      "hotspot_voi_nuoc" -> "Nước mát róc rách!"
+      "hotspot_bot_xa_phong" -> "Xoa đều hai bàn tay nhé!"
+      "hotspot_ban_tay_sach" -> "Đôi bàn tay sạch bong rồi!"
+      "hotspot_xe_do" -> "Pim pim! Chiếc xe đỏ chạy bon bon!"
+      "hotspot_be_gao" -> "Chúng mình cùng chơi nhé!"
+      "hotspot_cay_cau" -> "Cây cầu gỗ thật là cao!"
+      "hotspot_hai_ban" -> "Cùng chơi vui gấp nhiều lần!"
+      "hotspot_gio_do_choi" -> "Đồ chơi vào giỏ ngủ ngon nhé!"
+      "hotspot_ban_chai" -> "Xoay tròn bàn chải, răng trắng xinh!"
+      "hotspot_quyen_sach" -> "Cuốn sách truyện tranh kỳ diệu!"
+      else -> "Chúng mình cùng chơi nhé!"
+    }
+    voiceManager.speak(speech)
+  }
+
   // ==================== ĐỐ VUI CÙNG THẦY ====================
   fun openQuizGame() {
+    voiceManager.stop()
     _quizQuestions.value = LearningData.quizQuestions.shuffled()
     _quizIndex.value = 0
     _currentScreen.value = ScreenDestination.QuizPlay
     _teacherMood.value = TeacherMood.TALKING
     val q = _quizQuestions.value.first()
     voiceManager.speak(q.spokenTextVi)
+  }
+
+  fun nextQuizQuestion() {
+    voiceManager.stop()
+    val questions = _quizQuestions.value
+    if (_quizIndex.value < questions.size - 1) {
+      _quizIndex.value += 1
+      val nextQ = questions[_quizIndex.value]
+      _teacherMood.value = TeacherMood.TALKING
+      voiceManager.speak(nextQ.spokenTextVi)
+    } else {
+      _quizIndex.value = 0
+      _teacherMood.value = TeacherMood.CELEBRATING
+      voiceManager.speak("Hoan hô bé Gạo! Con đã hoàn thành tất cả câu đố rồi! Bé Gạo thật là tuyệt vời!")
+    }
   }
 
   fun answerQuiz(option: QuizOption) {
@@ -214,28 +264,19 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
       _teacherMood.value = TeacherMood.CELEBRATING
       _showCelebration.value = true
       _totalStars.value += 1
+      voiceManager.stop()
       voiceManager.playSuccessChime()
       voiceManager.speak(currentQ.praiseSpeechVi) {
         viewModelScope.launch {
-          delay(1400)
+          delay(1500)
           _showCelebration.value = false
-          if (_quizIndex.value < questions.size - 1) {
-            _quizIndex.value += 1
-            val nextQ = questions[_quizIndex.value]
-            _teacherMood.value = TeacherMood.TALKING
-            voiceManager.speak(nextQ.spokenTextVi)
-          } else {
-            // Hoàn thành các câu đố
-            _quizIndex.value = 0
-            _teacherMood.value = TeacherMood.CELEBRATING
-            voiceManager.speak("Hoan hô bé Gạo! Con đã hoàn thành tất cả câu đố rồi! Bé Gạo thật là tuyệt vời!")
-          }
         }
       }
     } else {
       _teacherMood.value = TeacherMood.ENCOURAGING
+      voiceManager.stop()
       voiceManager.playEncourageTone()
-      voiceManager.speak(currentQ.encourageSpeechVi)
+      voiceManager.speak("Mình thử lại nhé! Bé nhìn kỹ từng hình nào.")
     }
   }
 

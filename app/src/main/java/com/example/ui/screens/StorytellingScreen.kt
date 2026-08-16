@@ -1,6 +1,9 @@
 package com.example.ui.screens
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -9,15 +12,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,15 +34,16 @@ import com.example.data.StoryBook
 import com.example.ui.components.ConfettiOverlay
 import com.example.ui.components.PastelBackgroundWithDots
 import com.example.ui.components.RasterStorySceneViewer
+import com.example.ui.components.ThayNyRaster
 import com.example.ui.theme.*
 
 /**
- * PHASE 1 STORY READER:
- * - Sử dụng ảnh raster (PNG/WebP) làm lớp tranh chính với ContentScale.Fit.
- * - Không dùng Canvas để dựng nhân vật, bối cảnh hay chi tiết cảnh.
- * - Khi chưa có ảnh chính thức, hiển thị raster placeholder (story_placeholder.webp).
- * - Cân đối tỷ lệ giao diện: Header ~8-10%, Tranh ~68-72%, Thẻ lời kể ~20-22%, Nút điều khiển trong Safe Area.
- * - Không có thanh cuộn dọc, các nút hiển thị đầy đủ không bị crop trên mọi kích thước màn hình.
+ * PHASE 3 STORY READER (Toddler-optimized for 3-year-olds):
+ * - Mỗi cảnh chỉ hiển thị 1 câu chính (8-12 từ, Font 21sp ExtraBold, tối đa 2 dòng).
+ * - TTS autoplay chỉ kích hoạt một lần duy nhất qua LaunchedEffect ở đây.
+ * - Khung ảnh vuông chuẩn 1:1 với ContentScale.Fit.
+ * - Progress Indicator dạng 4 sao/chấm tròn to rõ ràng với Accessibility Semantic.
+ * - Hàng nút điều khiển: Trước (56dp), Loa nghe lại (56dp), Tiếp theo/Hoàn thành (CTA 60dp).
  */
 @Composable
 fun StorytellingScreen(
@@ -44,6 +53,7 @@ fun StorytellingScreen(
   onNextScene: (Int) -> Unit = {},
   onPrevScene: (Int) -> Unit = {},
   onReplayScene: (SimpleStoryScene) -> Unit = {},
+  onHotspotTap: (String) -> Unit = {},
   onBackToMenu: () -> Unit,
   modifier: Modifier = Modifier
 ) {
@@ -58,12 +68,21 @@ fun StorytellingScreen(
     if (activeIndex < totalScenes - 1) storyBook.scenes[activeIndex + 1] else null
   }
 
-  // Tự động phát giọng kể khi đổi cảnh
+  // Tự động phát TTS duy nhất khi mở/đổi cảnh
   LaunchedEffect(activeIndex, storyBook.id) {
     onReplayScene(currentScene)
   }
 
-  val showCelebration = activeIndex == totalScenes - 1
+  val isLastScene = activeIndex == totalScenes - 1
+
+  // Câu hiển thị duy nhất (8-12 từ, ưu tiên dialogueVi nếu có)
+  val mainDisplayText = remember(currentScene) {
+    if (currentScene.dialogueVi.isNotBlank()) {
+      currentScene.dialogueVi.trim('“', '”', '"', ' ')
+    } else {
+      currentScene.narrationVi
+    }
+  }
 
   PastelBackgroundWithDots(
     modifier = modifier
@@ -75,8 +94,10 @@ fun StorytellingScreen(
         .fillMaxSize()
         .statusBarsPadding()
         .navigationBarsPadding()
+        .padding(horizontal = 12.dp),
+      horizontalAlignment = Alignment.CenterHorizontally
     ) {
-      // 1. Header tinh gọn (8-10% chiều cao màn hình)
+      // 1. Header tinh gọn
       StoryHeader(
         title = storyBook.titleVi,
         sceneNumber = currentScene.sceneNumber,
@@ -86,148 +107,143 @@ fun StorytellingScreen(
         onReplay = { onReplayScene(currentScene) }
       )
 
-      // Thanh tiến trình mỏng 4dp
-      val progress = (activeIndex + 1).toFloat() / totalScenes.toFloat()
-      LinearProgressIndicator(
-        progress = { progress },
-        modifier = Modifier
-          .fillMaxWidth()
-          .height(4.dp)
-          .padding(horizontal = 14.dp)
-          .clip(RoundedCornerShape(2.dp)),
-        color = storyBook.accentColor,
-        trackColor = Color(0xFFE0E0E0)
+      Spacer(modifier = Modifier.height(4.dp))
+
+      // 2. Progress indicator: Sao/Chấm tròn trực quan cho bé 3 tuổi
+      StoryProgressStars(
+        currentIndex = activeIndex,
+        totalScenes = totalScenes,
+        accentColor = storyBook.accentColor,
+        modifier = Modifier.padding(vertical = 2.dp)
       )
 
       Spacer(modifier = Modifier.height(4.dp))
 
-      // 2. KHU VỰC TRANH RASTER. Phần chữ nằm riêng bên dưới để không che tranh.
+      // 3. KHU VỰC TRANH RASTER TỶ LỆ 1:1
       Box(
         modifier = Modifier
           .fillMaxWidth()
           .weight(1f)
-          .padding(horizontal = 10.dp, vertical = 2.dp)
+          .padding(vertical = 2.dp),
+        contentAlignment = Alignment.Center
       ) {
         RasterStorySceneViewer(
           scene = currentScene,
           nextScene = nextScene,
           accentColor = storyBook.accentColor,
-          onHotspotTap = {
-            onReplayScene(currentScene)
-          },
-          modifier = Modifier.fillMaxSize()
+          onHotspotTap = onHotspotTap,
+          modifier = Modifier
+            .fillMaxHeight()
+            .aspectRatio(1f)
         )
       }
 
-      // 3. THẺ LỜI KỂ TÁCH KHỎI TRANH: luôn nhìn trọn mặt và hành động nhân vật.
+      // 4. THẺ 1 CÂU DUY NHẤT (Font 21sp ExtraBold, tối đa 2 dòng)
       Surface(
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(18.dp),
         color = Color.White,
-        shadowElevation = 2.dp,
-        border = BorderStroke(1.5.dp, storyBook.accentColor.copy(alpha = 0.55f)),
+        shadowElevation = 3.dp,
+        border = BorderStroke(2.dp, storyBook.accentColor.copy(alpha = 0.65f)),
         modifier = Modifier
           .fillMaxWidth()
-          .padding(horizontal = 12.dp, vertical = 5.dp)
+          .padding(vertical = 6.dp)
           .testTag("story_narration_card")
       ) {
-        Column(modifier = Modifier.padding(horizontal = 14.dp, vertical = 9.dp)) {
+        Row(
+          modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 10.dp),
+          verticalAlignment = Alignment.CenterVertically,
+          horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+          ThayNyRaster(
+            size = 46.dp,
+            isSpeaking = isSpeaking,
+            storytelling = true
+          )
           Text(
-            text = currentScene.narrationVi,
-            style = MaterialTheme.typography.titleSmall.copy(
+            text = mainDisplayText,
+            style = MaterialTheme.typography.titleMedium.copy(
               fontWeight = FontWeight.ExtraBold,
               color = Color(0xFF2C3E50),
-              fontSize = 15.sp,
-              lineHeight = 20.sp
+              fontSize = 20.sp,
+              lineHeight = 26.sp,
+              textAlign = TextAlign.Center
             ),
-            maxLines = 3,
-            overflow = TextOverflow.Ellipsis
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.weight(1f)
           )
-          if (currentScene.dialogueVi.isNotBlank()) {
-            Spacer(modifier = Modifier.height(3.dp))
-            Text(
-              text = currentScene.dialogueVi,
-              style = MaterialTheme.typography.bodySmall.copy(
-                fontWeight = FontWeight.Bold,
-                color = storyBook.accentColor,
-                fontSize = 14.sp,
-                lineHeight = 18.sp
-              ),
-              maxLines = 2,
-              overflow = TextOverflow.Ellipsis
-            )
-          }
         }
       }
 
-      // 4. THANH ĐIỀU KHIỂN NẰM TRONG SAFE AREA (Tránh crop nút trên mọi kích thước)
+      // 5. HÀNG ĐIỀU KHIỂN CHO BÉ 3 TUỔI (Trước: 56dp, Loa: 56dp, Tiếp/Xong: CTA 60dp)
       Row(
         modifier = Modifier
           .fillMaxWidth()
-          .padding(horizontal = 10.dp, vertical = 4.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+          .padding(bottom = 8.dp, top = 2.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalAlignment = Alignment.CenterVertically
       ) {
-        // Nút Cảnh Trước
-        OutlinedButton(
-          onClick = {
-            if (activeIndex > 0) {
-              activeIndex--
-              onPrevScene(activeIndex)
-            }
-          },
-          enabled = activeIndex > 0,
-          shape = RoundedCornerShape(14.dp),
-          contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
+        // Nút Cảnh Trước (56dp)
+        Surface(
+          shape = RoundedCornerShape(16.dp),
+          color = if (activeIndex > 0) Color.White else Color(0xFFEEEEEE),
           border = BorderStroke(1.5.dp, if (activeIndex > 0) Color(0xFFBDBDBD) else Color(0xFFE0E0E0)),
+          shadowElevation = if (activeIndex > 0) 2.dp else 0.dp,
           modifier = Modifier
-            .weight(1f)
-            .height(46.dp)
+            .size(56.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .clickable(
+              enabled = activeIndex > 0,
+              interactionSource = remember { MutableInteractionSource() },
+              indication = ripple()
+            ) {
+              if (activeIndex > 0) {
+                activeIndex--
+                onPrevScene(activeIndex)
+              }
+            }
             .testTag("story_prev_button")
         ) {
-          Icon(
-            Icons.AutoMirrored.Filled.ArrowBack,
-            contentDescription = "Cảnh trước",
-            tint = if (activeIndex > 0) Color(0xFF616161) else Color(0xFFBDBDBD),
-            modifier = Modifier.size(18.dp)
-          )
-          Spacer(modifier = Modifier.width(3.dp))
-          Text(
-            "Trước",
-            color = if (activeIndex > 0) Color(0xFF616161) else Color(0xFFBDBDBD),
-            fontWeight = FontWeight.Bold,
-            fontSize = 13.5.sp
-          )
+          Box(contentAlignment = Alignment.Center) {
+            Icon(
+              Icons.AutoMirrored.Filled.ArrowBack,
+              contentDescription = "Cảnh trước",
+              tint = if (activeIndex > 0) Color(0xFF424242) else Color(0xFF9E9E9E),
+              modifier = Modifier.size(26.dp)
+            )
+          }
         }
 
-        // Nút Nghe Lại Giọng Kể
-        FilledTonalButton(
-          onClick = { onReplayScene(currentScene) },
-          shape = RoundedCornerShape(14.dp),
-          contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
-          colors = ButtonDefaults.filledTonalButtonColors(
-            containerColor = if (isSpeaking) Color(0xFFFF5252) else Color(0xFFFFE082)
-          ),
+        // Nút Nghe Lại Giọng Kể (56dp)
+        Surface(
+          shape = RoundedCornerShape(16.dp),
+          color = if (isSpeaking) Color(0xFFFF5252) else Color(0xFFFFF3E0),
+          border = BorderStroke(1.5.dp, if (isSpeaking) Color(0xFFFF1744) else Color(0xFFFFB74D)),
+          shadowElevation = 2.dp,
           modifier = Modifier
-            .weight(1.1f)
-            .height(46.dp)
+            .size(56.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .clickable(
+              interactionSource = remember { MutableInteractionSource() },
+              indication = ripple()
+            ) {
+              onReplayScene(currentScene)
+            }
             .testTag("story_replay_button")
         ) {
-          Icon(
-            Icons.Default.VolumeUp,
-            contentDescription = "Nghe lại",
-            tint = if (isSpeaking) Color.White else Color(0xFF5D4037),
-            modifier = Modifier.size(18.dp)
-          )
-          Spacer(modifier = Modifier.width(3.dp))
-          Text(
-            if (isSpeaking) "Đang đọc" else "Nghe lại",
-            color = if (isSpeaking) Color.White else Color(0xFF5D4037),
-            fontWeight = FontWeight.Bold,
-            fontSize = 13.5.sp
-          )
+          Box(contentAlignment = Alignment.Center) {
+            Icon(
+              Icons.Default.VolumeUp,
+              contentDescription = if (isSpeaking) "Đang đọc" else "Nghe lại",
+              tint = if (isSpeaking) Color.White else Color(0xFFE65100),
+              modifier = Modifier.size(26.dp)
+            )
+          }
         }
 
-        // Nút Cảnh Tiếp Theo / Hoàn Thành
+        // Nút Cảnh Tiếp Theo / Hoàn Thành (CTA to nhất hàng, cao 60dp)
         Button(
           onClick = {
             if (activeIndex < totalScenes - 1) {
@@ -237,38 +253,105 @@ fun StorytellingScreen(
               onBackToMenu()
             }
           },
-          shape = RoundedCornerShape(14.dp),
-          contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
+          shape = RoundedCornerShape(18.dp),
+          contentPadding = PaddingValues(horizontal = 14.dp, vertical = 0.dp),
           colors = ButtonDefaults.buttonColors(
-            containerColor = if (activeIndex == totalScenes - 1) Color(0xFFE65100) else Color(0xFF43A047)
+            containerColor = if (isLastScene) Color(0xFF2E7D32) else Color(0xFFFB8C00)
           ),
+          elevation = ButtonDefaults.buttonElevation(defaultElevation = 3.dp),
           modifier = Modifier
-            .weight(1.25f)
-            .height(46.dp)
+            .weight(1f)
+            .height(60.dp)
             .testTag("story_next_button")
         ) {
-          Text(
-            if (activeIndex == totalScenes - 1) "Xong ⭐" else "Tiếp theo",
-            color = Color.White,
-            fontWeight = FontWeight.Bold,
-            fontSize = 13.5.sp,
-            maxLines = 1
-          )
-          if (activeIndex < totalScenes - 1) {
-            Spacer(modifier = Modifier.width(3.dp))
-            Icon(
-              Icons.AutoMirrored.Filled.ArrowForward,
-              contentDescription = "Cảnh sau",
-              tint = Color.White,
-              modifier = Modifier.size(18.dp)
+          Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+          ) {
+            Text(
+              text = if (isLastScene) "Hoàn thành ⭐" else "Tiếp theo",
+              color = Color.White,
+              fontWeight = FontWeight.ExtraBold,
+              fontSize = 17.sp,
+              maxLines = 1
             )
+            if (!isLastScene) {
+              Spacer(modifier = Modifier.width(6.dp))
+              Icon(
+                Icons.AutoMirrored.Filled.ArrowForward,
+                contentDescription = "Cảnh sau",
+                tint = Color.White,
+                modifier = Modifier.size(22.dp)
+              )
+            }
           }
         }
       }
     }
 
-    // Hiệu ứng micro duy nhất: Pháo hoa chúc mừng ở cảnh cuối
-    ConfettiOverlay(visible = showCelebration)
+    // Hiệu ứng pháo hoa chúc mừng ở cảnh cuối
+    ConfettiOverlay(visible = isLastScene)
+  }
+}
+
+/**
+ * Progress Indicator dạng 4 sao/chấm tròn to rõ ràng cho bé 3 tuổi
+ */
+@Composable
+private fun StoryProgressStars(
+  currentIndex: Int,
+  totalScenes: Int,
+  accentColor: Color,
+  modifier: Modifier = Modifier
+) {
+  val accessibilityDesc = "Cảnh ${currentIndex + 1} trên $totalScenes"
+
+  Row(
+    modifier = modifier
+      .semantics { contentDescription = accessibilityDesc }
+      .testTag("story_progress_stars"),
+    horizontalArrangement = Arrangement.spacedBy(8.dp),
+    verticalAlignment = Alignment.CenterVertically
+  ) {
+    for (i in 0 until totalScenes) {
+      val isPassed = i < currentIndex
+      val isCurrent = i == currentIndex
+
+      if (isPassed) {
+        // Ngôi sao vàng đã hoàn thành
+        Icon(
+          imageVector = Icons.Default.Star,
+          contentDescription = "Cảnh ${i + 1} đã xem",
+          tint = Color(0xFFFFB300),
+          modifier = Modifier.size(20.dp)
+        )
+      } else if (isCurrent) {
+        // Chấm tròn hiện tại to hơn và viền nổi bật
+        Box(
+          modifier = Modifier
+            .size(22.dp)
+            .clip(CircleShape)
+            .background(accentColor)
+            .border(2.dp, Color.White, CircleShape),
+          contentAlignment = Alignment.Center
+        ) {
+          Box(
+            modifier = Modifier
+              .size(8.dp)
+              .clip(CircleShape)
+              .background(Color.White)
+          )
+        }
+      } else {
+        // Chấm tròn chưa xem pastel xám nhạt
+        Box(
+          modifier = Modifier
+            .size(14.dp)
+            .clip(CircleShape)
+            .background(Color(0xFFE0E0E0))
+        )
+      }
+    }
   }
 }
 
@@ -288,7 +371,7 @@ private fun StoryHeader(
   Row(
     modifier = modifier
       .fillMaxWidth()
-      .padding(horizontal = 10.dp, vertical = 4.dp),
+      .padding(vertical = 4.dp),
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.SpaceBetween
   ) {
@@ -298,7 +381,7 @@ private fun StoryHeader(
       shadowElevation = 1.5.dp,
       border = BorderStroke(1.dp, Color(0xFFE0E0E0)),
       modifier = Modifier
-        .size(38.dp)
+        .size(42.dp)
         .clip(CircleShape)
         .clickable(
           interactionSource = remember { MutableInteractionSource() },
@@ -311,7 +394,7 @@ private fun StoryHeader(
           Icons.AutoMirrored.Filled.ArrowBack,
           contentDescription = "Danh sách truyện",
           tint = TextDark,
-          modifier = Modifier.size(20.dp)
+          modifier = Modifier.size(22.dp)
         )
       }
     }
@@ -325,7 +408,7 @@ private fun StoryHeader(
         style = MaterialTheme.typography.titleSmall.copy(
           fontWeight = FontWeight.ExtraBold,
           color = TextDark,
-          fontSize = 14.sp
+          fontSize = 15.sp
         ),
         maxLines = 1,
         overflow = TextOverflow.Ellipsis
@@ -335,7 +418,7 @@ private fun StoryHeader(
         style = MaterialTheme.typography.labelSmall.copy(
           fontWeight = FontWeight.Bold,
           color = Color(0xFF757575),
-          fontSize = 11.sp
+          fontSize = 12.sp
         )
       )
     }
@@ -346,7 +429,7 @@ private fun StoryHeader(
       shadowElevation = 1.5.dp,
       border = BorderStroke(1.dp, if (isSpeaking) Color(0xFFFF5252) else Color(0xFFE0E0E0)),
       modifier = Modifier
-        .size(38.dp)
+        .size(42.dp)
         .clip(CircleShape)
         .clickable(
           interactionSource = remember { MutableInteractionSource() },
@@ -359,7 +442,7 @@ private fun StoryHeader(
           Icons.Default.VolumeUp,
           contentDescription = "Giọng kể",
           tint = if (isSpeaking) Color.White else TextDark,
-          modifier = Modifier.size(20.dp)
+          modifier = Modifier.size(22.dp)
         )
       }
     }

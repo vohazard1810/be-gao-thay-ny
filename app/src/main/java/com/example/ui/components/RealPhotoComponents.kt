@@ -46,7 +46,11 @@ fun RealPhotoThumbnail(
   isAlphabetOrNumber: Boolean = false
 ) {
   val manifestEntry = remember(itemId) { FlashcardAssetManifest.getAsset(itemId) }
-  val effectiveUrl = photoUrl ?: manifestEntry?.photoUrl
+  val effectiveUrl = if (itemId == "wild_panda" || itemId == "panda") {
+    "file:///android_asset/flashcards/wild/wild_panda.jpg"
+  } else {
+    photoUrl ?: manifestEntry?.photoUrl
+  }
 
   // 1. Chữ cái & Số đếm: Thiết kế giáo dục rõ nét
   if (isAlphabetOrNumber || itemId.startsWith("alpha_") || itemId.startsWith("num_")) {
@@ -129,7 +133,11 @@ fun RealPhotoDetailDisplay(
   size: Dp = 160.dp
 ) {
   val manifestEntry = remember(itemId) { FlashcardAssetManifest.getAsset(itemId) }
-  val effectiveUrl = photoUrl ?: manifestEntry?.photoUrl
+  val effectiveUrl = if (itemId == "wild_panda" || itemId == "panda") {
+    "file:///android_asset/flashcards/wild/wild_panda.jpg"
+  } else {
+    photoUrl ?: manifestEntry?.photoUrl
+  }
 
   if (isAlphabetOrNumber || itemId.startsWith("alpha_") || itemId.startsWith("num_")) {
     EducationalLetterOrNumberCard(

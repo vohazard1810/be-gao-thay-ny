@@ -80,9 +80,9 @@ fun RasterStorySceneViewer(
 
   Box(
     modifier = modifier
-      .fillMaxSize()
+      .aspectRatio(1f)
       .clip(RoundedCornerShape(22.dp))
-      .background(Color(0xFFF9F6EE)) // Pastel background trung tính ấm áp
+      .background(Color(0xFFF9F6EE))
       .border(BorderStroke(2.5.dp, accentColor.copy(alpha = 0.65f)), RoundedCornerShape(22.dp))
       .testTag("raster_story_scene_viewer"),
     contentAlignment = Alignment.Center
@@ -140,16 +140,36 @@ fun RasterStorySceneViewer(
       }
     }
 
-    // 2. LỚP HOTSPOT TƯƠNG TÁC OVERLAY (Rộng tối thiểu 48dp, không có khung kỹ thuật)
+    // Hotspot Pulse Animation Ring
+    val infiniteTransition = rememberInfiniteTransition(label = "hotspot_pulse")
+    val pulseScale by infiniteTransition.animateFloat(
+      initialValue = 0.92f,
+      targetValue = 1.08f,
+      animationSpec = infiniteRepeatable(
+        animation = tween(900, easing = FastOutSlowInEasing),
+        repeatMode = RepeatMode.Reverse
+      ),
+      label = "pulse_scale"
+    )
+    val pulseAlpha by infiniteTransition.animateFloat(
+      initialValue = 0.35f,
+      targetValue = 0.85f,
+      animationSpec = infiniteRepeatable(
+        animation = tween(900, easing = FastOutSlowInEasing),
+        repeatMode = RepeatMode.Reverse
+      ),
+      label = "pulse_alpha"
+    )
+
+    // 2. LỚP HOTSPOT TƯƠNG TÁC OVERLAY (Rộng tối thiểu 48dp, có vòng sáng dịu nhẹ)
     when (scene.interaction) {
       "hotspot_tho_bong", "hotspot_co_tho_bong" -> {
-        // Hotspot quanh Thỏ Bông bên trái màn hình
         Box(
           modifier = Modifier
-            .fillMaxHeight(0.6f)
+            .fillMaxHeight(0.55f)
             .fillMaxWidth(0.48f)
             .align(Alignment.BottomStart)
-            .padding(start = 12.dp, bottom = 48.dp)
+            .padding(start = 12.dp, bottom = 32.dp)
             .clickable(
               interactionSource = remember { MutableInteractionSource() },
               indication = null
@@ -158,16 +178,29 @@ fun RasterStorySceneViewer(
               onHotspotTap(scene.interaction)
             }
             .testTag("scene_hotspot_tho_bong")
-        )
+        ) {
+          Surface(
+            shape = CircleShape,
+            color = Color(0xFFFFD54F).copy(alpha = pulseAlpha * 0.25f),
+            border = BorderStroke(2.dp, Color(0xFFFFB300).copy(alpha = pulseAlpha)),
+            modifier = Modifier
+              .size(52.dp)
+              .align(Alignment.Center)
+              .scale(pulseScale)
+          ) {
+            Box(contentAlignment = Alignment.Center) {
+              Text("✨", fontSize = 16.sp)
+            }
+          }
+        }
       }
       "hotspot_bui_hoa" -> {
-        // Hotspot quanh bụi hoa bên phải màn hình
         Box(
           modifier = Modifier
             .fillMaxHeight(0.55f)
             .fillMaxWidth(0.48f)
             .align(Alignment.BottomEnd)
-            .padding(end = 12.dp, bottom = 48.dp)
+            .padding(end = 12.dp, bottom = 32.dp)
             .clickable(
               interactionSource = remember { MutableInteractionSource() },
               indication = null
@@ -176,16 +209,29 @@ fun RasterStorySceneViewer(
               onHotspotTap(scene.interaction)
             }
             .testTag("scene_hotspot_bui_hoa")
-        )
+        ) {
+          Surface(
+            shape = CircleShape,
+            color = Color(0xFFFFD54F).copy(alpha = pulseAlpha * 0.25f),
+            border = BorderStroke(2.dp, Color(0xFFFFB300).copy(alpha = pulseAlpha)),
+            modifier = Modifier
+              .size(52.dp)
+              .align(Alignment.Center)
+              .scale(pulseScale)
+          ) {
+            Box(contentAlignment = Alignment.Center) {
+              Text("✨", fontSize = 16.sp)
+            }
+          }
+        }
       }
       "hotspot_chiec_khan" -> {
-        // Hotspot quanh chiếc khăn len xanh dương ở Cảnh 4
         Box(
           modifier = Modifier
             .fillMaxHeight(0.5f)
             .fillMaxWidth(0.45f)
             .align(Alignment.BottomEnd)
-            .padding(end = 16.dp, bottom = 48.dp)
+            .padding(end = 16.dp, bottom = 32.dp)
             .clickable(
               interactionSource = remember { MutableInteractionSource() },
               indication = null
@@ -194,16 +240,29 @@ fun RasterStorySceneViewer(
               onHotspotTap(scene.interaction)
             }
             .testTag("scene_hotspot_chiec_khan")
-        )
+        ) {
+          Surface(
+            shape = CircleShape,
+            color = Color(0xFF64B5F6).copy(alpha = pulseAlpha * 0.3f),
+            border = BorderStroke(2.dp, Color(0xFF1E88E5).copy(alpha = pulseAlpha)),
+            modifier = Modifier
+              .size(52.dp)
+              .align(Alignment.Center)
+              .scale(pulseScale)
+          ) {
+            Box(contentAlignment = Alignment.Center) {
+              Text("✨", fontSize = 16.sp)
+            }
+          }
+        }
       }
       "hotspot_tay_dinh_dat" -> {
-        // Hotspot quanh hai bàn tay dính đất của Mèo Mây ở Cảnh 1
         Box(
           modifier = Modifier
             .fillMaxHeight(0.45f)
             .fillMaxWidth(0.7f)
             .align(Alignment.BottomCenter)
-            .padding(bottom = 56.dp)
+            .padding(bottom = 36.dp)
             .clickable(
               interactionSource = remember { MutableInteractionSource() },
               indication = null
@@ -212,16 +271,29 @@ fun RasterStorySceneViewer(
               onHotspotTap(scene.interaction)
             }
             .testTag("scene_hotspot_tay_dinh_dat")
-        )
+        ) {
+          Surface(
+            shape = CircleShape,
+            color = Color(0xFFFFD54F).copy(alpha = pulseAlpha * 0.25f),
+            border = BorderStroke(2.dp, Color(0xFFFFB300).copy(alpha = pulseAlpha)),
+            modifier = Modifier
+              .size(52.dp)
+              .align(Alignment.Center)
+              .scale(pulseScale)
+          ) {
+            Box(contentAlignment = Alignment.Center) {
+              Text("✨", fontSize = 16.sp)
+            }
+          }
+        }
       }
       "hotspot_voi_nuoc" -> {
-        // Hotspot quanh vòi nước / dòng nước ở Cảnh 2
         Box(
           modifier = Modifier
             .fillMaxHeight(0.5f)
             .fillMaxWidth(0.45f)
             .align(Alignment.BottomStart)
-            .padding(start = 16.dp, bottom = 36.dp)
+            .padding(start = 16.dp, bottom = 28.dp)
             .clickable(
               interactionSource = remember { MutableInteractionSource() },
               indication = null
@@ -230,16 +302,29 @@ fun RasterStorySceneViewer(
               onHotspotTap(scene.interaction)
             }
             .testTag("scene_hotspot_voi_nuoc")
-        )
+        ) {
+          Surface(
+            shape = CircleShape,
+            color = Color(0xFF4FC3F7).copy(alpha = pulseAlpha * 0.3f),
+            border = BorderStroke(2.dp, Color(0xFF0288D1).copy(alpha = pulseAlpha)),
+            modifier = Modifier
+              .size(52.dp)
+              .align(Alignment.Center)
+              .scale(pulseScale)
+          ) {
+            Box(contentAlignment = Alignment.Center) {
+              Text("💧", fontSize = 16.sp)
+            }
+          }
+        }
       }
       "hotspot_bot_xa_phong" -> {
-        // Hotspot quanh bọt xà phòng trên tay Mèo Mây ở Cảnh 3
         Box(
           modifier = Modifier
             .fillMaxHeight(0.5f)
             .fillMaxWidth(0.6f)
             .align(Alignment.Center)
-            .padding(top = 40.dp)
+            .padding(top = 28.dp)
             .clickable(
               interactionSource = remember { MutableInteractionSource() },
               indication = null
@@ -248,16 +333,29 @@ fun RasterStorySceneViewer(
               onHotspotTap(scene.interaction)
             }
             .testTag("scene_hotspot_bot_xa_phong")
-        )
+        ) {
+          Surface(
+            shape = CircleShape,
+            color = Color(0xFF81D4FA).copy(alpha = pulseAlpha * 0.3f),
+            border = BorderStroke(2.dp, Color(0xFF039BE5).copy(alpha = pulseAlpha)),
+            modifier = Modifier
+              .size(52.dp)
+              .align(Alignment.Center)
+              .scale(pulseScale)
+          ) {
+            Box(contentAlignment = Alignment.Center) {
+              Text("🫧", fontSize = 16.sp)
+            }
+          }
+        }
       }
       "hotspot_ban_tay_sach" -> {
-        // Hotspot quanh hai bàn tay sạch của Mèo Mây ở Cảnh 4
         Box(
           modifier = Modifier
             .fillMaxHeight(0.5f)
             .fillMaxWidth(0.48f)
             .align(Alignment.BottomStart)
-            .padding(start = 24.dp, bottom = 48.dp)
+            .padding(start = 24.dp, bottom = 32.dp)
             .clickable(
               interactionSource = remember { MutableInteractionSource() },
               indication = null
@@ -266,7 +364,145 @@ fun RasterStorySceneViewer(
               onHotspotTap(scene.interaction)
             }
             .testTag("scene_hotspot_ban_tay_sach")
-        )
+        ) {
+          Surface(
+            shape = CircleShape,
+            color = Color(0xFFA5D6A7).copy(alpha = pulseAlpha * 0.3f),
+            border = BorderStroke(2.dp, Color(0xFF43A047).copy(alpha = pulseAlpha)),
+            modifier = Modifier
+              .size(52.dp)
+              .align(Alignment.Center)
+              .scale(pulseScale)
+          ) {
+            Box(contentAlignment = Alignment.Center) {
+              Text("✨", fontSize = 16.sp)
+            }
+          }
+        }
+      }
+      "hotspot_xe_do" -> {
+        Box(
+          modifier = Modifier
+            .fillMaxHeight(0.5f)
+            .fillMaxWidth(0.5f)
+            .align(Alignment.BottomStart)
+            .padding(start = 16.dp, bottom = 32.dp)
+            .clickable(
+              interactionSource = remember { MutableInteractionSource() },
+              indication = null
+            ) {
+              isHotspotActive = true
+              onHotspotTap(scene.interaction)
+            }
+            .testTag("scene_hotspot_xe_do")
+        ) {
+          Surface(
+            shape = CircleShape,
+            color = Color(0xFFFFAB91).copy(alpha = pulseAlpha * 0.3f),
+            border = BorderStroke(2.dp, Color(0xFFE64A19).copy(alpha = pulseAlpha)),
+            modifier = Modifier
+              .size(52.dp)
+              .align(Alignment.Center)
+              .scale(pulseScale)
+          ) {
+            Box(contentAlignment = Alignment.Center) {
+              Text("🚗", fontSize = 16.sp)
+            }
+          }
+        }
+      }
+      "hotspot_be_gao" -> {
+        Box(
+          modifier = Modifier
+            .fillMaxHeight(0.55f)
+            .fillMaxWidth(0.5f)
+            .align(Alignment.BottomEnd)
+            .padding(end = 16.dp, bottom = 32.dp)
+            .clickable(
+              interactionSource = remember { MutableInteractionSource() },
+              indication = null
+            ) {
+              isHotspotActive = true
+              onHotspotTap(scene.interaction)
+            }
+            .testTag("scene_hotspot_be_gao")
+        ) {
+          Surface(
+            shape = CircleShape,
+            color = Color(0xFFFFE082).copy(alpha = pulseAlpha * 0.3f),
+            border = BorderStroke(2.dp, Color(0xFFFFB300).copy(alpha = pulseAlpha)),
+            modifier = Modifier
+              .size(52.dp)
+              .align(Alignment.Center)
+              .scale(pulseScale)
+          ) {
+            Box(contentAlignment = Alignment.Center) {
+              Text("✨", fontSize = 16.sp)
+            }
+          }
+        }
+      }
+      "hotspot_cay_cau", "hotspot_hai_ban" -> {
+        Box(
+          modifier = Modifier
+            .fillMaxHeight(0.5f)
+            .fillMaxWidth(0.6f)
+            .align(Alignment.Center)
+            .padding(top = 24.dp)
+            .clickable(
+              interactionSource = remember { MutableInteractionSource() },
+              indication = null
+            ) {
+              isHotspotActive = true
+              onHotspotTap(scene.interaction)
+            }
+            .testTag("scene_hotspot_cay_cau")
+        ) {
+          Surface(
+            shape = CircleShape,
+            color = Color(0xFFFFD54F).copy(alpha = pulseAlpha * 0.25f),
+            border = BorderStroke(2.dp, Color(0xFFFFB300).copy(alpha = pulseAlpha)),
+            modifier = Modifier
+              .size(52.dp)
+              .align(Alignment.Center)
+              .scale(pulseScale)
+          ) {
+            Box(contentAlignment = Alignment.Center) {
+              Text("⭐", fontSize = 16.sp)
+            }
+          }
+        }
+      }
+      "hotspot_gio_do_choi", "hotspot_ban_chai", "hotspot_quyen_sach" -> {
+        Box(
+          modifier = Modifier
+            .fillMaxHeight(0.5f)
+            .fillMaxWidth(0.5f)
+            .align(Alignment.BottomCenter)
+            .padding(bottom = 32.dp)
+            .clickable(
+              interactionSource = remember { MutableInteractionSource() },
+              indication = null
+            ) {
+              isHotspotActive = true
+              onHotspotTap(scene.interaction)
+            }
+            .testTag("scene_hotspot_night")
+        ) {
+          Surface(
+            shape = CircleShape,
+            color = Color(0xFFB39DDB).copy(alpha = pulseAlpha * 0.3f),
+            border = BorderStroke(2.dp, Color(0xFF7E57C2).copy(alpha = pulseAlpha)),
+            modifier = Modifier
+              .size(52.dp)
+              .align(Alignment.Center)
+              .scale(pulseScale)
+          ) {
+            Box(contentAlignment = Alignment.Center) {
+              Text("✨", fontSize = 16.sp)
+            }
+          }
+        }
       }
     }
 

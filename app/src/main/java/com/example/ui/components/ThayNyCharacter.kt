@@ -86,7 +86,7 @@ fun TeacherHeroCard(
         modifier = Modifier.size(112.dp),
         contentAlignment = Alignment.Center
       ) {
-        ThayNyCartoonHalfBody(
+        ThayNyRaster(
           size = 104.dp,
           isSpeaking = isSpeaking,
           mood = mood

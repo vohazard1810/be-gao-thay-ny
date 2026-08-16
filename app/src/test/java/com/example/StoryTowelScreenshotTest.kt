@@ -39,7 +39,7 @@ class StoryTowelScreenshotTest {
       }
     }
     composeTestRule.waitForIdle()
-    composeTestRule.onRoot().captureRoboImage(filePath = "src/test/screenshots/towel_scene_01.png")
+    composeTestRule.onRoot().captureRoboImage(filePath = "build/outputs/roborazzi/towel_scene_01.png")
   }
 
   @Test
@@ -58,7 +58,7 @@ class StoryTowelScreenshotTest {
       }
     }
     composeTestRule.waitForIdle()
-    composeTestRule.onRoot().captureRoboImage(filePath = "src/test/screenshots/towel_scene_02.png")
+    composeTestRule.onRoot().captureRoboImage(filePath = "build/outputs/roborazzi/towel_scene_02.png")
   }
 
   @Test
@@ -77,7 +77,7 @@ class StoryTowelScreenshotTest {
       }
     }
     composeTestRule.waitForIdle()
-    composeTestRule.onRoot().captureRoboImage(filePath = "src/test/screenshots/towel_scene_03.png")
+    composeTestRule.onRoot().captureRoboImage(filePath = "build/outputs/roborazzi/towel_scene_03.png")
   }
 
   @Test
@@ -96,7 +96,7 @@ class StoryTowelScreenshotTest {
       }
     }
     composeTestRule.waitForIdle()
-    composeTestRule.onRoot().captureRoboImage(filePath = "src/test/screenshots/towel_scene_04.png")
+    composeTestRule.onRoot().captureRoboImage(filePath = "build/outputs/roborazzi/towel_scene_04.png")
   }
 
   @Test
@@ -117,6 +117,6 @@ class StoryTowelScreenshotTest {
     // Tap the hotspot on scene 4
     composeTestRule.onNodeWithTag("scene_hotspot_chiec_khan").performClick()
     composeTestRule.waitForIdle()
-    composeTestRule.onRoot().captureRoboImage(filePath = "src/test/screenshots/towel_scene_04_hotspot.png")
+    composeTestRule.onRoot().captureRoboImage(filePath = "build/outputs/roborazzi/towel_scene_04_hotspot.png")
   }
 }

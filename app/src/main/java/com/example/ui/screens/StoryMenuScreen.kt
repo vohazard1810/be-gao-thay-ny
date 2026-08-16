@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -28,7 +29,9 @@ import androidx.compose.ui.unit.sp
 import com.example.data.StoryAssetManifest
 import com.example.data.StoryBook
 import com.example.ui.components.PastelBackgroundWithDots
+import com.example.ui.components.ThayNyRaster
 import com.example.ui.theme.TextDark
+import coil.compose.AsyncImage
 
 @Composable
 fun StoryMenuScreen(
@@ -85,18 +88,7 @@ fun StoryMenuScreen(
           verticalAlignment = Alignment.CenterVertically,
           horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-          Surface(
-            shape = CircleShape,
-            color = Color(0xFFFFD54F),
-            modifier = Modifier.size(46.dp)
-          ) {
-            Box(contentAlignment = Alignment.Center) {
-              Text(
-                text = "📖",
-                fontSize = 24.sp
-              )
-            }
-          }
+          ThayNyRaster(size = 54.dp, storytelling = true)
 
           Column(modifier = Modifier.weight(1f)) {
             Text(
@@ -167,7 +159,7 @@ private fun StoryBookCard(
       verticalAlignment = Alignment.CenterVertically,
       horizontalArrangement = Arrangement.spacedBy(14.dp)
     ) {
-      // Cover Emoji Icon
+      // Cover uses the actual first scene so parents and children see the real art style.
       Surface(
         shape = RoundedCornerShape(18.dp),
         color = Color.White,
@@ -175,13 +167,12 @@ private fun StoryBookCard(
         border = BorderStroke(1.5.dp, story.accentColor.copy(alpha = 0.4f)),
         modifier = Modifier.size(68.dp)
       ) {
-        Box(contentAlignment = Alignment.Center) {
-          Text(
-            text = story.coverEmoji,
-            fontSize = 30.sp,
-            textAlign = TextAlign.Center
-          )
-        }
+        AsyncImage(
+          model = story.scenes.firstOrNull()?.imageAsset,
+          contentDescription = "Bìa truyện ${story.titleVi}",
+          contentScale = ContentScale.Crop,
+          modifier = Modifier.fillMaxSize()
+        )
       }
 
       // Title & Moral lesson

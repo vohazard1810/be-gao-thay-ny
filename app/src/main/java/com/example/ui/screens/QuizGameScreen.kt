@@ -49,6 +49,7 @@ fun QuizGameScreen(
   showCelebration: Boolean,
   teacherMood: TeacherMood,
   onSelectOption: (QuizOption) -> Unit,
+  onNextQuestion: () -> Unit = {},
   onReplayQuestion: () -> Unit,
   onHomeClick: () -> Unit,
   modifier: Modifier = Modifier
@@ -196,16 +197,51 @@ fun QuizGameScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // 3 GIANT PICTURE ANSWER OPTIONS (Visual first, toddler identifies directly by picture)
-        Column(
+        // 2 GIANT PICTURE ANSWER OPTIONS (Visual first, toddler identifies directly by picture)
+        Row(
           modifier = Modifier.fillMaxWidth(),
-          verticalArrangement = Arrangement.spacedBy(10.dp)
+          horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-          currentQuestion.options.forEach { option ->
+          currentQuestion.options.take(2).forEach { option ->
             BigPictureQuizOptionCard(
               option = option,
-              onClick = { onSelectOption(option) }
+              onClick = { onSelectOption(option) },
+              modifier = Modifier.weight(1f)
             )
+          }
+        }
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        // Nút lớn "Chơi tiếp ⭐" xuất hiện khi trả lời đúng
+        AnimatedVisibility(
+          visible = showCelebration,
+          enter = fadeIn() + expandVertically(),
+          exit = fadeOut() + shrinkVertically()
+        ) {
+          Button(
+            onClick = onNextQuestion,
+            shape = RoundedCornerShape(18.dp),
+            colors = ButtonDefaults.buttonColors(
+              containerColor = Color(0xFF2E7D32)
+            ),
+            elevation = ButtonDefaults.buttonElevation(defaultElevation = 3.dp),
+            modifier = Modifier
+              .fillMaxWidth()
+              .height(56.dp)
+              .testTag("quiz_next_question_button")
+          ) {
+            Row(
+              verticalAlignment = Alignment.CenterVertically,
+              horizontalArrangement = Arrangement.Center
+            ) {
+              Text(
+                text = "Chơi tiếp ⭐",
+                color = Color.White,
+                fontWeight = FontWeight.ExtraBold,
+                fontSize = 17.sp
+              )
+            }
           }
         }
 
@@ -247,8 +283,7 @@ fun BigPictureQuizOptionCard(
     shadowElevation = 4.dp,
     border = androidx.compose.foundation.BorderStroke(2.dp, Color.White),
     modifier = modifier
-      .fillMaxWidth()
-      .height(96.dp)
+      .aspectRatio(0.86f)
       .scale(scale)
       .clip(RoundedCornerShape(24.dp))
       .clickable(
@@ -259,29 +294,29 @@ fun BigPictureQuizOptionCard(
       }
       .testTag("quiz_option_${option.id}")
   ) {
-    Row(
+    Column(
       modifier = Modifier
         .fillMaxSize()
-        .padding(horizontal = 14.dp, vertical = 6.dp),
-      verticalAlignment = Alignment.CenterVertically
+        .padding(8.dp),
+      horizontalAlignment = Alignment.CenterHorizontally,
+      verticalArrangement = Arrangement.SpaceBetween
     ) {
       // GIANT Photorealistic Picture Box (Primary Focus for Toddler)
       RealPhotoThumbnail(
         photoUrl = option.photoUrl,
         fallbackEmoji = option.emoji,
         cardColor = option.color,
-        size = 76.dp,
+        itemId = option.id,
+        modifier = Modifier.weight(1f),
+        size = 118.dp,
         showRealBadge = false,
         isAlphabetOrNumber = false
       )
 
-      Spacer(modifier = Modifier.width(14.dp))
+      Spacer(modifier = Modifier.height(6.dp))
 
       // Center Column: Label pill
-      Column(
-        modifier = Modifier.weight(1f),
-        verticalArrangement = Arrangement.Center
-      ) {
+      Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Surface(
           shape = RoundedCornerShape(12.dp),
           color = Color.White.copy(alpha = 0.95f),
@@ -299,24 +334,7 @@ fun BigPictureQuizOptionCard(
           )
         }
 
-        Spacer(modifier = Modifier.height(3.dp))
-
-        Text(
-          text = "Chạm để chọn",
-          style = MaterialTheme.typography.labelSmall.copy(
-            fontWeight = FontWeight.Bold,
-            color = TextDark.copy(alpha = 0.65f),
-            fontSize = 11.sp
-          )
-        )
       }
-
-      // Big Touch Hand Pointer
-      Text(
-        text = "👈",
-        fontSize = 24.sp,
-        modifier = Modifier.padding(end = 4.dp)
-      )
     }
   }
 }

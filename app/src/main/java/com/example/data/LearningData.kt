@@ -32,7 +32,6 @@ object LearningData {
     SubCategory("sub_farm", CategoryType.ANIMALS, "Nông Trại", "🏡", Color(0xFFFFE082)),
     SubCategory("sub_wild", CategoryType.ANIMALS, "Hoang Dã", "🦁", Color(0xFFFFCC80)),
     SubCategory("sub_water", CategoryType.ANIMALS, "Dưới Nước", "🐬", Color(0xFF81D4FA)),
-    SubCategory("sub_insects", CategoryType.ANIMALS, "Côn Trùng", "🦋", Color(0xFFA5D6A7)),
     // Letters and numbers
     SubCategory("sub_alphabet", CategoryType.LETTERS_NUMBERS, "Bảng Chữ Cái", "🔤", Color(0xFFFFAB91)),
     SubCategory("sub_numbers", CategoryType.LETTERS_NUMBERS, "Bảng Số Đếm", "🔢", Color(0xFFCE93D8))
@@ -396,13 +395,13 @@ object LearningData {
       nameVi = "Gấu Trúc",
       pronunciationVi = "Gấu trúc Panda",
       emoji = "🐼",
-      photoUrl = "https://images.unsplash.com/photo-1564349683136-77e08dba1ef6?w=500&auto=format&fit=crop&q=80",
+      photoUrl = "https://images.unsplash.com/photo-1564349683136-77e08dba1ef7?w=500&auto=format&fit=crop&q=80",
       soundEffectVi = "Nhai trúc rộp rộp!",
       funFactVi = "Gấu trúc tròn xoe thích ăn lá trúc non và ngủ nướng cả ngày!",
       cardColor = Color(0xFFE0E0E0),
       questionVi = "Bạn gấu nào có quầng mắt đen thích ăn cành trúc?",
       distractors = listOf(
-        FlashcardOption("panda", "Gấu Trúc", "🐼", "https://images.unsplash.com/photo-1564349683136-77e08dba1ef6?w=500&auto=format&fit=crop&q=80", true),
+        FlashcardOption("panda", "Gấu Trúc", "🐼", "https://images.unsplash.com/photo-1564349683136-77e08dba1ef7?w=500&auto=format&fit=crop&q=80", true),
         FlashcardOption("bear", "Chú Gấu", "🐻", "https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?w=500&auto=format&fit=crop&q=80", false),
         FlashcardOption("cat", "Bé Mèo", "🐱", "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500&auto=format&fit=crop&q=80", false)
       )
@@ -484,24 +483,6 @@ object LearningData {
       )
     ),
     FlashcardItem(
-      id = "water_crab",
-      category = CategoryType.ANIMALS,
-      subCategoryId = "sub_water",
-      nameVi = "Chú Cua",
-      pronunciationVi = "Chú cua biển",
-      emoji = "🦀",
-      photoUrl = "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500&auto=format&fit=crop&q=80",
-      soundEffectVi = "Lách cách hai càng!",
-      funFactVi = "Chú cua có hai chiếc càng to và thích bò ngang trên cát!",
-      cardColor = Color(0xFFFFAB91),
-      questionVi = "Bạn nào có hai chiếc càng to bò ngang trên cát?",
-      distractors = listOf(
-        FlashcardOption("crab", "Chú Cua", "🦀", "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500&auto=format&fit=crop&q=80", true),
-        FlashcardOption("shrimp", "Chú Tôm", "🦐", "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=500&auto=format&fit=crop&q=80", false),
-        FlashcardOption("starfish", "Sao Biển", "⭐", "https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=500&auto=format&fit=crop&q=80", false)
-      )
-    ),
-    FlashcardItem(
       id = "water_turtle",
       category = CategoryType.ANIMALS,
       subCategoryId = "sub_water",
@@ -515,8 +496,7 @@ object LearningData {
       questionVi = "Bạn nào có chiếc mai tròn cứng bơi chậm rãi?",
       distractors = listOf(
         FlashcardOption("turtle", "Rùa Biển", "🐢", "https://images.unsplash.com/photo-1518467166778-b88f373ffec7?w=500&auto=format&fit=crop&q=80", true),
-        FlashcardOption("crab", "Chú Cua", "🦀", "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500&auto=format&fit=crop&q=80", false),
-        FlashcardOption("dolphin", "Cá Heo", "🐬", "https://images.unsplash.com/photo-1607153333879-c174d265f1d2?w=500&auto=format&fit=crop&q=80", false)
+        FlashcardOption("whale", "Cá Voi", "🐋", "https://images.unsplash.com/photo-1568430462989-44163eb1752f?w=500&auto=format&fit=crop&q=80", false)
       )
     ),
     FlashcardItem(
@@ -533,26 +513,7 @@ object LearningData {
       questionVi = "Bạn nào dưới biển có tám chiếc xúc tu mềm mại?",
       distractors = listOf(
         FlashcardOption("octopus", "Bạch Tuộc", "🐙", "https://images.unsplash.com/photo-1545671913-b89ac1b4ac10?w=500&auto=format&fit=crop&q=80", true),
-        FlashcardOption("crab", "Chú Cua", "🦀", "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500&auto=format&fit=crop&q=80", false),
-        FlashcardOption("whale", "Cá Voi", "🐋", "https://images.unsplash.com/photo-1568430462989-44163eb1752f?w=500&auto=format&fit=crop&q=80", false)
-      )
-    ),
-    FlashcardItem(
-      id = "water_starfish",
-      category = CategoryType.ANIMALS,
-      subCategoryId = "sub_water",
-      nameVi = "Sao Biển",
-      pronunciationVi = "Sao biển năm cánh",
-      emoji = "⭐",
-      photoUrl = "https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=500&auto=format&fit=crop&q=80",
-      soundEffectVi = "Lấp lánh bờ cát!",
-      funFactVi = "Sao biển có hình dáng như một ngôi sao 5 cánh xinh đẹp dưới đáy đại dương!",
-      cardColor = Color(0xFFFFE082),
-      questionVi = "Bạn nào hình ngôi sao 5 cánh nằm trên bờ cát?",
-      distractors = listOf(
-        FlashcardOption("starfish", "Sao Biển", "⭐", "https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=500&auto=format&fit=crop&q=80", true),
-        FlashcardOption("crab", "Chú Cua", "🦀", "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500&auto=format&fit=crop&q=80", false),
-        FlashcardOption("turtle", "Rùa Biển", "🐢", "https://images.unsplash.com/photo-1518467166778-b88f373ffec7?w=500&auto=format&fit=crop&q=80", false)
+        FlashcardOption("dolphin", "Cá Heo", "🐬", "https://images.unsplash.com/photo-1607153333879-c174d265f1d2?w=500&auto=format&fit=crop&q=80", false)
       )
     ),
     FlashcardItem(
@@ -589,118 +550,6 @@ object LearningData {
         FlashcardOption("penguin", "Chim Cánh Cụt", "🐧", "https://images.unsplash.com/photo-1598439210625-5067c578f3f6?w=500&auto=format&fit=crop&q=80", true),
         FlashcardOption("duck", "Chú Vịt", "🦆", "https://images.unsplash.com/photo-1555852095-64e7428df0fa?w=500&auto=format&fit=crop&q=80", false),
         FlashcardOption("dolphin", "Cá Heo", "🐬", "https://images.unsplash.com/photo-1607153333879-c174d265f1d2?w=500&auto=format&fit=crop&q=80", false)
-      )
-    ),
-
-    // ----------------------------------------------------
-    // 4. ANIMALS - CÔN TRÙNG & CHIM (INSECTS & BIRDS)
-    // ----------------------------------------------------
-    FlashcardItem(
-      id = "insect_butterfly",
-      category = CategoryType.ANIMALS,
-      subCategoryId = "sub_insects",
-      nameVi = "Bướm Xinh",
-      pronunciationVi = "Bướm hoa rực rỡ",
-      emoji = "🦋",
-      photoUrl = "https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=500&auto=format&fit=crop&q=80",
-      soundEffectVi = "Dập dờn cánh bay!",
-      funFactVi = "Bướm xinh có đôi cánh rực rỡ sắc màu bay lượn bên hoa!",
-      cardColor = Color(0xFFE1BEE7),
-      questionVi = "Bạn nào có đôi cánh sắc màu rực rỡ bay quanh hoa?",
-      distractors = listOf(
-        FlashcardOption("butterfly", "Bướm Xinh", "🦋", "https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=500&auto=format&fit=crop&q=80", true),
-        FlashcardOption("bee", "Chú Ong", "🐝", "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=500&auto=format&fit=crop&q=80", false),
-        FlashcardOption("ladybug", "Bọ Rùa", "🐞", "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500&auto=format&fit=crop&q=80", false)
-      )
-    ),
-    FlashcardItem(
-      id = "insect_bee",
-      category = CategoryType.ANIMALS,
-      subCategoryId = "sub_insects",
-      nameVi = "Chú Ong",
-      pronunciationVi = "Chú ong chăm chỉ",
-      emoji = "🐝",
-      photoUrl = "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=500&auto=format&fit=crop&q=80",
-      soundEffectVi = "Vo ve vo ve!",
-      funFactVi = "Chú ong chăm chỉ hút mật hoa làm nên những giọt mật ngọt!",
-      cardColor = Color(0xFFFFF9C4),
-      questionVi = "Bạn nào chăm chỉ hút mật hoa thơm ngon?",
-      distractors = listOf(
-        FlashcardOption("bee", "Chú Ong", "🐝", "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=500&auto=format&fit=crop&q=80", true),
-        FlashcardOption("butterfly", "Bướm Xinh", "🦋", "https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=500&auto=format&fit=crop&q=80", false),
-        FlashcardOption("ladybug", "Bọ Rùa", "🐞", "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500&auto=format&fit=crop&q=80", false)
-      )
-    ),
-    FlashcardItem(
-      id = "insect_ladybug",
-      category = CategoryType.ANIMALS,
-      subCategoryId = "sub_insects",
-      nameVi = "Bọ Rùa",
-      pronunciationVi = "Bọ rùa đỏ chấm bi",
-      emoji = "🐞",
-      photoUrl = "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500&auto=format&fit=crop&q=80",
-      soundEffectVi = "Bò ngoan trên lá!",
-      funFactVi = "Bọ rùa có chiếc áo choàng màu đỏ chấm bi đen rất xinh xắn!",
-      cardColor = Color(0xFFFFCDD2),
-      questionVi = "Bạn nào có áo đỏ chấm bi đen nhỏ nhắn?",
-      distractors = listOf(
-        FlashcardOption("ladybug", "Bọ Rùa", "🐞", "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500&auto=format&fit=crop&q=80", true),
-        FlashcardOption("bee", "Chú Ong", "🐝", "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=500&auto=format&fit=crop&q=80", false),
-        FlashcardOption("butterfly", "Bướm Xinh", "🦋", "https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=500&auto=format&fit=crop&q=80", false)
-      )
-    ),
-    FlashcardItem(
-      id = "insect_dragonfly",
-      category = CategoryType.ANIMALS,
-      subCategoryId = "sub_insects",
-      nameVi = "Chuồn Chuồn",
-      pronunciationVi = "Chuồn chuồn ớt",
-      emoji = "🛸",
-      photoUrl = "https://images.unsplash.com/photo-1512438248247-f0f2a5a8b7f0?w=500&auto=format&fit=crop&q=80",
-      soundEffectVi = "Vút bay lượn lờ!",
-      funFactVi = "Chuồn chuồn có bốn cánh mỏng trong suốt bay lượn báo hiệu trời nắng mưa!",
-      cardColor = Color(0xFFB2DFDB),
-      questionVi = "Bạn nào có cánh mỏng trong suốt bay lượn báo hiệu trời mưa?",
-      distractors = listOf(
-        FlashcardOption("dragonfly", "Chuồn Chuồn", "🛸", "https://images.unsplash.com/photo-1512438248247-f0f2a5a8b7f0?w=500&auto=format&fit=crop&q=80", true),
-        FlashcardOption("butterfly", "Bướm Xinh", "🦋", "https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=500&auto=format&fit=crop&q=80", false),
-        FlashcardOption("bee", "Chú Ong", "🐝", "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=500&auto=format&fit=crop&q=80", false)
-      )
-    ),
-    FlashcardItem(
-      id = "insect_parrot",
-      category = CategoryType.ANIMALS,
-      subCategoryId = "sub_insects",
-      nameVi = "Chú Vẹt",
-      pronunciationVi = "Chú vẹt thông minh",
-      emoji = "🦜",
-      photoUrl = "https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=500&auto=format&fit=crop&q=80",
-      soundEffectVi = "Hót líu lo bắt chước tiếng người!",
-      funFactVi = "Chú vẹt có bộ lông rực rỡ sắc màu và bắt chước giọng nói rất giỏi!",
-      cardColor = Color(0xFFC8E6C9),
-      questionVi = "Bạn chim nào có lông sặc sỡ biết bắt chước tiếng người?",
-      distractors = listOf(
-        FlashcardOption("parrot", "Chú Vẹt", "🦜", "https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=500&auto=format&fit=crop&q=80", true),
-        FlashcardOption("chicken", "Gà Trống", "🐔", "https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=500&auto=format&fit=crop&q=80", false),
-        FlashcardOption("duck", "Chú Vịt", "🦆", "https://images.unsplash.com/photo-1555852095-64e7428df0fa?w=500&auto=format&fit=crop&q=80", false)
-      )
-    ),
-    FlashcardItem(
-      id = "insect_dove",
-      category = CategoryType.ANIMALS,
-      subCategoryId = "sub_insects",
-      nameVi = "Bồ Câu",
-      pronunciationVi = "Chim bồ câu trắng",
-      emoji = "🕊️",
-      photoUrl = "https://images.unsplash.com/photo-1522926197415-e55c22c8880c?w=500&auto=format&fit=crop&q=80",
-      soundEffectVi = "Gù gù thân thương!",
-      funFactVi = "Chim bồ câu trắng hiền lành là biểu tượng của tình bạn và hòa bình!",
-      cardColor = Color(0xFFEDE7F6),
-      questionVi = "Bạn chim màu trắng hiền lành mang thông điệp hòa bình?",
-      distractors = listOf(
-        FlashcardOption("dove", "Bồ Câu", "🕊️", "https://images.unsplash.com/photo-1522926197415-e55c22c8880c?w=500&auto=format&fit=crop&q=80", true),
-        FlashcardOption("duck", "Chú Vịt", "🦆", "https://images.unsplash.com/photo-1555852095-64e7428df0fa?w=500&auto=format&fit=crop&q=80", false),
-        FlashcardOption("parrot", "Chú Vẹt", "🦜", "https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=500&auto=format&fit=crop&q=80", false)
       )
     ),
 
@@ -1859,8 +1708,7 @@ object LearningData {
       cluePhotoUrl = "https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=500&auto=format&fit=crop&q=80",
       options = listOf(
         QuizOption("chicken", "Gà Trống", "🐔", "https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=500&auto=format&fit=crop&q=80", Color(0xFFFFE0B2)),
-        QuizOption("duck", "Chú Vịt", "🦆", "https://images.unsplash.com/photo-1555852095-64e7428df0fa?w=500&auto=format&fit=crop&q=80", Color(0xFFFFF9C4)),
-        QuizOption("pig", "Bé Heo", "🐷", "https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=500&auto=format&fit=crop&q=80", Color(0xFFF8BBD0))
+        QuizOption("duck", "Chú Vịt", "🦆", "https://images.unsplash.com/photo-1555852095-64e7428df0fa?w=500&auto=format&fit=crop&q=80", Color(0xFFFFF9C4))
       ),
       correctId = "chicken",
       praiseSpeechVi = "Hoan hô bé Gạo! Chính là chú gà trống mào đỏ gáy ò ó o!",
@@ -1874,8 +1722,7 @@ object LearningData {
       cluePhotoUrl = "https://images.unsplash.com/photo-1555852095-64e7428df0fa?w=500&auto=format&fit=crop&q=80",
       options = listOf(
         QuizOption("duck", "Chú Vịt", "🦆", "https://images.unsplash.com/photo-1555852095-64e7428df0fa?w=500&auto=format&fit=crop&q=80", Color(0xFFFFF9C4)),
-        QuizOption("cat", "Bé Mèo", "🐱", "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500&auto=format&fit=crop&q=80", Color(0xFFFFE0B2)),
-        QuizOption("dog", "Chú Chó", "🐶", "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=500&auto=format&fit=crop&q=80", Color(0xFFFFECB3))
+        QuizOption("cat", "Bé Mèo", "🐱", "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500&auto=format&fit=crop&q=80", Color(0xFFFFE0B2))
       ),
       correctId = "duck",
       praiseSpeechVi = "Đúng rồi bé yêu! Chú vịt vàng bơi dưới ao kêu quạc quạc!",
@@ -1889,7 +1736,6 @@ object LearningData {
       cluePhotoUrl = "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=500&auto=format&fit=crop&q=80",
       options = listOf(
         QuizOption("dog", "Chú Chó", "🐶", "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=500&auto=format&fit=crop&q=80", Color(0xFFFFECB3)),
-        QuizOption("goat", "Chú Dê", "🐐", "https://images.unsplash.com/photo-1524024973431-2ad916746881?w=500&auto=format&fit=crop&q=80", Color(0xFFDCEDC8)),
         QuizOption("pig", "Bé Heo", "🐷", "https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=500&auto=format&fit=crop&q=80", Color(0xFFF8BBD0))
       ),
       correctId = "dog",
@@ -1904,7 +1750,6 @@ object LearningData {
       cluePhotoUrl = "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500&auto=format&fit=crop&q=80",
       options = listOf(
         QuizOption("cat", "Bé Mèo", "🐱", "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500&auto=format&fit=crop&q=80", Color(0xFFFFE0B2)),
-        QuizOption("horse", "Chú Ngựa", "🐴", "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=500&auto=format&fit=crop&q=80", Color(0xFFD7CCC8)),
         QuizOption("cow", "Bò Sữa", "🐮", "https://images.unsplash.com/photo-1546445317-29f4545e9d53?w=500&auto=format&fit=crop&q=80", Color(0xFFE0F2F1))
       ),
       correctId = "cat",
@@ -1919,7 +1764,6 @@ object LearningData {
       cluePhotoUrl = "https://images.unsplash.com/photo-1547721064-da6cfb341d50?w=500&auto=format&fit=crop&q=80",
       options = listOf(
         QuizOption("giraffe", "Hươu Cao Cổ", "🦒", "https://images.unsplash.com/photo-1547721064-da6cfb341d50?w=500&auto=format&fit=crop&q=80", Color(0xFFFFF59D)),
-        QuizOption("lion", "Sư Tử", "🦁", "https://images.unsplash.com/photo-1546182990-dffeafbe841d?w=500&auto=format&fit=crop&q=80", Color(0xFFFFE082)),
         QuizOption("elephant", "Chú Voi", "🐘", "https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?w=500&auto=format&fit=crop&q=80", Color(0xFFE1BEE7))
       ),
       correctId = "giraffe",
@@ -1934,8 +1778,7 @@ object LearningData {
       cluePhotoUrl = "https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?w=500&auto=format&fit=crop&q=80",
       options = listOf(
         QuizOption("elephant", "Chú Voi", "🐘", "https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?w=500&auto=format&fit=crop&q=80", Color(0xFFE1BEE7)),
-        QuizOption("bear", "Chú Gấu", "🐻", "https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?w=500&auto=format&fit=crop&q=80", Color(0xFFBCAAA4)),
-        QuizOption("monkey", "Chú Khỉ", "🐒", "https://images.unsplash.com/photo-1540573133985-87b6da6d54a9?w=500&auto=format&fit=crop&q=80", Color(0xFFD7CCC8))
+        QuizOption("bear", "Chú Gấu", "🐻", "https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?w=500&auto=format&fit=crop&q=80", Color(0xFFBCAAA4))
       ),
       correctId = "elephant",
       praiseSpeechVi = "Tuyệt vời bé Gạo! Chú voi to lớn có chiếc vòi dài phun nước!",
@@ -1949,8 +1792,7 @@ object LearningData {
       cluePhotoUrl = "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=500&auto=format&fit=crop&q=80",
       options = listOf(
         QuizOption("watermelon", "Dưa Hấu", "🍉", "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=500&auto=format&fit=crop&q=80", Color(0xFFC8E6C9)),
-        QuizOption("banana", "Quả Chuối", "🍌", "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=500&auto=format&fit=crop&q=80", Color(0xFFFFF9C4)),
-        QuizOption("orange", "Quả Cam", "🍊", "https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?w=500&auto=format&fit=crop&q=80", Color(0xFFFFE0B2))
+        QuizOption("banana", "Quả Chuối", "🍌", "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=500&auto=format&fit=crop&q=80", Color(0xFFFFF9C4))
       ),
       correctId = "watermelon",
       praiseSpeechVi = "Hoan hô bé Gạo! Quả dưa hấu ruột đỏ ăn vào ngọt mát lịm!",
@@ -1964,12 +1806,142 @@ object LearningData {
       cluePhotoUrl = "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=500&auto=format&fit=crop&q=80",
       options = listOf(
         QuizOption("apple", "Quả Táo", "🍎", "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=500&auto=format&fit=crop&q=80", Color(0xFFFFCDD2)),
-        QuizOption("mango", "Quả Xoài", "🥭", "https://images.unsplash.com/photo-1553279768-865429fa0078?w=500&auto=format&fit=crop&q=80", Color(0xFFFFECB3)),
-        QuizOption("grapes", "Chùm Nho", "🍇", "https://images.unsplash.com/photo-1537640538966-79f369143f8f?w=500&auto=format&fit=crop&q=80", Color(0xFFE1BEE7))
+        QuizOption("mango", "Quả Xoài", "🥭", "https://images.unsplash.com/photo-1553279768-865429fa0078?w=500&auto=format&fit=crop&q=80", Color(0xFFFFECB3))
       ),
       correctId = "apple",
       praiseSpeechVi = "Xuất sắc lắm bé Gạo! Quả táo đỏ giòn ngọt thơm ngon!",
       encourageSpeechVi = "Chưa đúng rồi con ơi, quả táo đỏ tròn xoe cơ, con chọn lại nhé!"
     )
   )
+
+  /**
+   * Helper function to return natural, toddler-friendly introduction speech for flashcards:
+   * - 1-2 short sentences (<= 15 words).
+   * - Natural pause between name and description.
+   * - Accurate sound description per animal/fruit/color/number.
+   * - No redundant "Con/Chú" prefixes.
+   */
+  fun getFlashcardIntroSpeech(card: FlashcardItem): String {
+    return when (card.id) {
+      "farm_chicken" -> "Gà trống. Gà trống gáy ò ó o."
+      "farm_duck" -> "Chú vịt. Chú vịt kêu quạc quạc."
+      "farm_pig" -> "Bé heo. Bé heo kêu ủn ỉn."
+      "farm_cow" -> "Bò sữa. Bò sữa kêu ùm bò."
+      "farm_goat" -> "Chú dê. Chú dê kêu be be."
+      "farm_horse" -> "Chú ngựa. Chú ngựa hí vang phi nhanh."
+      "farm_sheep" -> "Bé cừu. Bé cừu kêu be be lông xù."
+      "farm_dog" -> "Chú chó. Chú chó sủa gâu gâu."
+      "farm_cat" -> "Bé mèo. Bé mèo kêu meo meo."
+      "farm_rabbit" -> "Thỏ trắng. Thỏ trắng nhảy nhót thích ăn cà rốt."
+      "farm_chick" -> "Gà con. Gà con lông vàng kêu chíp chíp."
+      "farm_buffalo" -> "Chú trâu. Chú trâu gặm cỏ trên đồng."
+
+      "wild_lion" -> "Sư tử. Sư tử gầm gừ thật oai."
+      "wild_elephant" -> "Chú voi. Chú voi rống và vẫy chiếc vòi."
+      "wild_tiger" -> "Chú hổ. Chú hổ gầm vang rừng xanh."
+      "wild_giraffe" -> "Hươu cao cổ. Hươu cao cổ có chiếc cổ dài."
+      "wild_monkey" -> "Chú khỉ. Chú khỉ kêu khẹc khẹc thích ăn chuối."
+      "wild_bear" -> "Chú gấu. Chú gấu tròn xoe thích ăn mật ong."
+      "wild_zebra" -> "Ngựa vằn. Ngựa vằn có bộ lông sọc đen trắng."
+      "wild_panda" -> "Gấu trúc. Gấu trúc thích ăn cành trúc non."
+      "wild_fox" -> "Chú cáo. Chú cáo có bộ lông màu cam."
+      "wild_squirrel" -> "Chú sóc. Chú sóc chuyền cành nhặt hạt dẻ."
+
+      "water_dolphin" -> "Cá heo. Cá heo bơi lội và nhảy múa trên sóng."
+      "water_whale" -> "Cá voi. Cá voi khổng lồ phun cột nước cao."
+      "water_turtle" -> "Rùa biển. Rùa biển bơi chậm rãi trong đại dương."
+      "water_octopus" -> "Bạch tuộc. Bạch tuộc có tám chiếc xúc tu mềm mại."
+      "water_clownfish" -> "Cá hề. Cá hề bơi lội tung tăng trong san hô."
+      "water_penguin" -> "Chim cánh cụt. Chim cánh cụt đi lạch bạch trên băng tuyết."
+
+      "fruit_apple" -> "Quả táo. Quả táo đỏ giòn ngọt mát."
+      "fruit_banana" -> "Quả chuối. Quả chuối vàng thơm ngọt dễ ăn."
+      "fruit_orange" -> "Quả cam. Quả cam mọng nước giàu vitamin C."
+      "fruit_watermelon" -> "Dưa hấu. Dưa hấu vỏ xanh ruột đỏ ngọt lành."
+      "fruit_mango" -> "Quả xoài. Quả xoài chín vàng ngọt thơm phức."
+      "fruit_strawberry" -> "Dâu tây. Dâu tây đỏ mọng chua ngọt dịu dàng."
+      "fruit_grapes" -> "Chùm nho. Chùm nho tím mọng nước ngọt thơm."
+
+      "col_red" -> "Màu đỏ. Màu đỏ rực rỡ như quả táo chín."
+      "col_yellow" -> "Màu vàng. Màu vàng ấm áp như ánh mặt trời."
+      "col_green" -> "Màu xanh lá. Màu xanh lá tươi mát của lá non."
+      "col_blue" -> "Màu xanh dương. Màu xanh của bầu trời bao la."
+      "col_pink" -> "Màu hồng. Màu hồng dịu dàng xinh xắn."
+      "col_orange" -> "Màu cam. Màu cam tươi sáng như quả cam chín."
+      "col_purple" -> "Màu tím. Màu tím mộng mơ như chùm nho chín."
+
+      "alpha_a" -> "Chữ A. Chữ A trong quả táo đỏ."
+      "alpha_aw" -> "Chữ Ă. Chữ Ă trong mặt trăng khuyết."
+      "alpha_aa" -> "Chữ Â. Chữ Â có chiếc nón xinh."
+      "alpha_b" -> "Chữ B. Chữ B trong chú bướm nhỏ."
+      "alpha_c" -> "Chữ C. Chữ C trong chú cá bơi."
+      "alpha_d" -> "Chữ D. Chữ D trong quả dưa hấu."
+
+      "num_1" -> "Số 1. Một chú vịt vàng."
+      "num_2" -> "Số 2. Hai chú thỏ trắng."
+      "num_3" -> "Số 3. Ba quả táo đỏ."
+      "num_4" -> "Số 4. Bốn chú bướm xinh."
+      "num_5" -> "Số 5. Năm ngôi sao sáng."
+      else -> {
+        val name = formatCleanName(card.nameVi)
+        if (card.category == CategoryType.ANIMALS && card.soundEffectVi.isNotBlank()) {
+          "$name. $name kêu ${card.soundEffectVi.lowercase()}"
+        } else {
+          "$name. ${card.funFactVi}"
+        }
+      }
+    }
+  }
+
+  fun getFlashcardSoundSpeech(card: FlashcardItem): String {
+    return when (card.id) {
+      "farm_chicken" -> "Gà trống gáy: Ò ó o o!"
+      "farm_duck" -> "Chú vịt kêu: Quạc quạc quạc!"
+      "farm_pig" -> "Bé heo kêu: Ủn ỉn ủn ỉn!"
+      "farm_cow" -> "Bò sữa kêu: Ùm bò bò!"
+      "farm_goat" -> "Chú dê kêu: Be be be!"
+      "farm_horse" -> "Chú ngựa hí vang: Hí hí hí!"
+      "farm_sheep" -> "Bé cừu kêu: Be be be!"
+      "farm_dog" -> "Chú chó sủa: Gâu gâu gâu!"
+      "farm_cat" -> "Bé mèo kêu: Meo meo meo!"
+      "farm_rabbit" -> "Thỏ trắng nhảy nhót tung tăng!"
+      "farm_chick" -> "Gà con kêu: Chíp chíp chíp!"
+      "farm_buffalo" -> "Chú trâu kêu: Nghé ọ nghé ọ!"
+
+      "wild_lion" -> "Sư tử gầm gừ thật oai phong!"
+      "wild_elephant" -> "Chú voi rống và huơ vòi phun nước!"
+      "wild_tiger" -> "Chú hổ gầm vang rừng xanh!"
+      "wild_giraffe" -> "Hươu cao cổ vươn cao gặm lá cây!"
+      "wild_monkey" -> "Chú khỉ kêu: Khẹc khẹc vui nhộn!"
+      "wild_bear" -> "Chú gấu gừ gừ ấm áp!"
+      "wild_zebra" -> "Ngựa vằn hí vang trên đồng cỏ!"
+      "wild_panda" -> "Gấu trúc nhai trúc rộp rộp!"
+      "wild_fox" -> "Chú cáo khẽ kêu lanh lợi!"
+      "wild_squirrel" -> "Chú sóc kêu: Chít chít nhanh nhẹn!"
+
+      "water_dolphin" -> "Cá heo kêu lách chách vui tai!"
+      "water_whale" -> "Cá voi khổng lồ phun nước lên cao!"
+      "water_turtle" -> "Rùa biển bơi êm đềm dưới làn nước mát!"
+      "water_octopus" -> "Bạch tuộc uốn lượn tám xúc tu mềm mại!"
+      "water_clownfish" -> "Cá hề bơi lội tung tăng trong san hô!"
+      "water_penguin" -> "Chim cánh cụt đi lạch bạch trên băng!"
+
+      else -> {
+        if (card.category == CategoryType.ANIMALS && card.soundEffectVi.isNotBlank()) {
+          "${formatCleanName(card.nameVi)}: ${card.soundEffectVi}"
+        } else {
+          "${formatCleanName(card.nameVi)}. ${card.funFactVi}"
+        }
+      }
+    }
+  }
+
+  fun formatCleanName(nameVi: String): String {
+    return nameVi.trim()
+  }
+
+  fun getPraiseForCard(card: FlashcardItem): String {
+    val name = formatCleanName(card.nameVi)
+    return "Đúng rồi! Đây là $name!"
+  }
 }

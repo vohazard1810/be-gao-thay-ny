@@ -51,7 +51,7 @@ class StoryReaderPhase1Test {
     composeTestRule.onNodeWithTag("story_next_button").assertIsDisplayed()
 
     // Capture Roborazzi screenshot on 360x800
-    composeTestRule.onRoot().captureRoboImage(filePath = "src/test/screenshots/story_reader_360x800.png")
+    composeTestRule.onRoot().captureRoboImage(filePath = "build/outputs/roborazzi/story_reader_360x800.png")
   }
 
   @Test
@@ -72,7 +72,7 @@ class StoryReaderPhase1Test {
     composeTestRule.onNodeWithTag("story_next_button").assertIsDisplayed()
 
     // Capture Roborazzi screenshot on 390x844
-    composeTestRule.onRoot().captureRoboImage(filePath = "src/test/screenshots/story_reader_390x844.png")
+    composeTestRule.onRoot().captureRoboImage(filePath = "build/outputs/roborazzi/story_reader_390x844.png")
   }
 
   @Test
@@ -93,7 +93,7 @@ class StoryReaderPhase1Test {
     composeTestRule.onNodeWithTag("story_next_button").assertIsDisplayed()
 
     // Capture Roborazzi screenshot on 412x915
-    composeTestRule.onRoot().captureRoboImage(filePath = "src/test/screenshots/story_reader_412x915.png")
+    composeTestRule.onRoot().captureRoboImage(filePath = "build/outputs/roborazzi/story_reader_412x915.png")
   }
 
   @Test

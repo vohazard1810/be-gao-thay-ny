@@ -86,9 +86,9 @@ class VoiceManager(private val context: Context) {
 
   fun speak(
     text: String,
-    onDone: (() -> Unit)? = null,
     pitch: Float = 0.95f,
-    rate: Float = 0.88f
+    rate: Float = 0.88f,
+    onDone: (() -> Unit)? = null
   ) {
     _spokenText.value = text
     onSpeechDoneCallback = onDone

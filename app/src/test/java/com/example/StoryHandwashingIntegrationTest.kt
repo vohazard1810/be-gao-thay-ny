@@ -23,7 +23,7 @@ class StoryHandwashingIntegrationTest {
     assertEquals("Tay Mèo Mây Dính Đất", s1.titleVi)
     assertEquals("Sau giờ chơi, tay Mèo Mây dính đất.", s1.narrationVi)
     assertEquals("“Ôi, tay mình bẩn rồi!”", s1.dialogueVi)
-    assertEquals("file:///android_asset/stories/handwashing_story/scene_01.webp", s1.imageAsset)
+    assertEquals("file:///android_asset/stories/handwashing_story/scene_01.png", s1.imageAsset)
     assertEquals("hotspot_tay_dinh_dat", s1.interaction)
 
     // Scene 2 verification
@@ -33,7 +33,7 @@ class StoryHandwashingIntegrationTest {
     assertEquals("Thầy Ny Hướng Dẫn", s2.titleVi)
     assertEquals("Thầy Ny chỉ Mèo Mây cách rửa tay.", s2.narrationVi)
     assertEquals("“Trước tiên, mình làm ướt tay nhé!”", s2.dialogueVi)
-    assertEquals("file:///android_asset/stories/handwashing_story/scene_02.webp", s2.imageAsset)
+    assertEquals("file:///android_asset/stories/handwashing_story/scene_02.png", s2.imageAsset)
     assertEquals("hotspot_voi_nuoc", s2.interaction)
 
     // Scene 3 verification
@@ -43,7 +43,7 @@ class StoryHandwashingIntegrationTest {
     assertEquals("Xoa Xà Phòng Thật Kỹ", s3.titleVi)
     assertEquals("Mèo Mây xoa xà phòng thật kỹ.", s3.narrationVi)
     assertEquals("“Xoa lòng bàn tay và từng ngón tay.”", s3.dialogueVi)
-    assertEquals("file:///android_asset/stories/handwashing_story/scene_03.webp", s3.imageAsset)
+    assertEquals("file:///android_asset/stories/handwashing_story/scene_03.png", s3.imageAsset)
     assertEquals("hotspot_bot_xa_phong", s3.interaction)
 
     // Scene 4 verification
@@ -53,7 +53,7 @@ class StoryHandwashingIntegrationTest {
     assertEquals("Hai Bàn Tay Sạch Sẽ", s4.titleVi)
     assertEquals("Hai bàn tay đã sạch sẽ rồi!", s4.narrationVi)
     assertEquals("“Tay mình sạch rồi!”", s4.dialogueVi)
-    assertEquals("file:///android_asset/stories/handwashing_story/scene_04.webp", s4.imageAsset)
+    assertEquals("file:///android_asset/stories/handwashing_story/scene_04.png", s4.imageAsset)
     assertEquals("hotspot_ban_tay_sach", s4.interaction)
   }
 
@@ -69,13 +69,13 @@ class StoryHandwashingIntegrationTest {
   @Test
   fun testAssetFilesPhysicalExistence() {
     for (i in 1..4) {
-      val fTowel = File("src/main/assets/stories/towel_story/scene_0$i.webp")
-        .takeIf { it.exists() } ?: File("app/src/main/assets/stories/towel_story/scene_0$i.webp")
+      val fTowel = File("src/main/assets/stories/towel_story/scene_0$i.png")
+        .takeIf { it.exists() } ?: File("app/src/main/assets/stories/towel_story/scene_0$i.png")
       assertTrue("towel scene $i must exist physically", fTowel.exists())
       assertTrue("towel scene $i size > 0", fTowel.length() > 0)
 
-      val fHandwashing = File("src/main/assets/stories/handwashing_story/scene_0$i.webp")
-        .takeIf { it.exists() } ?: File("app/src/main/assets/stories/handwashing_story/scene_0$i.webp")
+      val fHandwashing = File("src/main/assets/stories/handwashing_story/scene_0$i.png")
+        .takeIf { it.exists() } ?: File("app/src/main/assets/stories/handwashing_story/scene_0$i.png")
       assertTrue("handwashing scene $i must exist physically", fHandwashing.exists())
       assertTrue("handwashing scene $i size > 0", fHandwashing.length() > 0)
     }

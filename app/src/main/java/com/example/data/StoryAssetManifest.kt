@@ -111,6 +111,7 @@ object StoryAssetManifest {
       themeColor = Color(0xFFE1F5FE),
       accentColor = Color(0xFF039BE5),
       moralLessonVi = "Rửa tay sạch bằng xà phòng và nước sạch",
+      isPublished = true,
       totalScenes = 4,
       scenes = listOf(
         SimpleStoryScene(
@@ -448,6 +449,43 @@ object StoryAssetManifest {
           audioAsset = null,
           interaction = null
         )
+      )
+    ),
+
+    // Bản 4 cảnh đã có tranh raster, câu ngắn phù hợp bé 3 tuổi.
+    StoryBook(
+      id = "sharing_story",
+      titleVi = "Cún Đốm học chia sẻ đồ chơi",
+      subtitleVi = "Chơi cùng bạn vui hơn chơi một mình",
+      coverEmoji = "🐶🚗",
+      themeColor = Color(0xFFFFFDE7),
+      accentColor = Color(0xFFFBC02D),
+      moralLessonVi = "Biết chia sẻ và cùng chơi với bạn",
+      isPublished = true,
+      totalScenes = 4,
+      scenes = listOf(
+        SimpleStoryScene("sharing_story_scene_01", 1, 4, "Chiếc Xe Đỏ", "Cún Đốm ôm chiếc xe đỏ và chơi một mình.", "“Mình chơi một mình thôi!”", "file:///android_asset/stories/story_sharing/scene_01.png", interaction = "hotspot_xe_do"),
+        SimpleStoryScene("sharing_story_scene_02", 2, 4, "Bé Gạo Rủ Bạn", "Bé Gạo mang đường ray đến rủ bạn cùng chơi.", "“Cún Đốm ơi, mình cùng chơi nhé?”", "file:///android_asset/stories/story_sharing/scene_02.png", interaction = "hotspot_be_gao"),
+        SimpleStoryScene("sharing_story_scene_03", 3, 4, "Cùng Xây Cây Cầu", "Hai bạn cùng lắp cây cầu và đường ray.", "“Bạn đặt xe lên cầu nhé!”", "file:///android_asset/stories/story_sharing/scene_03.png", interaction = "hotspot_cay_cau"),
+        SimpleStoryScene("sharing_story_scene_04", 4, 4, "Chơi Cùng Thật Vui", "Chiếc xe chạy vòng quanh trong tiếng cười.", "“Chơi cùng nhau vui quá!”", "file:///android_asset/stories/story_sharing/scene_04.png", interaction = "hotspot_hai_ban")
+      )
+    ),
+
+    StoryBook(
+      id = "bedtime_story",
+      titleVi = "Bé Gạo đi ngủ đúng giờ",
+      subtitleVi = "Một buổi tối êm đềm của Bé Gạo",
+      coverEmoji = "👧🌙",
+      themeColor = Color(0xFFEDE7F6),
+      accentColor = Color(0xFF7E57C2),
+      moralLessonVi = "Cất đồ chơi, đánh răng và đi ngủ đúng giờ",
+      isPublished = true,
+      totalScenes = 4,
+      scenes = listOf(
+        SimpleStoryScene("bedtime_story_scene_01", 1, 4, "Cất Đồ Chơi", "Đã chín giờ, Bé Gạo cất đồ chơi vào giỏ.", "“Đồ chơi ngủ ngoan nhé!”", "file:///android_asset/stories/story_bedtime/scene_01.png", interaction = "hotspot_gio_do_choi"),
+        SimpleStoryScene("bedtime_story_scene_02", 2, 4, "Chải Răng Sạch", "Bé Gạo chải răng thật sạch trước khi ngủ.", "“Chải đều từng chiếc răng nào!”", "file:///android_asset/stories/story_bedtime/scene_02.png", interaction = "hotspot_ban_chai"),
+        SimpleStoryScene("bedtime_story_scene_03", 3, 4, "Mẹ Kể Chuyện", "Mẹ ngồi bên giường đọc truyện cho Bé Gạo.", "“Con thích nghe mẹ kể chuyện.”", "file:///android_asset/stories/story_bedtime/scene_03.png", interaction = "hotspot_quyen_sach"),
+        SimpleStoryScene("bedtime_story_scene_04", 4, 4, "Ngủ Thật Ngon", "Bé Gạo ôm Thỏ Bông và ngủ thật ngon.", "“Chúc các bé ngủ ngon!”", "file:///android_asset/stories/story_bedtime/scene_04.png", interaction = "hotspot_be_gao")
       )
     )
   )

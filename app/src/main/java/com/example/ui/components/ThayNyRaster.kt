@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
@@ -30,6 +31,7 @@ fun ThayNyRaster(
   isSpeaking: Boolean = false,
   mood: TeacherMood = TeacherMood.HAPPY,
   storytelling: Boolean = false,
+  compact: Boolean = false,
   modifier: Modifier = Modifier
 ) {
   val assetName = when {
@@ -53,8 +55,10 @@ fun ThayNyRaster(
   )
 
   Box(
-    modifier = modifier.size(size),
-    contentAlignment = Alignment.Center
+    modifier = modifier
+      .size(size)
+      .clipToBounds(),
+    contentAlignment = if (compact) Alignment.TopCenter else Alignment.Center
   ) {
     AsyncImage(
       model = ImageRequest.Builder(LocalContext.current)
@@ -64,7 +68,7 @@ fun ThayNyRaster(
       contentDescription = "Thầy Ny",
       contentScale = ContentScale.Fit,
       modifier = Modifier
-        .size(size)
+        .size(if (compact) size * 1.5f else size)
         .scale(gentleScale)
     )
   }

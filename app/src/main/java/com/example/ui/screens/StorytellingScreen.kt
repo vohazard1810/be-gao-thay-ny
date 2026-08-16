@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.Replay
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.*
@@ -156,10 +157,9 @@ fun StorytellingScreen(
           verticalAlignment = Alignment.CenterVertically,
           horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-          ThayNyRaster(
-            size = 46.dp,
-            isSpeaking = isSpeaking,
-            storytelling = true
+          StorySpeakerBadge(
+            speakerId = currentScene.speakerId,
+            isSpeaking = isSpeaking
           )
           Text(
             text = mainDisplayText,
@@ -219,8 +219,8 @@ fun StorytellingScreen(
         // Nút Nghe Lại Giọng Kể (56dp)
         Surface(
           shape = RoundedCornerShape(16.dp),
-          color = if (isSpeaking) Color(0xFFFF5252) else Color(0xFFFFF3E0),
-          border = BorderStroke(1.5.dp, if (isSpeaking) Color(0xFFFF1744) else Color(0xFFFFB74D)),
+          color = if (isSpeaking) Color(0xFF26A69A) else Color(0xFFFFF3E0),
+          border = BorderStroke(1.5.dp, if (isSpeaking) Color(0xFF00897B) else Color(0xFFFFB74D)),
           shadowElevation = 2.dp,
           modifier = Modifier
             .size(56.dp)
@@ -235,7 +235,7 @@ fun StorytellingScreen(
         ) {
           Box(contentAlignment = Alignment.Center) {
             Icon(
-              Icons.Default.VolumeUp,
+              if (isSpeaking) Icons.Default.VolumeUp else Icons.Default.Replay,
               contentDescription = if (isSpeaking) "Đang đọc" else "Nghe lại",
               tint = if (isSpeaking) Color.White else Color(0xFFE65100),
               modifier = Modifier.size(26.dp)
@@ -291,6 +291,65 @@ fun StorytellingScreen(
 
     // Hiệu ứng pháo hoa chúc mừng ở cảnh cuối
     ConfettiOverlay(visible = isLastScene)
+  }
+}
+
+/**
+ * Visual speaker identity without adding a second story sentence.
+ * Thầy Ny uses the approved raster; story characters use stable color/name cues.
+ */
+@Composable
+private fun StorySpeakerBadge(
+  speakerId: String,
+  isSpeaking: Boolean,
+  modifier: Modifier = Modifier
+) {
+  if (speakerId == "thay_ny") {
+    Column(
+      modifier = modifier.width(58.dp),
+      horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+      ThayNyRaster(
+        size = 52.dp,
+        isSpeaking = isSpeaking,
+        storytelling = true,
+        compact = true
+      )
+      Text("Thầy Ny", fontSize = 9.sp, fontWeight = FontWeight.ExtraBold, color = Color(0xFF8D6E00))
+    }
+    return
+  }
+
+  val (shortName, fullName, badgeColor) = when (speakerId) {
+    "be_gao" -> Triple("Gạo", "Bé Gạo", Color(0xFF81C784))
+    "tho_bong" -> Triple("Thỏ", "Thỏ Bông", Color(0xFFBA68C8))
+    "meo_may" -> Triple("Mây", "Mèo Mây", Color(0xFFF48FB1))
+    "cun_dom" -> Triple("Cún", "Cún Đốm", Color(0xFF64B5F6))
+    else -> Triple("Ny", "Thầy Ny", Color(0xFFFFC857))
+  }
+
+  Column(
+    modifier = modifier.width(58.dp),
+    horizontalAlignment = Alignment.CenterHorizontally
+  ) {
+    Surface(
+      shape = CircleShape,
+      color = badgeColor,
+      shadowElevation = 2.dp,
+      border = BorderStroke(2.dp, Color.White),
+      modifier = Modifier.size(46.dp)
+    ) {
+      Box(contentAlignment = Alignment.Center) {
+        Text(shortName, color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.ExtraBold)
+      }
+    }
+    Text(
+      fullName,
+      fontSize = 9.sp,
+      fontWeight = FontWeight.ExtraBold,
+      color = badgeColor,
+      maxLines = 1
+    )
   }
 }
 
@@ -425,9 +484,9 @@ private fun StoryHeader(
 
     Surface(
       shape = CircleShape,
-      color = if (isSpeaking) Color(0xFFFF5252) else Color.White,
+      color = if (isSpeaking) Color(0xFF26A69A) else Color.White,
       shadowElevation = 1.5.dp,
-      border = BorderStroke(1.dp, if (isSpeaking) Color(0xFFFF5252) else Color(0xFFE0E0E0)),
+      border = BorderStroke(1.dp, if (isSpeaking) Color(0xFF00897B) else Color(0xFFE0E0E0)),
       modifier = Modifier
         .size(42.dp)
         .clip(CircleShape)
@@ -439,8 +498,8 @@ private fun StoryHeader(
     ) {
       Box(contentAlignment = Alignment.Center) {
         Icon(
-          Icons.Default.VolumeUp,
-          contentDescription = "Giọng kể",
+          if (isSpeaking) Icons.Default.VolumeUp else Icons.Default.Replay,
+          contentDescription = if (isSpeaking) "Đang kể chuyện" else "Nghe lại cảnh",
           tint = if (isSpeaking) Color.White else TextDark,
           modifier = Modifier.size(22.dp)
         )

@@ -188,16 +188,17 @@ fun FlashcardsScreen(
         }
         if (topicScrollState.canScrollForward) {
           Surface(
-            shape = CircleShape,
+            shape = RoundedCornerShape(16.dp),
             color = Color(0xFFFFF3E0),
             shadowElevation = 2.dp,
             modifier = Modifier
               .align(Alignment.CenterEnd)
               .padding(end = 6.dp)
-              .size(30.dp)
+              .width(72.dp)
+              .height(32.dp)
           ) {
             Box(contentAlignment = Alignment.Center) {
-              Text(text = "›", fontSize = 25.sp, fontWeight = FontWeight.ExtraBold, color = PastelOrangeDark)
+              Text(text = "Vuốt  ›", fontSize = 12.sp, fontWeight = FontWeight.ExtraBold, color = PastelOrangeDark)
             }
           }
         }
@@ -221,9 +222,10 @@ fun FlashcardsScreen(
           verticalAlignment = Alignment.CenterVertically
         ) {
           ThayNyRaster(
-            size = 32.dp,
+            size = 48.dp,
             isSpeaking = isSpeaking,
-            mood = if (isSpeaking) TeacherMood.TALKING else TeacherMood.HAPPY
+            mood = if (isSpeaking) TeacherMood.TALKING else TeacherMood.HAPPY,
+            compact = true
           )
 
           Spacer(modifier = Modifier.width(8.dp))

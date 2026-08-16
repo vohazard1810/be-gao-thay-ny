@@ -83,13 +83,14 @@ fun TeacherHeroCard(
     ) {
       // Left: Cute Cartoon Half-body Teacher Ny Illustration with dynamic aura glow
       Box(
-        modifier = Modifier.size(112.dp),
+        modifier = Modifier.size(132.dp),
         contentAlignment = Alignment.Center
       ) {
         ThayNyRaster(
-          size = 104.dp,
+          size = 124.dp,
           isSpeaking = isSpeaking,
-          mood = mood
+          mood = mood,
+          compact = true
         )
 
         // Pill badge "Thầy Ny" at bottom of character

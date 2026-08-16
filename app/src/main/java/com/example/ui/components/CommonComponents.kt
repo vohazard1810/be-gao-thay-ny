@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Replay
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -137,7 +138,7 @@ fun AppHeader(
 
       Surface(
         shape = CircleShape,
-        color = if (isSpeaking) Color(0xFFFF5252) else PastelMint,
+        color = if (isSpeaking) Color(0xFF26A69A) else PastelMint,
         shadowElevation = 3.dp,
         modifier = Modifier
           .size(44.dp)
@@ -383,8 +384,8 @@ fun KidTopAppBar(
       ) {
         Box(contentAlignment = Alignment.Center) {
           Icon(
-            imageVector = Icons.Default.VolumeUp,
-            contentDescription = "Nghe Thầy Ny nói lại",
+            imageVector = if (isSpeaking) Icons.Default.VolumeUp else Icons.Default.Replay,
+            contentDescription = if (isSpeaking) "Thầy Ny đang nói" else "Nghe lại",
             tint = Color.White,
             modifier = Modifier.size(28.dp)
           )

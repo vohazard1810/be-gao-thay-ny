@@ -197,7 +197,14 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
     } else {
       scene.narrationVi
     }
-    voiceManager.speak(mainSentence)
+    val (pitch, rate) = when (scene.speakerId) {
+      "be_gao" -> 1.12f to 0.90f
+      "tho_bong" -> 1.18f to 0.87f
+      "meo_may" -> 1.15f to 0.90f
+      "cun_dom" -> 1.08f to 0.92f
+      else -> 0.92f to 0.86f
+    }
+    voiceManager.speak(mainSentence, pitch = pitch, rate = rate)
   }
 
   fun onSceneChanged(storyBook: StoryBook, newIndex: Int) {

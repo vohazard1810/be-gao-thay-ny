@@ -15,7 +15,8 @@ data class SimpleStoryScene(
   val imageAsset: String? = null,
   val audioAsset: String? = null,
   val interaction: String? = null,
-  val illustrationKey: String = "scene_$sceneNumber"
+  val illustrationKey: String = "scene_$sceneNumber",
+  val speakerId: String = "thay_ny"
 )
 
 /**
@@ -61,7 +62,8 @@ object StoryAssetManifest {
           dialogueVi = "“Bạn đang tìm gì thế?”",
           imageAsset = "file:///android_asset/stories/towel_story/scene_01.png",
           audioAsset = null,
-          interaction = "hotspot_tho_bong"
+          interaction = "hotspot_tho_bong",
+          speakerId = "be_gao"
         ),
         SimpleStoryScene(
           sceneId = "towel_story_scene_02",
@@ -72,7 +74,8 @@ object StoryAssetManifest {
           dialogueVi = "“Chiếc khăn của mình đâu rồi nhỉ?”",
           imageAsset = "file:///android_asset/stories/towel_story/scene_02.png",
           audioAsset = null,
-          interaction = "hotspot_co_tho_bong"
+          interaction = "hotspot_co_tho_bong",
+          speakerId = "tho_bong"
         ),
         SimpleStoryScene(
           sceneId = "towel_story_scene_03",
@@ -83,7 +86,8 @@ object StoryAssetManifest {
           dialogueVi = "“Chúng mình nhìn bên bụi hoa nhé!”",
           imageAsset = "file:///android_asset/stories/towel_story/scene_03.png",
           audioAsset = null,
-          interaction = "hotspot_bui_hoa"
+          interaction = "hotspot_bui_hoa",
+          speakerId = "be_gao"
         ),
         SimpleStoryScene(
           sceneId = "towel_story_scene_04",
@@ -94,7 +98,8 @@ object StoryAssetManifest {
           dialogueVi = "“Khăn của bạn đây rồi!”",
           imageAsset = "file:///android_asset/stories/towel_story/scene_04.png",
           audioAsset = null,
-          interaction = "hotspot_chiec_khan"
+          interaction = "hotspot_chiec_khan",
+          speakerId = "be_gao"
         )
       )
     ),
@@ -123,7 +128,8 @@ object StoryAssetManifest {
           dialogueVi = "“Ôi, tay mình bẩn rồi!”",
           imageAsset = "file:///android_asset/stories/handwashing_story/scene_01.png",
           audioAsset = null,
-          interaction = "hotspot_tay_dinh_dat"
+          interaction = "hotspot_tay_dinh_dat",
+          speakerId = "meo_may"
         ),
         SimpleStoryScene(
           sceneId = "handwashing_story_scene_02",
@@ -134,7 +140,8 @@ object StoryAssetManifest {
           dialogueVi = "“Trước tiên, mình làm ướt tay nhé!”",
           imageAsset = "file:///android_asset/stories/handwashing_story/scene_02.png",
           audioAsset = null,
-          interaction = "hotspot_voi_nuoc"
+          interaction = "hotspot_voi_nuoc",
+          speakerId = "thay_ny"
         ),
         SimpleStoryScene(
           sceneId = "handwashing_story_scene_03",
@@ -145,7 +152,8 @@ object StoryAssetManifest {
           dialogueVi = "“Xoa lòng bàn tay và từng ngón tay.”",
           imageAsset = "file:///android_asset/stories/handwashing_story/scene_03.png",
           audioAsset = null,
-          interaction = "hotspot_bot_xa_phong"
+          interaction = "hotspot_bot_xa_phong",
+          speakerId = "thay_ny"
         ),
         SimpleStoryScene(
           sceneId = "handwashing_story_scene_04",
@@ -156,7 +164,8 @@ object StoryAssetManifest {
           dialogueVi = "“Tay mình sạch rồi!”",
           imageAsset = "file:///android_asset/stories/handwashing_story/scene_04.png",
           audioAsset = null,
-          interaction = "hotspot_ban_tay_sach"
+          interaction = "hotspot_ban_tay_sach",
+          speakerId = "meo_may"
         )
       )
     ),
@@ -464,10 +473,10 @@ object StoryAssetManifest {
       isPublished = true,
       totalScenes = 4,
       scenes = listOf(
-        SimpleStoryScene("sharing_story_scene_01", 1, 4, "Chiếc Xe Đỏ", "Cún Đốm ôm chiếc xe đỏ và chơi một mình.", "“Mình chơi một mình thôi!”", "file:///android_asset/stories/story_sharing/scene_01.png", interaction = "hotspot_xe_do"),
-        SimpleStoryScene("sharing_story_scene_02", 2, 4, "Bé Gạo Rủ Bạn", "Bé Gạo mang đường ray đến rủ bạn cùng chơi.", "“Cún Đốm ơi, mình cùng chơi nhé?”", "file:///android_asset/stories/story_sharing/scene_02.png", interaction = "hotspot_be_gao"),
-        SimpleStoryScene("sharing_story_scene_03", 3, 4, "Cùng Xây Cây Cầu", "Hai bạn cùng lắp cây cầu và đường ray.", "“Bạn đặt xe lên cầu nhé!”", "file:///android_asset/stories/story_sharing/scene_03.png", interaction = "hotspot_cay_cau"),
-        SimpleStoryScene("sharing_story_scene_04", 4, 4, "Chơi Cùng Thật Vui", "Chiếc xe chạy vòng quanh trong tiếng cười.", "“Chơi cùng nhau vui quá!”", "file:///android_asset/stories/story_sharing/scene_04.png", interaction = "hotspot_hai_ban")
+        SimpleStoryScene("sharing_story_scene_01", 1, 4, "Chiếc Xe Đỏ", "Cún Đốm ôm chiếc xe đỏ và chơi một mình.", "“Mình chơi một mình thôi!”", "file:///android_asset/stories/story_sharing/scene_01.png", interaction = "hotspot_xe_do", speakerId = "cun_dom"),
+        SimpleStoryScene("sharing_story_scene_02", 2, 4, "Bé Gạo Rủ Bạn", "Bé Gạo mang đường ray đến rủ bạn cùng chơi.", "“Cún Đốm ơi, mình cùng chơi nhé?”", "file:///android_asset/stories/story_sharing/scene_02.png", interaction = "hotspot_be_gao", speakerId = "be_gao"),
+        SimpleStoryScene("sharing_story_scene_03", 3, 4, "Cùng Xây Cây Cầu", "Hai bạn cùng lắp cây cầu và đường ray.", "“Bạn đặt xe lên cầu nhé!”", "file:///android_asset/stories/story_sharing/scene_03.png", interaction = "hotspot_cay_cau", speakerId = "be_gao"),
+        SimpleStoryScene("sharing_story_scene_04", 4, 4, "Chơi Cùng Thật Vui", "Chiếc xe chạy vòng quanh trong tiếng cười.", "“Chơi cùng nhau vui quá!”", "file:///android_asset/stories/story_sharing/scene_04.png", interaction = "hotspot_hai_ban", speakerId = "cun_dom")
       )
     ),
 
@@ -482,10 +491,10 @@ object StoryAssetManifest {
       isPublished = true,
       totalScenes = 4,
       scenes = listOf(
-        SimpleStoryScene("bedtime_story_scene_01", 1, 4, "Cất Đồ Chơi", "Đã chín giờ, Bé Gạo cất đồ chơi vào giỏ.", "“Đồ chơi ngủ ngoan nhé!”", "file:///android_asset/stories/story_bedtime/scene_01.png", interaction = "hotspot_gio_do_choi"),
-        SimpleStoryScene("bedtime_story_scene_02", 2, 4, "Chải Răng Sạch", "Bé Gạo chải răng thật sạch trước khi ngủ.", "“Chải đều từng chiếc răng nào!”", "file:///android_asset/stories/story_bedtime/scene_02.png", interaction = "hotspot_ban_chai"),
-        SimpleStoryScene("bedtime_story_scene_03", 3, 4, "Mẹ Kể Chuyện", "Mẹ ngồi bên giường đọc truyện cho Bé Gạo.", "“Con thích nghe mẹ kể chuyện.”", "file:///android_asset/stories/story_bedtime/scene_03.png", interaction = "hotspot_quyen_sach"),
-        SimpleStoryScene("bedtime_story_scene_04", 4, 4, "Ngủ Thật Ngon", "Bé Gạo ôm Thỏ Bông và ngủ thật ngon.", "“Chúc các bé ngủ ngon!”", "file:///android_asset/stories/story_bedtime/scene_04.png", interaction = "hotspot_be_gao")
+        SimpleStoryScene("bedtime_story_scene_01", 1, 4, "Cất Đồ Chơi", "Đã chín giờ, Bé Gạo cất đồ chơi vào giỏ.", "“Đồ chơi ngủ ngoan nhé!”", "file:///android_asset/stories/story_bedtime/scene_01.png", interaction = "hotspot_gio_do_choi", speakerId = "be_gao"),
+        SimpleStoryScene("bedtime_story_scene_02", 2, 4, "Chải Răng Sạch", "Bé Gạo chải răng thật sạch trước khi ngủ.", "“Chải đều từng chiếc răng nào!”", "file:///android_asset/stories/story_bedtime/scene_02.png", interaction = "hotspot_ban_chai", speakerId = "thay_ny"),
+        SimpleStoryScene("bedtime_story_scene_03", 3, 4, "Mẹ Kể Chuyện", "Mẹ ngồi bên giường đọc truyện cho Bé Gạo.", "“Con thích nghe mẹ kể chuyện.”", "file:///android_asset/stories/story_bedtime/scene_03.png", interaction = "hotspot_quyen_sach", speakerId = "be_gao"),
+        SimpleStoryScene("bedtime_story_scene_04", 4, 4, "Ngủ Thật Ngon", "Bé Gạo ôm Thỏ Bông và ngủ thật ngon.", "“Chúc các bé ngủ ngon!”", "file:///android_asset/stories/story_bedtime/scene_04.png", interaction = "hotspot_be_gao", speakerId = "thay_ny")
       )
     )
   )

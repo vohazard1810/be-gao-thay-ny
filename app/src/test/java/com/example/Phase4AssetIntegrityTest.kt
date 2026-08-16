@@ -2,6 +2,7 @@ package com.example
 
 import com.example.data.FlashcardAssetManifest
 import com.example.data.LearningData
+import com.example.data.StoryAssetManifest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
@@ -29,6 +30,12 @@ class Phase4AssetIntegrityTest {
   }
 
   @Test
+  fun `baby chick has a local real photo fallback`() {
+    val file = projectFile("assets/flashcards/farm/farm_chick.jpg")
+    assertTrue("Local baby chick photo must exist", file.exists() && file.length() > 0)
+  }
+
+  @Test
   fun `duck and rooster never share one photo mapping`() {
     val rooster = LearningData.flashcards.first { it.id == "farm_chicken" }
     val duck = LearningData.flashcards.first { it.id == "farm_duck" }
@@ -39,5 +46,17 @@ class Phase4AssetIntegrityTest {
     val roosterManifest = FlashcardAssetManifest.getAsset("farm_chicken")!!
     val duckManifest = FlashcardAssetManifest.getAsset("farm_duck")!!
     assertNotEquals(roosterManifest.photoUrl, duckManifest.photoUrl)
+  }
+
+  @Test
+  fun `published story dialogue has an explicit speaker`() {
+    val publishedScenes = StoryAssetManifest.storyBooks
+      .filter { it.isPublished }
+      .flatMap { it.scenes }
+    assertEquals(16, publishedScenes.size)
+    assertTrue(publishedScenes.all { it.speakerId.isNotBlank() })
+
+    val towelSpeakers = StoryAssetManifest.getStoryBook("towel_story").scenes.map { it.speakerId }
+    assertEquals(listOf("be_gao", "tho_bong", "be_gao", "be_gao"), towelSpeakers)
   }
 }

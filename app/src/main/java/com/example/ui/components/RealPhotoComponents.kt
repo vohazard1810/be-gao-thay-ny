@@ -46,10 +46,10 @@ fun RealPhotoThumbnail(
   isAlphabetOrNumber: Boolean = false
 ) {
   val manifestEntry = remember(itemId) { FlashcardAssetManifest.getAsset(itemId) }
-  val effectiveUrl = if (itemId == "wild_panda" || itemId == "panda") {
-    "file:///android_asset/flashcards/wild/wild_panda.jpg"
-  } else {
-    photoUrl ?: manifestEntry?.photoUrl
+  val effectiveUrl = when (itemId) {
+    "wild_panda", "panda" -> "file:///android_asset/flashcards/wild/wild_panda.jpg"
+    "farm_chick", "chick" -> "file:///android_asset/flashcards/farm/farm_chick.jpg"
+    else -> photoUrl ?: manifestEntry?.photoUrl
   }
 
   // 1. Chữ cái & Số đếm: Thiết kế giáo dục rõ nét
@@ -133,10 +133,10 @@ fun RealPhotoDetailDisplay(
   size: Dp = 160.dp
 ) {
   val manifestEntry = remember(itemId) { FlashcardAssetManifest.getAsset(itemId) }
-  val effectiveUrl = if (itemId == "wild_panda" || itemId == "panda") {
-    "file:///android_asset/flashcards/wild/wild_panda.jpg"
-  } else {
-    photoUrl ?: manifestEntry?.photoUrl
+  val effectiveUrl = when (itemId) {
+    "wild_panda", "panda" -> "file:///android_asset/flashcards/wild/wild_panda.jpg"
+    "farm_chick", "chick" -> "file:///android_asset/flashcards/farm/farm_chick.jpg"
+    else -> photoUrl ?: manifestEntry?.photoUrl
   }
 
   if (isAlphabetOrNumber || itemId.startsWith("alpha_") || itemId.startsWith("num_")) {

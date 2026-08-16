@@ -84,12 +84,19 @@ class VoiceManager(private val context: Context) {
     }
   }
 
-  fun speak(text: String, onDone: (() -> Unit)? = null) {
+  fun speak(
+    text: String,
+    onDone: (() -> Unit)? = null,
+    pitch: Float = 0.95f,
+    rate: Float = 0.88f
+  ) {
     _spokenText.value = text
     onSpeechDoneCallback = onDone
 
     if (tts != null && isTtsInitialized) {
       try {
+        tts?.setPitch(pitch.coerceIn(0.8f, 1.25f))
+        tts?.setSpeechRate(rate.coerceIn(0.75f, 1.05f))
         val params = Bundle()
         val utteranceId = "utterance_${System.currentTimeMillis()}"
         val res = tts?.speak(text, TextToSpeech.QUEUE_FLUSH, params, utteranceId)

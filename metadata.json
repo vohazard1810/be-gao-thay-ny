@@ -1,0 +1,6 @@
+{
+  "name": "Bé Gạo & Thầy Ny",
+  "description": "Ứng dụng học tập tương tác bằng giọng nói tiếng Việt dành cho bé 3 tuổi với Thầy Ny - giáo viên mầm non thân thiện.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -496,6 +496,68 @@ object StoryAssetManifest {
         SimpleStoryScene("bedtime_story_scene_03", 3, 4, "Mẹ Kể Chuyện", "Mẹ ngồi bên giường đọc truyện cho Bé Gạo.", "“Con thích nghe mẹ kể chuyện.”", "file:///android_asset/stories/story_bedtime/scene_03.png", interaction = "hotspot_quyen_sach", speakerId = "be_gao"),
         SimpleStoryScene("bedtime_story_scene_04", 4, 4, "Ngủ Thật Ngon", "Bé Gạo ôm Thỏ Bông và ngủ thật ngon.", "“Chúc các bé ngủ ngon!”", "file:///android_asset/stories/story_bedtime/scene_04.png", interaction = "hotspot_be_gao", speakerId = "thay_ny")
       )
+    ),
+
+    StoryBook(
+      id = "picnic_story",
+      titleVi = "Bé Gạo và Sóc Nâu đi dã ngoại",
+      subtitleVi = "Bài học về tình bạn và cùng nhau sẻ chia",
+      coverEmoji = "🐿️🧺",
+      themeColor = Color(0xFFFFF8E1),
+      accentColor = Color(0xFFFF8F00),
+      moralLessonVi = "Cùng bạn khám phá thiên nhiên và sẻ chia niềm vui",
+      isPublished = true,
+      totalScenes = 4,
+      scenes = listOf(
+        SimpleStoryScene(
+          sceneId = "picnic_story_scene_01",
+          sceneNumber = 1,
+          totalScenes = 4,
+          titleVi = "Chuẩn Bị Giỏ Bánh",
+          narrationVi = "Bé Gạo cùng Sóc Nâu chuẩn bị giỏ bánh ngon.",
+          dialogueVi = "“Chúng mình cùng xếp bánh vào giỏ nhé!”",
+          imageAsset = "file:///android_asset/stories/picnic_story/scene_01.png",
+          audioAsset = null,
+          interaction = "hotspot_gio_banh",
+          speakerId = "be_gao"
+        ),
+        SimpleStoryScene(
+          sceneId = "picnic_story_scene_02",
+          sceneNumber = 2,
+          totalScenes = 4,
+          titleVi = "Con Đường Rợp Bóng",
+          narrationVi = "Hai bạn nhỏ tung tăng đi dưới tán cây xanh mát.",
+          dialogueVi = "“Gió thổi lá cây xào xạc vui tai quá!”",
+          imageAsset = "file:///android_asset/stories/picnic_story/scene_02.png",
+          audioAsset = null,
+          interaction = "hotspot_la_cay",
+          speakerId = "soc_nau"
+        ),
+        SimpleStoryScene(
+          sceneId = "picnic_story_scene_03",
+          sceneNumber = 3,
+          totalScenes = 4,
+          titleVi = "Món Quà Rừng Xanh",
+          narrationVi = "Sóc Nâu nhặt một quả thông đẹp tặng Bé Gạo.",
+          dialogueVi = "“Tặng Bé Gạo quả thông xinh xắn này!”",
+          imageAsset = "file:///android_asset/stories/picnic_story/scene_03.png",
+          audioAsset = null,
+          interaction = "hotspot_qua_thong",
+          speakerId = "soc_nau"
+        ),
+        SimpleStoryScene(
+          sceneId = "picnic_story_scene_04",
+          sceneNumber = 4,
+          totalScenes = 4,
+          titleVi = "Bữa Trưa Vui Vẻ",
+          narrationVi = "Hai bạn trải thảm cỏ và cùng nhau ăn trưa.",
+          dialogueVi = "“Bánh mì và nho ngọt ngon tuyệt cú mèo!”",
+          imageAsset = "file:///android_asset/stories/picnic_story/scene_04.png",
+          audioAsset = null,
+          interaction = "hotspot_bua_trua",
+          speakerId = "soc_nau"
+        )
+      )
     )
   )
 

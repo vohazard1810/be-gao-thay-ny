@@ -217,4 +217,24 @@ class RuntimeVerificationScreenshotsTest {
     composeTestRule.waitForIdle()
     composeTestRule.onRoot().captureRoboImage(filePath = "build/outputs/roborazzi/runtime_09_quiz_game.png")
   }
+
+  @Test
+  fun capture_10_picnic_story_scene_01() {
+    val story = StoryAssetManifest.getStoryBook("picnic_story")
+    composeTestRule.setContent {
+      MyApplicationTheme {
+        StorytellingScreen(
+          storyBook = story,
+          currentSceneIndex = 0,
+          isSpeaking = false,
+          onPrevScene = {},
+          onNextScene = {},
+          onReplayScene = {},
+          onBackToMenu = {}
+        )
+      }
+    }
+    composeTestRule.waitForIdle()
+    composeTestRule.onRoot().captureRoboImage(filePath = "build/outputs/roborazzi/runtime_10_picnic_scene_01.png")
+  }
 }

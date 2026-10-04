@@ -53,10 +53,13 @@ class Phase4AssetIntegrityTest {
     val publishedScenes = StoryAssetManifest.storyBooks
       .filter { it.isPublished }
       .flatMap { it.scenes }
-    assertEquals(16, publishedScenes.size)
+    assertEquals(20, publishedScenes.size)
     assertTrue(publishedScenes.all { it.speakerId.isNotBlank() })
 
     val towelSpeakers = StoryAssetManifest.getStoryBook("towel_story").scenes.map { it.speakerId }
     assertEquals(listOf("be_gao", "tho_bong", "be_gao", "be_gao"), towelSpeakers)
+
+    val picnicSpeakers = StoryAssetManifest.getStoryBook("picnic_story").scenes.map { it.speakerId }
+    assertEquals(listOf("be_gao", "soc_nau", "soc_nau", "soc_nau"), picnicSpeakers)
   }
 }

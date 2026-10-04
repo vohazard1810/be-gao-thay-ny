@@ -46,9 +46,9 @@ class ExampleRobolectricTest {
   fun `verify multiple storybooks manifest integrity`() {
     val books = com.example.data.StoryAssetManifest.storyBooks
     val publishedBooks = books.filter { it.isPublished }
-    assertEquals(4, publishedBooks.size)
+    assertEquals(5, publishedBooks.size)
     assertEquals(
-      setOf("towel_story", "handwashing_story", "sharing_story", "bedtime_story"),
+      setOf("towel_story", "handwashing_story", "sharing_story", "bedtime_story", "picnic_story"),
       publishedBooks.map { it.id }.toSet()
     )
     books.forEach { book ->

@@ -227,6 +227,7 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
       "tho_bong" -> 1.18f to 0.87f
       "meo_may" -> 1.15f to 0.90f
       "cun_dom" -> 1.08f to 0.92f
+      "soc_nau" -> 1.14f to 0.91f
       else -> 0.92f to 0.86f
     }
     voiceManager.speak(mainSentence, pitch = pitch, rate = rate)
@@ -246,8 +247,9 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
       "hotspot_voi_nuoc", "hotspot_tay_dinh_dat", "hotspot_ban_tay_sach" -> voiceManager.playWaterSplash()
       "hotspot_bot_xa_phong" -> voiceManager.playBubbleFoam()
       "hotspot_xe_do" -> voiceManager.playCarHorn()
-      "hotspot_bui_hoa" -> voiceManager.playNatureChirp()
-      "hotspot_chiec_khan", "hotspot_quyen_sach", "hotspot_gio_do_choi", "hotspot_ban_chai" -> voiceManager.playMagicTwinkle()
+      "hotspot_bui_hoa", "hotspot_la_cay" -> voiceManager.playNatureChirp()
+      "hotspot_bua_trua" -> voiceManager.playCelebrationFanfare()
+      "hotspot_chiec_khan", "hotspot_quyen_sach", "hotspot_gio_do_choi", "hotspot_ban_chai", "hotspot_gio_banh", "hotspot_qua_thong" -> voiceManager.playMagicTwinkle()
       else -> voiceManager.playPopTone()
     }
     val speech = when (interactionKey) {
@@ -265,6 +267,10 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
       "hotspot_gio_do_choi" -> "Đồ chơi vào giỏ ngủ ngon nhé!"
       "hotspot_ban_chai" -> "Xoay tròn bàn chải, răng trắng xinh!"
       "hotspot_quyen_sach" -> "Cuốn sách truyện tranh kỳ diệu!"
+      "hotspot_gio_banh" -> "Giỏ bánh dã ngoại thơm phức!"
+      "hotspot_la_cay" -> "Tán cây xào xạc trong gió mát!"
+      "hotspot_qua_thong" -> "Quả thông nâu xinh xắn của rừng xanh!"
+      "hotspot_bua_trua" -> "Bữa trưa ngon lành cùng bạn thân!"
       else -> "Chúng mình cùng chơi nhé!"
     }
     voiceManager.speak(speech)

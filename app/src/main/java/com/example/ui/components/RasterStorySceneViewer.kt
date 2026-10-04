@@ -504,6 +504,99 @@ fun RasterStorySceneViewer(
           }
         }
       }
+      "hotspot_gio_banh", "hotspot_bua_trua" -> {
+        Box(
+          modifier = Modifier
+            .fillMaxHeight(0.5f)
+            .fillMaxWidth(0.5f)
+            .align(Alignment.BottomCenter)
+            .padding(bottom = 32.dp)
+            .clickable(
+              interactionSource = remember { MutableInteractionSource() },
+              indication = null
+            ) {
+              isHotspotActive = true
+              onHotspotTap(scene.interaction)
+            }
+            .testTag("scene_hotspot_picnic")
+        ) {
+          Surface(
+            shape = CircleShape,
+            color = Color(0xFFFFD54F).copy(alpha = pulseAlpha * 0.25f),
+            border = BorderStroke(2.dp, Color(0xFFFFB300).copy(alpha = pulseAlpha)),
+            modifier = Modifier
+              .size(52.dp)
+              .align(Alignment.Center)
+              .scale(pulseScale)
+          ) {
+            Box(contentAlignment = Alignment.Center) {
+              Text("🧺", fontSize = 16.sp)
+            }
+          }
+        }
+      }
+      "hotspot_la_cay" -> {
+        Box(
+          modifier = Modifier
+            .fillMaxHeight(0.5f)
+            .fillMaxWidth(0.6f)
+            .align(Alignment.TopCenter)
+            .padding(top = 28.dp)
+            .clickable(
+              interactionSource = remember { MutableInteractionSource() },
+              indication = null
+            ) {
+              isHotspotActive = true
+              onHotspotTap(scene.interaction)
+            }
+            .testTag("scene_hotspot_la_cay")
+        ) {
+          Surface(
+            shape = CircleShape,
+            color = Color(0xFFA5D6A7).copy(alpha = pulseAlpha * 0.3f),
+            border = BorderStroke(2.dp, Color(0xFF43A047).copy(alpha = pulseAlpha)),
+            modifier = Modifier
+              .size(52.dp)
+              .align(Alignment.Center)
+              .scale(pulseScale)
+          ) {
+            Box(contentAlignment = Alignment.Center) {
+              Text("🍃", fontSize = 16.sp)
+            }
+          }
+        }
+      }
+      "hotspot_qua_thong" -> {
+        Box(
+          modifier = Modifier
+            .fillMaxHeight(0.5f)
+            .fillMaxWidth(0.5f)
+            .align(Alignment.BottomEnd)
+            .padding(end = 24.dp, bottom = 32.dp)
+            .clickable(
+              interactionSource = remember { MutableInteractionSource() },
+              indication = null
+            ) {
+              isHotspotActive = true
+              onHotspotTap(scene.interaction)
+            }
+            .testTag("scene_hotspot_qua_thong")
+        ) {
+          Surface(
+            shape = CircleShape,
+            color = Color(0xFFFFCC80).copy(alpha = pulseAlpha * 0.3f),
+            border = BorderStroke(2.dp, Color(0xFFEF6C00).copy(alpha = pulseAlpha)),
+            modifier = Modifier
+              .size(52.dp)
+              .align(Alignment.Center)
+              .scale(pulseScale)
+          ) {
+            Box(contentAlignment = Alignment.Center) {
+              Text("🌰", fontSize = 16.sp)
+            }
+          }
+        }
+      }
     }
 
     // 3. HIỆU ỨNG CHẠM NHẸ: Sao nhỏ hoặc ánh sáng dịu lấp lánh (Không che mặt nhân vật)

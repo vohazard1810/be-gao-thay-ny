@@ -1,6 +1,7 @@
 package com.example.viewmodel
 
 import android.app.Application
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.audio.VoiceManager
@@ -57,7 +58,25 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
   private val _teacherMood = MutableStateFlow(TeacherMood.HAPPY)
   val teacherMood: StateFlow<TeacherMood> = _teacherMood.asStateFlow()
 
+  // ==================== LẬT THẺ TÌM BẠN (MEMORY MATCH) ====================
+  private val _memoryCards = MutableStateFlow<List<MemoryCard>>(emptyList())
+  val memoryCards: StateFlow<List<MemoryCard>> = _memoryCards.asStateFlow()
+
+  private val _matchedPairsCount = MutableStateFlow(0)
+  val matchedPairsCount: StateFlow<Int> = _matchedPairsCount.asStateFlow()
+
+  val totalMemoryPairs: Int = 3
+
+  private val flippedCardIds = mutableListOf<String>()
+  private var isCheckingMatch = false
+
+  // ==================== SỔ DÁN STICKER BÉ NGOAN ====================
+  private val _stickers = MutableStateFlow<List<StickerReward>>(createDefaultStickers())
+  val stickers: StateFlow<List<StickerReward>> = _stickers.asStateFlow()
+
   init {
+    _memoryCards.value = generateMemoryCards()
+    refreshUnlockedStickers()
     viewModelScope.launch {
       delay(500)
       greetHome()
@@ -145,6 +164,7 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
       _showCelebration.value = true
       _totalStars.value += 1
       _easyQuizCorrectCount.value += 1
+      refreshUnlockedStickers()
       voiceManager.stop()
       voiceManager.playSuccessChime()
       val praiseText = LearningData.getPraiseForCard(currentCard)
@@ -271,6 +291,7 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
       _teacherMood.value = TeacherMood.CELEBRATING
       _showCelebration.value = true
       _totalStars.value += 1
+      refreshUnlockedStickers()
       voiceManager.stop()
       voiceManager.playSuccessChime()
       voiceManager.speak(currentQ.praiseSpeechVi) {
@@ -310,7 +331,220 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
         narrateScene(scene)
       }
       is ScreenDestination.QuizPlay -> replayQuizQuestion()
+      is ScreenDestination.GameHub -> openGameHub()
+      is ScreenDestination.MemoryMatch -> voiceManager.speak("Bé hãy lật 2 thẻ giống nhau nhé!")
+      is ScreenDestination.StickerBook -> voiceManager.speak("Sổ Dán Sticker Bé Ngoan của bé!")
     }
+  }
+
+  // ==================== KHU VUI CHƠI (GAME HUB) ====================
+  fun openGameHub() {
+    voiceManager.stop()
+    _currentScreen.value = ScreenDestination.GameHub
+    _teacherMood.value = TeacherMood.HAPPY
+    voiceManager.playPopTone()
+    voiceManager.speak("Khu Vui Chơi Của Bé! Bé muốn chơi trò gì nào?")
+  }
+
+  // ==================== LẬT THẺ TÌM BẠN (MEMORY MATCH) ====================
+  fun openMemoryMatch() {
+    voiceManager.stop()
+    resetMemoryMatch()
+    _currentScreen.value = ScreenDestination.MemoryMatch
+    _teacherMood.value = TeacherMood.TALKING
+    voiceManager.playPopTone()
+    voiceManager.speak("Trò chơi Lật Thẻ Tìm Bạn! Bé hãy lật 2 thẻ giống nhau nhé!")
+  }
+
+  fun resetMemoryMatch() {
+    flippedCardIds.clear()
+    isCheckingMatch = false
+    _matchedPairsCount.value = 0
+    _showCelebration.value = false
+    _memoryCards.value = generateMemoryCards()
+  }
+
+  fun onMemoryCardClick(clickedCard: MemoryCard) {
+    if (isCheckingMatch) return
+    if (clickedCard.isMatched || clickedCard.isFaceUp) return
+
+    voiceManager.playFlipSound()
+
+    _memoryCards.value = _memoryCards.value.map { card ->
+      if (card.id == clickedCard.id) card.copy(isFaceUp = true) else card
+    }
+    flippedCardIds.add(clickedCard.id)
+
+    if (flippedCardIds.size == 2) {
+      isCheckingMatch = true
+      val firstId = flippedCardIds[0]
+      val secondId = flippedCardIds[1]
+      val firstCard = _memoryCards.value.find { it.id == firstId }
+      val secondCard = _memoryCards.value.find { it.id == secondId }
+
+      if (firstCard != null && secondCard != null && firstCard.matchKey == secondCard.matchKey) {
+        viewModelScope.launch {
+          delay(350)
+          _memoryCards.value = _memoryCards.value.map { card ->
+            if (card.id == firstId || card.id == secondId) {
+              card.copy(isMatched = true, isFaceUp = true)
+            } else card
+          }
+          _matchedPairsCount.value += 1
+          _totalStars.value += 1
+          refreshUnlockedStickers()
+          flippedCardIds.clear()
+          isCheckingMatch = false
+
+          voiceManager.playSuccessChime()
+          if (_matchedPairsCount.value >= totalMemoryPairs) {
+            _teacherMood.value = TeacherMood.CELEBRATING
+            _showCelebration.value = true
+            voiceManager.playCelebrationFanfare()
+            voiceManager.speak("Hoan hô bé Gạo! Con đã tìm thấy tất cả các cặp bạn rồi! Thật là xuất sắc!")
+          } else {
+            _teacherMood.value = TeacherMood.HAPPY
+            voiceManager.speak("Đúng rồi! Bạn ${firstCard.nameVi}!")
+          }
+        }
+      } else {
+        viewModelScope.launch {
+          delay(900)
+          _memoryCards.value = _memoryCards.value.map { card ->
+            if (card.id == firstId || card.id == secondId) {
+              card.copy(isFaceUp = false)
+            } else card
+          }
+          flippedCardIds.clear()
+          isCheckingMatch = false
+          voiceManager.playEncourageTone()
+        }
+      }
+    }
+  }
+
+  // ==================== SỔ DÁN STICKER BÉ NGOAN ====================
+  fun openStickerBook() {
+    voiceManager.stop()
+    refreshUnlockedStickers()
+    _currentScreen.value = ScreenDestination.StickerBook
+    _teacherMood.value = TeacherMood.HAPPY
+    voiceManager.playPopTone()
+    voiceManager.speak("Sổ Dán Sticker Bé Ngoan! Càng chơi nhiều bé càng có nhiều sticker đẹp!")
+  }
+
+  fun onStickerTap(sticker: StickerReward) {
+    voiceManager.stop()
+    if (sticker.isUnlocked) {
+      voiceManager.playPopTone()
+      voiceManager.speak("Sticker ${sticker.titleVi}! ${sticker.descriptionVi}")
+    } else {
+      voiceManager.playEncourageTone()
+      voiceManager.speak("Sticker này cần ${sticker.requiredStars} ngôi sao. Bé hãy chơi thêm để mở khóa nhé!")
+    }
+  }
+
+  private fun refreshUnlockedStickers() {
+    val currentStars = _totalStars.value
+    _stickers.value = _stickers.value.map { sticker ->
+      sticker.copy(isUnlocked = sticker.isUnlocked || currentStars >= sticker.requiredStars)
+    }
+  }
+
+  // ==================== TƯƠNG TÁC BÉ GẠO & THỎ BÔNG ====================
+  private val beGaoQuotes = listOf(
+    "Dạ! Bé Gạo chào bạn! Chúng mình cùng học thật vui nhé! 🌸",
+    "Bé Gạo thích túi ngôi sao vàng lắm nè! ⭐",
+    "Bạn Thỏ Bông mặc áo len tím xinh ghê! 🐰",
+    "Cố lên bạn ơi, bạn giỏi lắm đó! 💖",
+    "Bé Gạo thích nghe Thầy Ny kể chuyện nhất trên đời!"
+  )
+  private var beGaoQuoteIndex = 0
+
+  fun onBeGaoTap() {
+    voiceManager.stop()
+    voiceManager.playPopTone()
+    val text = beGaoQuotes[beGaoQuoteIndex % beGaoQuotes.size]
+    beGaoQuoteIndex++
+    voiceManager.speak(text, pitch = 1.15f, rate = 0.90f)
+  }
+
+  private val thoBongQuotes = listOf(
+    "Thỏ Bông chào bé! Lỗ tai dài của thỏ ngoe nguẩy nè! 🐰",
+    "Thỏ Bông thích ăn cà rốt ngọt lắm! 🥕",
+    "Cùng Bé Gạo khám phá thêm nhiều điều vui nhé! ✨",
+    "Áo len tím của thỏ ấm ơi là ấm!"
+  )
+  private var thoBongQuoteIndex = 0
+
+  fun onThoBongTap() {
+    voiceManager.stop()
+    voiceManager.playPopTone()
+    val text = thoBongQuotes[thoBongQuoteIndex % thoBongQuotes.size]
+    thoBongQuoteIndex++
+    voiceManager.speak(text, pitch = 1.20f, rate = 0.88f)
+  }
+
+  // ==================== GENERATORS ====================
+  private fun generateMemoryCards(): List<MemoryCard> {
+    val candidates = listOf(
+      Triple("cat", "Mèo Con", "🐱"),
+      Triple("dog", "Cún Con", "🐶"),
+      Triple("rabbit", "Thỏ Trắng", "🐰"),
+      Triple("chicken", "Gà Trống", "🐔"),
+      Triple("duck", "Vịt Con", "🦆"),
+      Triple("bear", "Gấu Nâu", "🐻"),
+      Triple("star", "Ngôi Sao", "⭐"),
+      Triple("apple", "Quả Táo", "🍎")
+    ).shuffled().take(3)
+
+    val colors = listOf(
+      Color(0xFFFFD1DC),
+      Color(0xFFB5EAD7),
+      Color(0xFFFFF2B2)
+    )
+
+    val cards = mutableListOf<MemoryCard>()
+    candidates.forEachIndexed { index, (key, name, emoji) ->
+      val color = colors[index % colors.size]
+      cards.add(
+        MemoryCard(
+          id = "${key}_1",
+          matchKey = key,
+          nameVi = name,
+          emoji = emoji,
+          cardColor = color,
+          isFaceUp = false,
+          isMatched = false
+        )
+      )
+      cards.add(
+        MemoryCard(
+          id = "${key}_2",
+          matchKey = key,
+          nameVi = name,
+          emoji = emoji,
+          cardColor = color,
+          isFaceUp = false,
+          isMatched = false
+        )
+      )
+    }
+    return cards.shuffled()
+  }
+
+  private fun createDefaultStickers(): List<StickerReward> {
+    return listOf(
+      StickerReward("stk_begao", "Bé Gạo Chăm Ngoan", "🌸", 0, "Bé Gạo tóc ngắn cài hoa vàng đáng yêu!", true),
+      StickerReward("stk_thobong", "Thỏ Bông Áo Tím", "🐰", 1, "Bạn thỏ bông trắng mặc áo len tím!", false),
+      StickerReward("stk_star", "Ngôi Sao Lấp Lánh", "⭐", 2, "Ngôi sao may mắn thưởng cho bé thông minh!", false),
+      StickerReward("stk_meomay", "Mèo Mây Ngọt Ngào", "🐱", 3, "Bạn mèo mây xám sọc thích chơi đùa!", false),
+      StickerReward("stk_cundom", "Cún Đốm Vui Vẻ", "🐶", 5, "Bạn cún đốm tai nâu rất trung thành!", false),
+      StickerReward("stk_vitmo", "Vịt Mơ Lông Vàng", "🐥", 7, "Bạn vịt mơ lông vàng bơi lội tung tăng!", false),
+      StickerReward("stk_socnau", "Sóc Nâu Nhanh Nhẹn", "🐿️", 9, "Bạn sóc nâu thích ăn hạt dẻ!", false),
+      StickerReward("stk_cauvong", "Cầu Vồng Tươi Vui", "🌈", 12, "Cầu vồng bảy sắc sau cơn mưa rào!", false),
+      StickerReward("stk_traitim", "Trái Tim Yêu Thương", "💖", 15, "Thầy Ny và Bé Gạo gửi triệu yêu thương!", false)
+    )
   }
 
   override fun onCleared() {

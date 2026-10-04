@@ -15,8 +15,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.model.ScreenDestination
 import com.example.ui.screens.FlashcardsScreen
+import com.example.ui.screens.GameHubScreen
 import com.example.ui.screens.HomeScreen
+import com.example.ui.screens.MemoryMatchScreen
 import com.example.ui.screens.QuizGameScreen
+import com.example.ui.screens.StickerBookScreen
 import com.example.ui.screens.StoryMenuScreen
 import com.example.ui.screens.StorytellingScreen
 import com.example.ui.theme.PastelCreamBg
@@ -60,6 +63,10 @@ fun ToddlerAppNavigation(
   val quizQuestions by viewModel.quizQuestions.collectAsStateWithLifecycle()
   val quizIndex by viewModel.quizIndex.collectAsStateWithLifecycle()
 
+  val memoryCards by viewModel.memoryCards.collectAsStateWithLifecycle()
+  val matchedPairsCount by viewModel.matchedPairsCount.collectAsStateWithLifecycle()
+  val stickers by viewModel.stickers.collectAsStateWithLifecycle()
+
   AnimatedContent(
     targetState = currentScreen,
     transitionSpec = {
@@ -76,7 +83,11 @@ fun ToddlerAppNavigation(
           onOpenFlashcards = { viewModel.openFlashcards() },
           onOpenStory = { viewModel.openStoryMenu() },
           onOpenQuiz = { viewModel.openQuizGame() },
-          onTeacherTap = { viewModel.onTeacherTapGeneral() }
+          onTeacherTap = { viewModel.onTeacherTapGeneral() },
+          onOpenMemoryMatch = { viewModel.openMemoryMatch() },
+          onOpenStickerBook = { viewModel.openStickerBook() },
+          onBeGaoTap = { viewModel.onBeGaoTap() },
+          onThoBongTap = { viewModel.onThoBongTap() }
         )
       }
 
@@ -138,6 +149,46 @@ fun ToddlerAppNavigation(
           onSelectOption = { viewModel.answerQuiz(it) },
           onNextQuestion = { viewModel.nextQuizQuestion() },
           onReplayQuestion = { viewModel.replayQuizQuestion() },
+          onHomeClick = { viewModel.navigateToHome() }
+        )
+      }
+
+      is ScreenDestination.GameHub -> {
+        GameHubScreen(
+          totalStars = totalStars,
+          isSpeaking = isSpeaking,
+          onOpenMemoryMatch = { viewModel.openMemoryMatch() },
+          onOpenQuiz = { viewModel.openQuizGame() },
+          onOpenFlashcards = { viewModel.openFlashcards() },
+          onOpenStory = { viewModel.openStoryMenu() },
+          onOpenStickerBook = { viewModel.openStickerBook() },
+          onReplaySpeech = { viewModel.openGameHub() },
+          onHomeClick = { viewModel.navigateToHome() }
+        )
+      }
+
+      is ScreenDestination.MemoryMatch -> {
+        MemoryMatchScreen(
+          cards = memoryCards,
+          matchedPairsCount = matchedPairsCount,
+          totalPairs = viewModel.totalMemoryPairs,
+          starsEarned = totalStars,
+          isSpeaking = isSpeaking,
+          showCelebration = showCelebration,
+          onCardClick = { viewModel.onMemoryCardClick(it) },
+          onResetGame = { viewModel.resetMemoryMatch() },
+          onReplaySpeech = { viewModel.onTeacherTapGeneral() },
+          onHomeClick = { viewModel.navigateToHome() }
+        )
+      }
+
+      is ScreenDestination.StickerBook -> {
+        StickerBookScreen(
+          totalStars = totalStars,
+          stickers = stickers,
+          isSpeaking = isSpeaking,
+          onStickerTap = { viewModel.onStickerTap(it) },
+          onReplaySpeech = { viewModel.onTeacherTapGeneral() },
           onHomeClick = { viewModel.navigateToHome() }
         )
       }

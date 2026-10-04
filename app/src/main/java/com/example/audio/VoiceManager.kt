@@ -124,6 +124,8 @@ class VoiceManager(private val context: Context) {
     }
   }
 
+  private val soundSynth = KidsSoundSynthesizer()
+
   fun stop() {
     tts?.stop()
     _isSpeaking.value = false
@@ -131,21 +133,23 @@ class VoiceManager(private val context: Context) {
   }
 
   fun playSuccessChime() {
-    try {
-      toneGen?.startTone(ToneGenerator.TONE_PROP_ACK, 220)
-    } catch (_: Exception) {}
+    soundSynth.playSuccessChime()
   }
 
   fun playEncourageTone() {
-    try {
-      toneGen?.startTone(ToneGenerator.TONE_PROP_PROMPT, 180)
-    } catch (_: Exception) {}
+    soundSynth.playEncourageTone()
   }
 
   fun playPopTone() {
-    try {
-      toneGen?.startTone(ToneGenerator.TONE_PROP_BEEP, 70)
-    } catch (_: Exception) {}
+    soundSynth.playPopBubble()
+  }
+
+  fun playFlipSound() {
+    soundSynth.playFlipSound()
+  }
+
+  fun playCelebrationFanfare() {
+    soundSynth.playCelebrationFanfare()
   }
 
   fun shutdown() {

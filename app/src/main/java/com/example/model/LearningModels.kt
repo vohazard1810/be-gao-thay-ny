@@ -116,4 +116,27 @@ sealed class ScreenDestination {
   object StoryMenu : ScreenDestination()
   data class StoryPlay(val storyBook: com.example.data.StoryBook) : ScreenDestination()
   object QuizPlay : ScreenDestination()
+  object GameHub : ScreenDestination()
+  object MemoryMatch : ScreenDestination()
+  object StickerBook : ScreenDestination()
 }
+
+data class MemoryCard(
+  val id: String,
+  val matchKey: String,
+  val nameVi: String,
+  val emoji: String,
+  val photoUrl: String? = null,
+  val cardColor: Color,
+  val isFaceUp: Boolean = false,
+  val isMatched: Boolean = false
+)
+
+data class StickerReward(
+  val id: String,
+  val titleVi: String,
+  val emoji: String,
+  val requiredStars: Int,
+  val descriptionVi: String,
+  val isUnlocked: Boolean = false
+)

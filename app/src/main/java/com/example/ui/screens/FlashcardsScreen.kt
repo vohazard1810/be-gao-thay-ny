@@ -228,6 +228,14 @@ fun FlashcardsScreen(
             compact = true
           )
 
+          Spacer(modifier = Modifier.width(4.dp))
+
+          com.example.ui.components.BeGaoMascot(
+            size = 42.dp,
+            mood = if (isSpeaking) com.example.ui.components.BeGaoMood.CHEERING else com.example.ui.components.BeGaoMood.HAPPY,
+            showNameBadge = false
+          )
+
           Spacer(modifier = Modifier.width(8.dp))
 
           Text(

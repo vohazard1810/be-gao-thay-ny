@@ -245,6 +245,29 @@ fun QuizGameScreen(
           }
         }
 
+        AnimatedVisibility(
+          visible = showCelebration,
+          enter = fadeIn(),
+          exit = fadeOut()
+        ) {
+          Row(
+            modifier = Modifier.padding(top = 10.dp),
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.spacedBy(14.dp)
+          ) {
+            com.example.ui.components.BeGaoMascot(
+              size = 68.dp,
+              mood = com.example.ui.components.BeGaoMood.CHEERING,
+              showNameBadge = false
+            )
+            com.example.ui.components.ThoBongMascot(
+              size = 56.dp,
+              isCheering = true,
+              showNameBadge = false
+            )
+          }
+        }
+
         Spacer(modifier = Modifier.height(16.dp))
       }
     }

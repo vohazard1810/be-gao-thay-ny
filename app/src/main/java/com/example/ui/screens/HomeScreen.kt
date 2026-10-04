@@ -29,6 +29,10 @@ fun HomeScreen(
   onOpenStory: () -> Unit,
   onOpenQuiz: () -> Unit,
   onTeacherTap: () -> Unit,
+  onOpenMemoryMatch: () -> Unit = {},
+  onOpenStickerBook: () -> Unit = {},
+  onBeGaoTap: () -> Unit = {},
+  onThoBongTap: () -> Unit = {},
   modifier: Modifier = Modifier
 ) {
   val verticalScrollState = rememberScrollState()
@@ -64,11 +68,21 @@ fun HomeScreen(
         onTap = onTeacherTap
       )
 
-      Spacer(modifier = Modifier.height(16.dp))
+      Spacer(modifier = Modifier.height(10.dp))
 
-      // 3. Section Title
+      // 3. Toddler Buddy Bar: Bé Gạo & Thỏ Bông đồng hành cùng bé!
+      ToddlerBuddyBar(
+        isCheering = isSpeaking,
+        bubbleText = spokenText.ifBlank { "Chào bạn nhỏ! Cùng Bé Gạo và Thầy Ny chơi nào! 🌸" },
+        onBeGaoTap = onBeGaoTap,
+        onThoBongTap = onThoBongTap
+      )
+
+      Spacer(modifier = Modifier.height(14.dp))
+
+      // 4. Section Title
       Text(
-        text = "⭐ 3 TRÒ CHƠI HỌC VUI CÙNG THẦY ⭐",
+        text = "⭐ KHU TRÒ CHƠI HỌC VUI CỦA BÉ ⭐",
         style = MaterialTheme.typography.titleMedium.copy(
           fontWeight = FontWeight.ExtraBold,
           color = Color(0xFFB45309),
@@ -80,14 +94,26 @@ fun HomeScreen(
 
       Spacer(modifier = Modifier.height(12.dp))
 
-      // 4. Cả 3 trò chơi hiển thị rõ ràng
+      // 5. Danh sách trò chơi phong phú
       Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(14.dp)
       ) {
-        // Game 1: Thẻ Học Vui
+        // Game 1: Lật Thẻ Tìm Bạn (MỚI NHẤT)
         MainGameOptionCard(
-          title = "1. Thẻ Học Vui",
+          title = "1. Lật Thẻ Tìm Bạn",
+          subtitle = "Lật thẻ 3D rèn trí nhớ tìm bạn giống nhau",
+          mainIconEmoji = "🧩",
+          subEmojis = listOf("🐰", "🐶", "⭐", "🎉"),
+          cardColor = Color(0xFFE8F5E9),
+          accentColor = Color(0xFF43A047),
+          testTag = "menu_memory_match_button",
+          onClick = onOpenMemoryMatch
+        )
+
+        // Game 2: Thẻ Học Vui
+        MainGameOptionCard(
+          title = "2. Thẻ Học Vui",
           subtitle = "Khám phá Con vật, Quả, Màu sắc, Số",
           mainIconEmoji = "🎴",
           subEmojis = listOf("🐶", "🍎", "🎨", "🔢"),
@@ -97,9 +123,9 @@ fun HomeScreen(
           onClick = onOpenFlashcards
         )
 
-        // Game 2: Nghe Thầy Kể Chuyện
+        // Game 3: Nghe Thầy Kể Chuyện
         MainGameOptionCard(
-          title = "2. Nghe Thầy Kể Chuyện",
+          title = "3. Nghe Thầy Kể Chuyện",
           subtitle = "Truyện cổ tích & bài học bé ngoan",
           mainIconEmoji = "📖",
           subEmojis = listOf("🐰", "🐻", "🐱", "✨"),
@@ -109,9 +135,9 @@ fun HomeScreen(
           onClick = onOpenStory
         )
 
-        // Game 3: Đố Vui Cùng Thầy
+        // Game 4: Đố Vui Cùng Thầy
         MainGameOptionCard(
-          title = "3. Đố Vui Cùng Thầy",
+          title = "4. Đố Vui Cùng Thầy",
           subtitle = "Câu đố vui nhộn nhận sao thưởng",
           mainIconEmoji = "🎯",
           subEmojis = listOf("⭐", "💡", "🎉", "🏆"),
@@ -119,6 +145,18 @@ fun HomeScreen(
           accentColor = PastelMint,
           testTag = "menu_quiz_button",
           onClick = onOpenQuiz
+        )
+
+        // Game 5: Sổ Dán Sticker Bé Ngoan
+        MainGameOptionCard(
+          title = "5. Sổ Dán Sticker",
+          subtitle = "Bộ sưu tập sticker đáng yêu đổi bằng sao",
+          mainIconEmoji = "📒",
+          subEmojis = listOf("🎨", "🌟", "🌸", "🐰"),
+          cardColor = Color(0xFFFFF3E0),
+          accentColor = Color(0xFFFB8C00),
+          testTag = "menu_sticker_button",
+          onClick = onOpenStickerBook
         )
       }
 

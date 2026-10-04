@@ -21,11 +21,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.model.SoundQuizOption
 import com.example.model.SoundQuizQuestion
 import com.example.ui.components.BeGaoMascot
@@ -286,10 +290,37 @@ private fun SoundQuizOptionCard(
       Surface(
         shape = CircleShape,
         color = Color(0xFFF3E5F5),
-        modifier = Modifier.size(54.dp)
+        border = BorderStroke(1.dp, Color(0xFFE1BEE7)),
+        modifier = Modifier.size(56.dp)
       ) {
-        Box(contentAlignment = Alignment.Center) {
-          Text(text = option.emoji, fontSize = 28.sp)
+        val assetUrl = when (option.id) {
+          "dog" -> "file:///android_asset/items/cun_dom.png"
+          "cat" -> "file:///android_asset/items/meo_may.png"
+          "squirrel" -> "file:///android_asset/items/soc_nau.png"
+          "rabbit" -> "file:///android_asset/items/tho_bong.png"
+          "car" -> "file:///android_asset/items/xe_o_to.png"
+          "train" -> "file:///android_asset/items/duong_ray.png"
+          "scarf" -> "file:///android_asset/items/chiec_khan.png"
+          "be_gao" -> "file:///android_asset/items/be_gao.png"
+          "thay_ny" -> "file:///android_asset/items/thay_ny.png"
+          else -> null
+        }
+        if (assetUrl != null) {
+          AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+              .data(assetUrl)
+              .crossfade(true)
+              .build(),
+            contentDescription = option.nameVi,
+            contentScale = ContentScale.Fit,
+            modifier = Modifier
+              .fillMaxSize()
+              .padding(4.dp)
+          )
+        } else {
+          Box(contentAlignment = Alignment.Center) {
+            Text(text = option.emoji, fontSize = 28.sp)
+          }
         }
       }
 

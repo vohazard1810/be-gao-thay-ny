@@ -16,11 +16,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.model.StickerReward
 import com.example.ui.components.BeGaoMascot
 import com.example.ui.components.BeGaoMood
@@ -205,14 +209,43 @@ private fun StickerCardItem(
       verticalArrangement = Arrangement.Center
     ) {
       if (sticker.isUnlocked) {
+        val assetUrl = when (sticker.id) {
+          "stk_begao" -> "file:///android_asset/items/be_gao.png"
+          "stk_thobong" -> "file:///android_asset/items/tho_bong.png"
+          "stk_meomay" -> "file:///android_asset/items/meo_may.png"
+          "stk_cundom" -> "file:///android_asset/items/cun_dom.png"
+          "stk_socnau" -> "file:///android_asset/items/soc_nau.png"
+          "stk_thayny" -> "file:///android_asset/items/thay_ny.png"
+          "stk_xeoto" -> "file:///android_asset/items/xe_o_to.png"
+          "stk_chieckhan" -> "file:///android_asset/items/chiec_khan.png"
+          "stk_duongray" -> "file:///android_asset/items/duong_ray.png"
+          "stk_quyen_sach" -> "file:///android_asset/items/quyen_sach.png"
+          "stk_gio_do_choi" -> "file:///android_asset/items/gio_do_choi.png"
+          else -> null
+        }
+
         Surface(
           shape = CircleShape,
           color = Color(0xFFFFF9E6),
           border = BorderStroke(1.5.dp, Color(0xFFFFCA28)),
           modifier = Modifier.size(54.dp)
         ) {
-          Box(contentAlignment = Alignment.Center) {
-            Text(sticker.emoji, fontSize = 28.sp)
+          if (assetUrl != null) {
+            AsyncImage(
+              model = ImageRequest.Builder(LocalContext.current)
+                .data(assetUrl)
+                .crossfade(true)
+                .build(),
+              contentDescription = sticker.titleVi,
+              contentScale = ContentScale.Fit,
+              modifier = Modifier
+                .fillMaxSize()
+                .padding(3.dp)
+            )
+          } else {
+            Box(contentAlignment = Alignment.Center) {
+              Text(sticker.emoji, fontSize = 28.sp)
+            }
           }
         }
         Spacer(modifier = Modifier.height(4.dp))

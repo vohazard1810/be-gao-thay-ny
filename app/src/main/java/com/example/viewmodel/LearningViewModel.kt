@@ -624,16 +624,21 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
   }
 
   // ==================== GENERATORS ====================
+  private data class MemoryCandidate(
+    val key: String,
+    val name: String,
+    val emoji: String,
+    val photoUrl: String
+  )
+
   private fun generateMemoryCards(): List<MemoryCard> {
     val candidates = listOf(
-      Triple("cat", "Mèo Con", "🐱"),
-      Triple("dog", "Cún Con", "🐶"),
-      Triple("rabbit", "Thỏ Trắng", "🐰"),
-      Triple("chicken", "Gà Trống", "🐔"),
-      Triple("duck", "Vịt Con", "🦆"),
-      Triple("bear", "Gấu Nâu", "🐻"),
-      Triple("star", "Ngôi Sao", "⭐"),
-      Triple("apple", "Quả Táo", "🍎")
+      MemoryCandidate("cat", "Mèo Mây", "🐱", "file:///android_asset/items/meo_may.png"),
+      MemoryCandidate("dog", "Cún Đốm", "🐶", "file:///android_asset/items/cun_dom.png"),
+      MemoryCandidate("rabbit", "Thỏ Bông", "🐰", "file:///android_asset/items/tho_bong.png"),
+      MemoryCandidate("squirrel", "Sóc Nâu", "🐿️", "file:///android_asset/items/soc_nau.png"),
+      MemoryCandidate("car", "Xe Ô Tô Đỏ", "🚗", "file:///android_asset/items/xe_o_to.png"),
+      MemoryCandidate("scarf", "Chiếc Khăn", "🧣", "file:///android_asset/items/chiec_khan.png")
     ).shuffled().take(3)
 
     val colors = listOf(
@@ -643,14 +648,15 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
     )
 
     val cards = mutableListOf<MemoryCard>()
-    candidates.forEachIndexed { index, (key, name, emoji) ->
+    candidates.forEachIndexed { index, candidate ->
       val color = colors[index % colors.size]
       cards.add(
         MemoryCard(
-          id = "${key}_1",
-          matchKey = key,
-          nameVi = name,
-          emoji = emoji,
+          id = "${candidate.key}_1",
+          matchKey = candidate.key,
+          nameVi = candidate.name,
+          emoji = candidate.emoji,
+          photoUrl = candidate.photoUrl,
           cardColor = color,
           isFaceUp = false,
           isMatched = false
@@ -658,10 +664,11 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
       )
       cards.add(
         MemoryCard(
-          id = "${key}_2",
-          matchKey = key,
-          nameVi = name,
-          emoji = emoji,
+          id = "${candidate.key}_2",
+          matchKey = candidate.key,
+          nameVi = candidate.name,
+          emoji = candidate.emoji,
+          photoUrl = candidate.photoUrl,
           cardColor = color,
           isFaceUp = false,
           isMatched = false

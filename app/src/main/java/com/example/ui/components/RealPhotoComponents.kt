@@ -49,6 +49,18 @@ fun RealPhotoThumbnail(
   val effectiveUrl = when (itemId) {
     "wild_panda", "panda" -> "file:///android_asset/flashcards/wild/wild_panda.jpg"
     "farm_chick", "chick" -> "file:///android_asset/flashcards/farm/farm_chick.jpg"
+    "dog", "cun_dom" -> "file:///android_asset/items/cun_dom.png"
+    "cat", "meo_may" -> "file:///android_asset/items/meo_may.png"
+    "squirrel", "soc_nau" -> "file:///android_asset/items/soc_nau.png"
+    "rabbit", "tho_bong" -> "file:///android_asset/items/tho_bong.png"
+    "car", "xe_o_to" -> "file:///android_asset/items/xe_o_to.png"
+    "scarf", "chiec_khan" -> "file:///android_asset/items/chiec_khan.png"
+    "train", "duong_ray" -> "file:///android_asset/items/duong_ray.png"
+    "book", "quyen_sach" -> "file:///android_asset/items/quyen_sach.png"
+    "basket", "gio_do_choi" -> "file:///android_asset/items/gio_do_choi.png"
+    "pinecone", "qua_thong" -> "file:///android_asset/items/qua_thong.png"
+    "be_gao" -> "file:///android_asset/items/be_gao.png"
+    "thay_ny" -> "file:///android_asset/items/thay_ny.png"
     else -> photoUrl ?: manifestEntry?.photoUrl
   }
 

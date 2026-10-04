@@ -1,35 +1,49 @@
 package com.example.ui.components
 
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.Canvas
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 
 /**
  * Thỏ Bông Mascot (Tuân thủ 100% Character Bible & Visual Guidelines):
  * - Bạn thỏ bông trắng nhồi bông đáng yêu với đôi tai dài rủ mềm mại (floppy ears), lòng tai hồng phấn, đuôi tròn xù.
  * - Trang phục vĩnh viễn: Áo gile len sát nách màu tím hoa cà / lavender (lilac/lavender knitted sleeveless sweater vest).
  * - Chiều cao nhỏ hơn Bé Gạo (chạm khoảng ngang hông Bé Gạo).
- * - Nét vẽ 2D tranh truyện mềm mại, biểu cảm dễ thương.
+ * - Tranh vẽ 2D thủ công ấm áp chuẩn sách tranh mầm non, bundled local raster asset.
  */
 @Composable
 fun ThoBongMascot(
@@ -39,11 +53,12 @@ fun ThoBongMascot(
   showNameBadge: Boolean = true,
   modifier: Modifier = Modifier
 ) {
-  val transition = rememberInfiniteTransition(label = "tho_bong_anim")
+  val assetName = if (isCheering) "tho_bong_cheering.png" else "tho_bong_happy.png"
 
+  val transition = rememberInfiniteTransition(label = "tho_bong_raster_anim")
   val hopOffset by transition.animateFloat(
     initialValue = 0f,
-    targetValue = if (isCheering) 8f else 3f,
+    targetValue = if (isCheering) 7f else 3f,
     animationSpec = infiniteRepeatable(
       animation = tween(if (isCheering) 280 else 600, easing = FastOutSlowInEasing),
       repeatMode = RepeatMode.Reverse
@@ -51,14 +66,14 @@ fun ThoBongMascot(
     label = "tho_hop"
   )
 
-  val earWiggle by transition.animateFloat(
-    initialValue = -4f,
-    targetValue = 5f,
+  val gentleScale by transition.animateFloat(
+    initialValue = 0.98f,
+    targetValue = if (isCheering) 1.05f else 1.02f,
     animationSpec = infiniteRepeatable(
-      animation = tween(450, easing = FastOutSlowInEasing),
+      animation = tween(if (isCheering) 280 else 650, easing = FastOutSlowInEasing),
       repeatMode = RepeatMode.Reverse
     ),
-    label = "tho_ear"
+    label = "tho_scale"
   )
 
   Column(
@@ -71,6 +86,7 @@ fun ThoBongMascot(
       modifier = Modifier
         .size(size)
         .offset(y = -hopOffset.dp)
+        .clipToBounds()
         .then(
           if (onTap != null) {
             Modifier.clickable(
@@ -81,12 +97,17 @@ fun ThoBongMascot(
         ),
       contentAlignment = Alignment.Center
     ) {
-      Canvas(modifier = Modifier.fillMaxSize()) {
-        drawThoBong2D(
-          isCheering = isCheering,
-          earWiggle = earWiggle
-        )
-      }
+      AsyncImage(
+        model = ImageRequest.Builder(LocalContext.current)
+          .data("file:///android_asset/characters/tho_bong/$assetName")
+          .crossfade(true)
+          .build(),
+        contentDescription = "Thỏ Bông",
+        contentScale = ContentScale.Fit,
+        modifier = Modifier
+          .fillMaxSize()
+          .scale(gentleScale)
+      )
     }
 
     if (showNameBadge) {
@@ -107,185 +128,4 @@ fun ThoBongMascot(
       }
     }
   }
-}
-
-private fun DrawScope.drawThoBong2D(
-  isCheering: Boolean,
-  earWiggle: Float
-) {
-  val w = size.width
-  val h = size.height
-  val cx = w / 2f
-  val cy = h * 0.52f
-
-  val plushWhite = Color(0xFFFFFFFF)
-  val plushShadow = Color(0xFFF0EAE1)
-  val pinkInner = Color(0xFFFFB6C1)
-  val lavenderVest = Color(0xFFCE93D8)
-  val lavenderDark = Color(0xFFAB47BC)
-  val outline = Color(0xFF4E342E)
-  val blush = Color(0xFFFF8DA1).copy(alpha = 0.55f)
-
-  val headR = w * 0.26f
-  val strokeW = w * 0.024f
-
-  // 1. PLUSH BODY & LILAC SWEATER VEST
-  val bodyTop = cy + headR * 0.5f
-  val bodyBottom = h * 0.90f
-  val bodyW = w * 0.44f
-
-  // White plush tummy
-  drawOval(
-    color = plushWhite,
-    topLeft = Offset(cx - bodyW * 0.5f, bodyTop - h * 0.02f),
-    size = Size(bodyW, bodyBottom - bodyTop + h * 0.02f)
-  )
-  drawOval(
-    color = outline,
-    topLeft = Offset(cx - bodyW * 0.5f, bodyTop - h * 0.02f),
-    size = Size(bodyW, bodyBottom - bodyTop + h * 0.02f),
-    style = Stroke(strokeW)
-  )
-
-  // Lilac / Lavender Knitted Sleeveless Sweater Vest (Áo gile len sát nách màu tím hoa cà)
-  val vestPath = Path().apply {
-    moveTo(cx - bodyW * 0.45f, bodyTop)
-    lineTo(cx + bodyW * 0.45f, bodyTop)
-    lineTo(cx + bodyW * 0.48f, bodyBottom - h * 0.03f)
-    quadraticTo(cx, bodyBottom, cx - bodyW * 0.48f, bodyBottom - h * 0.03f)
-    close()
-  }
-  drawPath(vestPath, lavenderVest)
-  drawPath(vestPath, outline, style = Stroke(strokeW))
-
-  // V-Neck opening on vest
-  val vNeck = Path().apply {
-    moveTo(cx - bodyW * 0.20f, bodyTop)
-    lineTo(cx, bodyTop + h * 0.09f)
-    lineTo(cx + bodyW * 0.20f, bodyTop)
-    close()
-  }
-  drawPath(vNeck, plushWhite)
-  drawPath(vNeck, outline, style = Stroke(strokeW * 0.9f))
-
-  // Knitted vest subtle rib lines
-  drawLine(lavenderDark.copy(alpha = 0.4f), Offset(cx - bodyW * 0.15f, bodyTop + h * 0.12f), Offset(cx - bodyW * 0.15f, bodyBottom - h * 0.04f), strokeW * 0.8f)
-  drawLine(lavenderDark.copy(alpha = 0.4f), Offset(cx + bodyW * 0.15f, bodyTop + h * 0.12f), Offset(cx + bodyW * 0.15f, bodyBottom - h * 0.04f), strokeW * 0.8f)
-
-  // Cute plush bunny feet
-  drawCircle(plushWhite, radius = w * 0.065f, center = Offset(cx - bodyW * 0.32f, bodyBottom + h * 0.02f))
-  drawCircle(outline, radius = w * 0.065f, center = Offset(cx - bodyW * 0.32f, bodyBottom + h * 0.02f), style = Stroke(strokeW))
-  drawCircle(plushWhite, radius = w * 0.065f, center = Offset(cx + bodyW * 0.32f, bodyBottom + h * 0.02f))
-  drawCircle(outline, radius = w * 0.065f, center = Offset(cx + bodyW * 0.32f, bodyBottom + h * 0.02f), style = Stroke(strokeW))
-
-  // Bunny paws / arms
-  if (isCheering) {
-    drawCircle(plushWhite, radius = w * 0.05f, center = Offset(cx - bodyW * 0.52f, bodyTop - h * 0.04f))
-    drawCircle(outline, radius = w * 0.05f, center = Offset(cx - bodyW * 0.52f, bodyTop - h * 0.04f), style = Stroke(strokeW))
-    drawCircle(plushWhite, radius = w * 0.05f, center = Offset(cx + bodyW * 0.52f, bodyTop - h * 0.04f))
-    drawCircle(outline, radius = w * 0.05f, center = Offset(cx + bodyW * 0.52f, bodyTop - h * 0.04f), style = Stroke(strokeW))
-  } else {
-    drawCircle(plushWhite, radius = w * 0.05f, center = Offset(cx - bodyW * 0.42f, bodyTop + h * 0.08f))
-    drawCircle(outline, radius = w * 0.05f, center = Offset(cx - bodyW * 0.42f, bodyTop + h * 0.08f), style = Stroke(strokeW))
-    drawCircle(plushWhite, radius = w * 0.05f, center = Offset(cx + bodyW * 0.42f, bodyTop + h * 0.08f))
-    drawCircle(outline, radius = w * 0.05f, center = Offset(cx + bodyW * 0.42f, bodyTop + h * 0.08f), style = Stroke(strokeW))
-  }
-
-  // 2. LONG FLOPPY EARS (Đôi tai dài rủ mềm mại)
-  // Left ear (floppy downward curving)
-  val earL = Path().apply {
-    moveTo(cx - headR * 0.45f, cy - headR * 0.85f)
-    cubicTo(
-      cx - headR * 1.35f, cy - headR * 1.45f + earWiggle * 2f,
-      cx - headR * 1.45f, cy + headR * 0.15f,
-      cx - headR * 0.75f, cy + headR * 0.15f
-    )
-    cubicTo(
-      cx - headR * 0.95f, cy - headR * 0.45f,
-      cx - headR * 0.70f, cy - headR * 0.80f,
-      cx - headR * 0.45f, cy - headR * 0.85f
-    )
-    close()
-  }
-  drawPath(earL, plushWhite)
-  drawPath(earL, outline, style = Stroke(strokeW))
-
-  // Inner pink left ear
-  val innerEarL = Path().apply {
-    moveTo(cx - headR * 0.55f, cy - headR * 0.80f)
-    cubicTo(
-      cx - headR * 1.20f, cy - headR * 1.25f + earWiggle * 2f,
-      cx - headR * 1.25f, cy + headR * 0.05f,
-      cx - headR * 0.80f, cy + headR * 0.05f
-    )
-    close()
-  }
-  drawPath(innerEarL, pinkInner)
-
-  // Right ear (floppy)
-  val earR = Path().apply {
-    moveTo(cx + headR * 0.45f, cy - headR * 0.85f)
-    cubicTo(
-      cx + headR * 1.35f, cy - headR * 1.45f - earWiggle * 2f,
-      cx + headR * 1.45f, cy + headR * 0.15f,
-      cx + headR * 0.75f, cy + headR * 0.15f
-    )
-    cubicTo(
-      cx + headR * 0.95f, cy - headR * 0.45f,
-      cx + headR * 0.70f, cy - headR * 0.80f,
-      cx + headR * 0.45f, cy - headR * 0.85f
-    )
-    close()
-  }
-  drawPath(earR, plushWhite)
-  drawPath(earR, outline, style = Stroke(strokeW))
-
-  // Inner pink right ear
-  val innerEarR = Path().apply {
-    moveTo(cx + headR * 0.55f, cy - headR * 0.80f)
-    cubicTo(
-      cx + headR * 1.20f, cy - headR * 1.25f - earWiggle * 2f,
-      cx + headR * 1.25f, cy + headR * 0.05f,
-      cx + headR * 0.80f, cy + headR * 0.05f
-    )
-    close()
-  }
-  drawPath(innerEarR, pinkInner)
-
-  // 3. ROUND PLUSH HEAD
-  drawCircle(plushWhite, center = Offset(cx, cy), radius = headR)
-  drawCircle(outline, center = Offset(cx, cy), radius = headR, style = Stroke(strokeW))
-
-  // 4. BIG INNOCENT BUNNY EYES
-  val eyeY = cy - headR * 0.06f
-  val eyeR = headR * 0.18f
-  drawCircle(outline, radius = eyeR, center = Offset(cx - headR * 0.32f, eyeY))
-  drawCircle(Color.White, radius = eyeR * 0.40f, center = Offset(cx - headR * 0.36f, eyeY - eyeR * 0.2f))
-  drawCircle(outline, radius = eyeR, center = Offset(cx + headR * 0.32f, eyeY))
-  drawCircle(Color.White, radius = eyeR * 0.40f, center = Offset(cx + headR * 0.28f, eyeY - eyeR * 0.2f))
-
-  // 5. CUTE PINK NOSE & WHISKERS
-  // Tiny pink heart/triangle nose
-  drawCircle(Color(0xFFFF8DA1), radius = w * 0.024f, center = Offset(cx, cy + headR * 0.12f))
-
-  // Rosy cheeks
-  drawCircle(blush, radius = headR * 0.22f, center = Offset(cx - headR * 0.48f, cy + headR * 0.16f))
-  drawCircle(blush, radius = headR * 0.22f, center = Offset(cx + headR * 0.48f, cy + headR * 0.16f))
-
-  // Whiskers (2 on each cheek)
-  drawLine(outline.copy(alpha = 0.7f), Offset(cx - headR * 0.35f, cy + headR * 0.15f), Offset(cx - headR * 0.75f, cy + headR * 0.10f), strokeW * 0.7f)
-  drawLine(outline.copy(alpha = 0.7f), Offset(cx - headR * 0.35f, cy + headR * 0.22f), Offset(cx - headR * 0.72f, cy + headR * 0.28f), strokeW * 0.7f)
-  drawLine(outline.copy(alpha = 0.7f), Offset(cx + headR * 0.35f, cy + headR * 0.15f), Offset(cx + headR * 0.75f, cy + headR * 0.10f), strokeW * 0.7f)
-  drawLine(outline.copy(alpha = 0.7f), Offset(cx + headR * 0.35f, cy + headR * 0.22f), Offset(cx + headR * 0.72f, cy + headR * 0.28f), strokeW * 0.7f)
-
-  // Smile
-  drawArc(
-    color = outline,
-    startAngle = 10f,
-    sweepAngle = 160f,
-    useCenter = false,
-    topLeft = Offset(cx - headR * 0.16f, cy + headR * 0.16f),
-    size = Size(headR * 0.32f, headR * 0.18f),
-    style = Stroke(strokeW * 1.1f)
-  )
 }

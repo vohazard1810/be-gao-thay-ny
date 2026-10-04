@@ -21,6 +21,11 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
 
   val isSpeaking: StateFlow<Boolean> = voiceManager.isSpeaking
   val spokenText: StateFlow<String> = voiceManager.spokenText
+  val isBgmEnabled: StateFlow<Boolean> = voiceManager.isBgmEnabled
+
+  fun toggleBgm() {
+    voiceManager.toggleBgm()
+  }
 
   private val _currentScreen = MutableStateFlow<ScreenDestination>(ScreenDestination.Home)
   val currentScreen: StateFlow<ScreenDestination> = _currentScreen.asStateFlow()
@@ -237,7 +242,14 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
   fun onHotspotTap(interactionKey: String) {
     _teacherMood.value = TeacherMood.TALKING
     voiceManager.stop()
-    voiceManager.playPopTone()
+    when (interactionKey) {
+      "hotspot_voi_nuoc", "hotspot_tay_dinh_dat", "hotspot_ban_tay_sach" -> voiceManager.playWaterSplash()
+      "hotspot_bot_xa_phong" -> voiceManager.playBubbleFoam()
+      "hotspot_xe_do" -> voiceManager.playCarHorn()
+      "hotspot_bui_hoa" -> voiceManager.playNatureChirp()
+      "hotspot_chiec_khan", "hotspot_quyen_sach", "hotspot_gio_do_choi", "hotspot_ban_chai" -> voiceManager.playMagicTwinkle()
+      else -> voiceManager.playPopTone()
+    }
     val speech = when (interactionKey) {
       "hotspot_tho_bong", "hotspot_co_tho_bong" -> "Cảm ơn Bé Gạo!"
       "hotspot_chiec_khan" -> "Bạn tìm thấy mình rồi!"
@@ -334,6 +346,7 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
       is ScreenDestination.GameHub -> openGameHub()
       is ScreenDestination.MemoryMatch -> voiceManager.speak("Bé hãy lật 2 thẻ giống nhau nhé!")
       is ScreenDestination.StickerBook -> voiceManager.speak("Sổ Dán Sticker Bé Ngoan của bé!")
+      is ScreenDestination.Coloring -> voiceManager.speak("Bé hãy chọn màu pastel con thích để tô tranh nhé!")
     }
   }
 
@@ -449,6 +462,26 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
     _stickers.value = _stickers.value.map { sticker ->
       sticker.copy(isUnlocked = sticker.isUnlocked || currentStars >= sticker.requiredStars)
     }
+  }
+
+  // ==================== BÉ TẬP TÔ MÀU ====================
+  fun openColoring() {
+    voiceManager.stop()
+    _currentScreen.value = ScreenDestination.Coloring
+    _teacherMood.value = TeacherMood.HAPPY
+    voiceManager.playPopTone()
+    voiceManager.speak("Góc Bé Tập Tô Màu! Bé hãy chọn màu sắc xinh xắn để tô cho các bạn nhé!")
+  }
+
+  fun onBrushStroke() {
+    voiceManager.playColorBrushSound()
+  }
+
+  fun onCompleteColoring() {
+    _totalStars.value += 1
+    refreshUnlockedStickers()
+    voiceManager.playCelebrationFanfare()
+    voiceManager.speak("Oa! Bức tranh của bé Gạo đẹp quá chừng! Thầy tặng con một ngôi sao sáng nhé!")
   }
 
   // ==================== TƯƠNG TÁC BÉ GẠO & THỎ BÔNG ====================

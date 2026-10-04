@@ -46,6 +46,8 @@ fun AppHeader(
   totalStars: Int = 0,
   isSpeaking: Boolean,
   onSpeakerClick: () -> Unit,
+  isBgmEnabled: Boolean = false,
+  onBgmToggle: () -> Unit = {},
   modifier: Modifier = Modifier
 ) {
   Row(
@@ -94,7 +96,7 @@ fun AppHeader(
       }
     }
 
-    // Right Action: Baby Badge + Speaker Toggle Button
+    // Right Action: Baby Badge + BGM Button + Speaker Toggle Button
     Row(
       verticalAlignment = Alignment.CenterVertically,
       horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -121,6 +123,25 @@ fun AppHeader(
               fontSize = 12.5.sp
             )
           )
+        }
+      }
+
+      // BGM Music Note Toggle Circle Button
+      Surface(
+        shape = CircleShape,
+        color = if (isBgmEnabled) Color(0xFFFFD54F) else Color(0xFFEEEEEE),
+        shadowElevation = 2.dp,
+        modifier = Modifier
+          .size(40.dp)
+          .clip(CircleShape)
+          .clickable(
+            interactionSource = remember { MutableInteractionSource() },
+            indication = ripple()
+          ) { onBgmToggle() }
+          .testTag("header_bgm_toggle")
+      ) {
+        Box(contentAlignment = Alignment.Center) {
+          Text(text = if (isBgmEnabled) "🎵" else "🔇", fontSize = 18.sp)
         }
       }
 

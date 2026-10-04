@@ -2,6 +2,7 @@ package com.example
 
 import androidx.compose.ui.graphics.Color
 import com.example.audio.KidsSoundSynthesizer
+import com.example.model.ColoringTemplate
 import com.example.model.MemoryCard
 import com.example.model.ScreenDestination
 import com.example.model.StickerReward
@@ -91,16 +92,34 @@ class NewMinigamesAndAudioTest {
       ScreenDestination.GameHub,
       ScreenDestination.MemoryMatch,
       ScreenDestination.StickerBook,
+      ScreenDestination.Coloring,
       ScreenDestination.StoryMenu,
       ScreenDestination.QuizPlay
     )
-    assertEquals(6, destinations.size)
+    assertEquals(7, destinations.size)
+    assertTrue(destinations.contains(ScreenDestination.Coloring))
   }
 
   @Test
-  fun testKidsSoundSynthesizerInstantiation() {
-    // Verify synthesizer can be created without crashing
+  fun testColoringTemplateModel() {
+    val template = ColoringTemplate(
+      id = "begao",
+      titleVi = "Bé Gạo Xinh",
+      descriptionVi = "Bé gái má phúng phính tóc ngắn cài hoa",
+      iconEmoji = "🌸",
+      defaultColor = Color(0xFFFFB2C9)
+    )
+    assertEquals("begao", template.id)
+    assertEquals("🌸", template.iconEmoji)
+  }
+
+  @Test
+  fun testKidsSoundSynthesizerInstantiationAndFx() {
     val synth = KidsSoundSynthesizer()
     assertNotNull(synth)
+    // Verify methods exist and can be called safely
+    synth.setBgmDucking(true)
+    synth.setBgmDucking(false)
+    synth.stopBgm()
   }
 }

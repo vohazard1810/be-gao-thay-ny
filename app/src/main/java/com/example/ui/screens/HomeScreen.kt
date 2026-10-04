@@ -31,8 +31,11 @@ fun HomeScreen(
   onTeacherTap: () -> Unit,
   onOpenMemoryMatch: () -> Unit = {},
   onOpenStickerBook: () -> Unit = {},
+  onOpenColoring: () -> Unit = {},
   onBeGaoTap: () -> Unit = {},
   onThoBongTap: () -> Unit = {},
+  isBgmEnabled: Boolean = false,
+  onBgmToggle: () -> Unit = {},
   modifier: Modifier = Modifier
 ) {
   val verticalScrollState = rememberScrollState()
@@ -51,11 +54,13 @@ fun HomeScreen(
         .padding(horizontal = 14.dp, vertical = 6.dp),
       horizontalAlignment = Alignment.CenterHorizontally
     ) {
-      // 1. Top Header (Logo + Baby Name + Audio Speaker)
+      // 1. Top Header (Logo + Baby Name + BGM + Audio Speaker)
       AppHeader(
         totalStars = totalStars,
         isSpeaking = isSpeaking,
-        onSpeakerClick = onTeacherTap
+        onSpeakerClick = onTeacherTap,
+        isBgmEnabled = isBgmEnabled,
+        onBgmToggle = onBgmToggle
       )
 
       Spacer(modifier = Modifier.height(10.dp))
@@ -157,6 +162,18 @@ fun HomeScreen(
           accentColor = Color(0xFFFB8C00),
           testTag = "menu_sticker_button",
           onClick = onOpenStickerBook
+        )
+
+        // Game 6: Bé Tập Tô Màu
+        MainGameOptionCard(
+          title = "6. Bé Tập Tô Màu",
+          subtitle = "Tô màu pastel ngộ nghĩnh cùng Bé Gạo & Thỏ Bông",
+          mainIconEmoji = "🎨",
+          subEmojis = listOf("🌸", "🐰", "🐿️", "✨"),
+          cardColor = Color(0xFFFCE4EC),
+          accentColor = Color(0xFFEC407A),
+          testTag = "menu_coloring_button",
+          onClick = onOpenColoring
         )
       }
 

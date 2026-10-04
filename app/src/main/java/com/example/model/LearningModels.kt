@@ -119,6 +119,7 @@ sealed class ScreenDestination {
   object GameHub : ScreenDestination()
   object MemoryMatch : ScreenDestination()
   object StickerBook : ScreenDestination()
+  object Coloring : ScreenDestination()
 }
 
 data class MemoryCard(
@@ -139,4 +140,12 @@ data class StickerReward(
   val requiredStars: Int,
   val descriptionVi: String,
   val isUnlocked: Boolean = false
+)
+
+data class ColoringTemplate(
+  val id: String,
+  val titleVi: String,
+  val descriptionVi: String,
+  val iconEmoji: String,
+  val defaultColor: Color
 )

@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.model.ScreenDestination
+import com.example.ui.screens.ColoringScreen
 import com.example.ui.screens.FlashcardsScreen
 import com.example.ui.screens.GameHubScreen
 import com.example.ui.screens.HomeScreen
@@ -50,6 +51,7 @@ fun ToddlerAppNavigation(
   val currentScreen by viewModel.currentScreen.collectAsStateWithLifecycle()
   val isSpeaking by viewModel.isSpeaking.collectAsStateWithLifecycle()
   val spokenText by viewModel.spokenText.collectAsStateWithLifecycle()
+  val isBgmEnabled by viewModel.isBgmEnabled.collectAsStateWithLifecycle()
   val totalStars by viewModel.totalStars.collectAsStateWithLifecycle()
   val selectedCategory by viewModel.selectedCategory.collectAsStateWithLifecycle()
   val selectedSubCategoryId by viewModel.selectedSubCategoryId.collectAsStateWithLifecycle()
@@ -86,8 +88,11 @@ fun ToddlerAppNavigation(
           onTeacherTap = { viewModel.onTeacherTapGeneral() },
           onOpenMemoryMatch = { viewModel.openMemoryMatch() },
           onOpenStickerBook = { viewModel.openStickerBook() },
+          onOpenColoring = { viewModel.openColoring() },
           onBeGaoTap = { viewModel.onBeGaoTap() },
-          onThoBongTap = { viewModel.onThoBongTap() }
+          onThoBongTap = { viewModel.onThoBongTap() },
+          isBgmEnabled = isBgmEnabled,
+          onBgmToggle = { viewModel.toggleBgm() }
         )
       }
 
@@ -162,6 +167,7 @@ fun ToddlerAppNavigation(
           onOpenFlashcards = { viewModel.openFlashcards() },
           onOpenStory = { viewModel.openStoryMenu() },
           onOpenStickerBook = { viewModel.openStickerBook() },
+          onOpenColoring = { viewModel.openColoring() },
           onReplaySpeech = { viewModel.openGameHub() },
           onHomeClick = { viewModel.navigateToHome() }
         )
@@ -188,6 +194,17 @@ fun ToddlerAppNavigation(
           stickers = stickers,
           isSpeaking = isSpeaking,
           onStickerTap = { viewModel.onStickerTap(it) },
+          onReplaySpeech = { viewModel.onTeacherTapGeneral() },
+          onHomeClick = { viewModel.navigateToHome() }
+        )
+      }
+
+      is ScreenDestination.Coloring -> {
+        ColoringScreen(
+          totalStars = totalStars,
+          isSpeaking = isSpeaking,
+          onBrushStroke = { viewModel.onBrushStroke() },
+          onCompleteColoring = { viewModel.onCompleteColoring() },
           onReplaySpeech = { viewModel.onTeacherTapGeneral() },
           onHomeClick = { viewModel.navigateToHome() }
         )

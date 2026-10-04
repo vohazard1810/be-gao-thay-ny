@@ -59,12 +59,14 @@ class VoiceManager(private val context: Context) {
           override fun onStart(utteranceId: String?) {
             mainHandler.post {
               _isSpeaking.value = true
+              soundSynth.setBgmDucking(true)
             }
           }
 
           override fun onDone(utteranceId: String?) {
             mainHandler.post {
               _isSpeaking.value = false
+              soundSynth.setBgmDucking(false)
               onSpeechDoneCallback?.invoke()
               onSpeechDoneCallback = null
             }
@@ -73,6 +75,7 @@ class VoiceManager(private val context: Context) {
           override fun onError(utteranceId: String?) {
             mainHandler.post {
               _isSpeaking.value = false
+              soundSynth.setBgmDucking(false)
               onSpeechDoneCallback?.invoke()
               onSpeechDoneCallback = null
             }
@@ -103,8 +106,10 @@ class VoiceManager(private val context: Context) {
         if (res == TextToSpeech.ERROR) {
           Log.w("VoiceManager", "TTS returned ERROR, falling back to timer")
           _isSpeaking.value = true
+          soundSynth.setBgmDucking(true)
           mainHandler.postDelayed({
             _isSpeaking.value = false
+            soundSynth.setBgmDucking(false)
             onSpeechDoneCallback?.invoke()
             onSpeechDoneCallback = null
           }, 1200)
@@ -112,13 +117,16 @@ class VoiceManager(private val context: Context) {
       } catch (e: Exception) {
         Log.e("VoiceManager", "TTS speak exception: ${e.message}")
         _isSpeaking.value = false
+        soundSynth.setBgmDucking(false)
         onSpeechDoneCallback?.invoke()
         onSpeechDoneCallback = null
       }
     } else {
       _isSpeaking.value = true
+      soundSynth.setBgmDucking(true)
       mainHandler.postDelayed({
         _isSpeaking.value = false
+        soundSynth.setBgmDucking(false)
         onDone?.invoke()
       }, 1200)
     }
@@ -126,9 +134,23 @@ class VoiceManager(private val context: Context) {
 
   private val soundSynth = KidsSoundSynthesizer()
 
+  private val _isBgmEnabled = MutableStateFlow(false)
+  val isBgmEnabled: StateFlow<Boolean> = _isBgmEnabled.asStateFlow()
+
+  fun toggleBgm() {
+    if (_isBgmEnabled.value) {
+      _isBgmEnabled.value = false
+      soundSynth.stopBgm()
+    } else {
+      _isBgmEnabled.value = true
+      soundSynth.startBgm()
+    }
+  }
+
   fun stop() {
     tts?.stop()
     _isSpeaking.value = false
+    soundSynth.setBgmDucking(false)
     onSpeechDoneCallback = null
   }
 
@@ -152,6 +174,30 @@ class VoiceManager(private val context: Context) {
     soundSynth.playCelebrationFanfare()
   }
 
+  fun playWaterSplash() {
+    soundSynth.playWaterSplash()
+  }
+
+  fun playBubbleFoam() {
+    soundSynth.playBubbleFoam()
+  }
+
+  fun playCarHorn() {
+    soundSynth.playCarHorn()
+  }
+
+  fun playNatureChirp() {
+    soundSynth.playNatureChirp()
+  }
+
+  fun playMagicTwinkle() {
+    soundSynth.playMagicTwinkle()
+  }
+
+  fun playColorBrushSound() {
+    soundSynth.playColorBrushSound()
+  }
+
   fun shutdown() {
     try {
       tts?.stop()
@@ -159,6 +205,7 @@ class VoiceManager(private val context: Context) {
       tts = null
       toneGen?.release()
       toneGen = null
+      soundSynth.shutdown()
     } catch (_: Exception) {}
   }
 }

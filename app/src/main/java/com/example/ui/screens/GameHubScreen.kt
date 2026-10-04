@@ -40,6 +40,7 @@ fun GameHubScreen(
   onOpenFlashcards: () -> Unit,
   onOpenStory: () -> Unit,
   onOpenStickerBook: () -> Unit,
+  onOpenColoring: () -> Unit = {},
   onReplaySpeech: () -> Unit,
   onHomeClick: () -> Unit,
   modifier: Modifier = Modifier
@@ -217,6 +218,17 @@ fun GameHubScreen(
             accentColor = Color(0xFF8E24AA),
             testTag = "hub_story_btn",
             onClick = onOpenStory
+          )
+
+          // Game 5: Bé Tập Tô Màu
+          HubGameItemCard(
+            title = "5. Bé Tập Tô Màu 🎨",
+            subtitle = "Tô màu pastel Bé Gạo & Thỏ Bông",
+            badgeText = "SÁNG TẠO 🌸",
+            color = Color(0xFFFCE4EC),
+            accentColor = Color(0xFFEC407A),
+            testTag = "hub_coloring_btn",
+            onClick = onOpenColoring
           )
         }
 

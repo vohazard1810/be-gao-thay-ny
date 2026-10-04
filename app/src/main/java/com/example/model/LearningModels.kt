@@ -6,7 +6,8 @@ enum class CategoryType(val titleVi: String, val emoji: String, val colorHex: Lo
   ANIMALS("Con Vật", "🐶", 0xFFFFB703),
   FRUITS("Trái Cây", "🍎", 0xFFFB8500),
   COLORS("Màu Sắc", "🎨", 0xFF0288D1),
-  LETTERS_NUMBERS("Chữ & Số", "🔢", 0xFF43A047)
+  LETTERS_NUMBERS("Chữ & Số", "🔢", 0xFF43A047),
+  VEHICLES("Phương Tiện", "🚗", 0xFFFF7043)
 }
 
 data class SubCategory(
@@ -120,6 +121,7 @@ sealed class ScreenDestination {
   object MemoryMatch : ScreenDestination()
   object StickerBook : ScreenDestination()
   object Coloring : ScreenDestination()
+  object SoundQuiz : ScreenDestination()
 }
 
 data class MemoryCard(
@@ -148,4 +150,21 @@ data class ColoringTemplate(
   val descriptionVi: String,
   val iconEmoji: String,
   val defaultColor: Color
+)
+
+data class SoundQuizOption(
+  val id: String,
+  val nameVi: String,
+  val emoji: String,
+  val isCorrect: Boolean
+)
+
+data class SoundQuizQuestion(
+  val id: String,
+  val soundKey: String,
+  val promptVi: String,
+  val answerNameVi: String,
+  val soundDescriptionVi: String,
+  val praiseVi: String,
+  val options: List<SoundQuizOption>
 )

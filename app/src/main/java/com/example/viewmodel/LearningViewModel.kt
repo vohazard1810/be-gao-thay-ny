@@ -79,6 +79,13 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
   private val _stickers = MutableStateFlow<List<StickerReward>>(createDefaultStickers())
   val stickers: StateFlow<List<StickerReward>> = _stickers.asStateFlow()
 
+  // ==================== ĐOÁN ÂM THANH VUI NHỘN ====================
+  private val _soundQuizQuestions = MutableStateFlow<List<SoundQuizQuestion>>(LearningData.soundQuizQuestions)
+  val soundQuizQuestions: StateFlow<List<SoundQuizQuestion>> = _soundQuizQuestions.asStateFlow()
+
+  private val _soundQuizIndex = MutableStateFlow(0)
+  val soundQuizIndex: StateFlow<Int> = _soundQuizIndex.asStateFlow()
+
   init {
     _memoryCards.value = generateMemoryCards()
     refreshUnlockedStickers()
@@ -144,6 +151,16 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
   fun speakFlashcardSound(card: FlashcardItem) {
     _teacherMood.value = TeacherMood.TALKING
     voiceManager.stop()
+    when (card.id) {
+      "farm_dog" -> voiceManager.playDogBark()
+      "farm_cat" -> voiceManager.playCatMeow()
+      "farm_duck" -> voiceManager.playDuckQuack()
+      "vehicle_car" -> voiceManager.playCarHorn()
+      "vehicle_train" -> voiceManager.playTrainChug()
+      "vehicle_bicycle" -> voiceManager.playBicycleBell()
+      "vehicle_plane" -> voiceManager.playAirplaneWhoosh()
+      else -> voiceManager.playPopTone()
+    }
     val soundSpeech = LearningData.getFlashcardSoundSpeech(card)
     voiceManager.speak(soundSpeech)
   }
@@ -353,6 +370,7 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
       is ScreenDestination.MemoryMatch -> voiceManager.speak("Bé hãy lật 2 thẻ giống nhau nhé!")
       is ScreenDestination.StickerBook -> voiceManager.speak("Sổ Dán Sticker Bé Ngoan của bé!")
       is ScreenDestination.Coloring -> voiceManager.speak("Bé hãy chọn màu pastel con thích để tô tranh nhé!")
+      is ScreenDestination.SoundQuiz -> replaySoundQuizSpeech()
     }
   }
 
@@ -488,6 +506,87 @@ class LearningViewModel(application: Application) : AndroidViewModel(application
     refreshUnlockedStickers()
     voiceManager.playCelebrationFanfare()
     voiceManager.speak("Oa! Bức tranh của bé Gạo đẹp quá chừng! Thầy tặng con một ngôi sao sáng nhé!")
+  }
+
+  // ==================== ĐOÁN ÂM THANH VUI NHỘN ====================
+  fun openSoundQuiz() {
+    voiceManager.stop()
+    _soundQuizQuestions.value = LearningData.soundQuizQuestions.shuffled()
+    _soundQuizIndex.value = 0
+    _currentScreen.value = ScreenDestination.SoundQuiz
+    _teacherMood.value = TeacherMood.TALKING
+    voiceManager.playPopTone()
+    val currentQ = _soundQuizQuestions.value.first()
+    playSoundQuizAudioKey(currentQ.soundKey)
+    voiceManager.speak(currentQ.promptVi)
+  }
+
+  fun playSoundQuizCurrentAudio() {
+    val questions = _soundQuizQuestions.value
+    val currentQ = questions.getOrNull(_soundQuizIndex.value) ?: return
+    playSoundQuizAudioKey(currentQ.soundKey)
+  }
+
+  private fun playSoundQuizAudioKey(soundKey: String) {
+    when (soundKey) {
+      "dog" -> voiceManager.playDogBark()
+      "cat" -> voiceManager.playCatMeow()
+      "duck" -> voiceManager.playDuckQuack()
+      "car" -> voiceManager.playCarHorn()
+      "train" -> voiceManager.playTrainChug()
+      "bicycle" -> voiceManager.playBicycleBell()
+      else -> voiceManager.playNatureChirp()
+    }
+  }
+
+  fun answerSoundQuiz(option: SoundQuizOption) {
+    val questions = _soundQuizQuestions.value
+    val currentQ = questions.getOrNull(_soundQuizIndex.value) ?: return
+    if (option.isCorrect) {
+      _teacherMood.value = TeacherMood.CELEBRATING
+      _showCelebration.value = true
+      _totalStars.value += 1
+      refreshUnlockedStickers()
+      voiceManager.stop()
+      voiceManager.playSuccessChime()
+      voiceManager.speak(currentQ.praiseVi) {
+        viewModelScope.launch {
+          delay(1500)
+          _showCelebration.value = false
+          nextSoundQuizQuestion()
+        }
+      }
+    } else {
+      _teacherMood.value = TeacherMood.ENCOURAGING
+      voiceManager.stop()
+      voiceManager.playEncourageTone()
+      voiceManager.speak("Chưa đúng rồi con ơi! Bé bấm nút nghe lại âm thanh nhé!")
+    }
+  }
+
+  fun nextSoundQuizQuestion() {
+    voiceManager.stop()
+    val questions = _soundQuizQuestions.value
+    if (_soundQuizIndex.value < questions.size - 1) {
+      _soundQuizIndex.value += 1
+      val nextQ = questions[_soundQuizIndex.value]
+      _teacherMood.value = TeacherMood.TALKING
+      playSoundQuizAudioKey(nextQ.soundKey)
+      voiceManager.speak(nextQ.promptVi)
+    } else {
+      _soundQuizIndex.value = 0
+      _teacherMood.value = TeacherMood.CELEBRATING
+      voiceManager.playCelebrationFanfare()
+      voiceManager.speak("Hoan hô bé Gạo! Con đã hoàn thành tất cả câu đố âm thanh rồi! Bé Gạo thật là cừ khôi!")
+    }
+  }
+
+  fun replaySoundQuizSpeech() {
+    val questions = _soundQuizQuestions.value
+    val currentQ = questions.getOrNull(_soundQuizIndex.value) ?: return
+    _teacherMood.value = TeacherMood.TALKING
+    playSoundQuizAudioKey(currentQ.soundKey)
+    voiceManager.speak(currentQ.promptVi)
   }
 
   // ==================== TƯƠNG TÁC BÉ GẠO & THỎ BÔNG ====================

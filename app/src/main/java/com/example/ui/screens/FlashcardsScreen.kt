@@ -84,7 +84,8 @@ fun FlashcardsScreen(
       FlatTopic("fruit", "Trái Cây", "🍎", CategoryType.FRUITS, null, Color(0xFF81C784)),
       FlatTopic("color", "Màu Sắc", "🎨", CategoryType.COLORS, null, Color(0xFFFF8DA1)),
       FlatTopic("alphabet", "Chữ Cái", "🔤", CategoryType.LETTERS_NUMBERS, "sub_alphabet", Color(0xFF9575CD)),
-      FlatTopic("numbers", "Số Đếm", "🔢", CategoryType.LETTERS_NUMBERS, "sub_numbers", Color(0xFF4DD0E1))
+      FlatTopic("numbers", "Số Đếm", "🔢", CategoryType.LETTERS_NUMBERS, "sub_numbers", Color(0xFF4DD0E1)),
+      FlatTopic("vehicles", "Xe Cộ", "🚗", CategoryType.VEHICLES, "sub_vehicles", Color(0xFFFF7043))
     )
   }
 

@@ -12,6 +12,7 @@ import com.example.ui.components.TeacherMood
 import com.example.ui.screens.FlashcardsScreen
 import com.example.ui.screens.HomeScreen
 import com.example.ui.screens.QuizGameScreen
+import com.example.ui.screens.SoundQuizScreen
 import com.example.ui.screens.StoryMenuScreen
 import com.example.ui.screens.StorytellingScreen
 import com.example.ui.theme.MyApplicationTheme
@@ -236,5 +237,28 @@ class RuntimeVerificationScreenshotsTest {
     }
     composeTestRule.waitForIdle()
     composeTestRule.onRoot().captureRoboImage(filePath = "build/outputs/roborazzi/runtime_10_picnic_scene_01.png")
+  }
+
+  @Test
+  fun capture_11_sound_quiz_screen() {
+    val question = LearningData.soundQuizQuestions.first()
+    composeTestRule.setContent {
+      MyApplicationTheme {
+        SoundQuizScreen(
+          question = question,
+          questionIndex = 0,
+          totalQuestions = 6,
+          totalStars = 5,
+          isSpeaking = false,
+          showCelebration = false,
+          onPlaySound = {},
+          onSelectOption = {},
+          onReplaySpeech = {},
+          onHomeClick = {}
+        )
+      }
+    }
+    composeTestRule.waitForIdle()
+    composeTestRule.onRoot().captureRoboImage(filePath = "build/outputs/roborazzi/runtime_11_sound_quiz.png")
   }
 }

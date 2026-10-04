@@ -361,6 +361,179 @@ class KidsSoundSynthesizer {
     }
   }
 
+  /**
+   * Âm thanh chú cún sủa vui vẻ ("Gâu gâu!"):
+   */
+  fun playDogBark() {
+    scope.launch {
+      try {
+        val barkDuration = 0.08
+        val gap = 0.05
+        val totalDuration = barkDuration * 2 + gap + 0.10
+        val totalSamples = (sampleRate * totalDuration).toInt()
+        val buffer = ShortArray(totalSamples)
+
+        val barkStarts = listOf(0, ((barkDuration + gap) * sampleRate).toInt())
+        barkStarts.forEach { startSample ->
+          val barkSamples = (barkDuration * sampleRate).toInt()
+          for (i in 0 until barkSamples) {
+            val target = startSample + i
+            if (target >= totalSamples) break
+            val t = i.toDouble() / sampleRate
+            val env = exp(-28.0 * t)
+            val freq = 480.0 - 120.0 * (t / barkDuration)
+            val sampleVal = (sin(2.0 * PI * freq * t) * 0.75 + sin(4.0 * PI * freq * t) * 0.25) * env
+            buffer[target] = (sampleVal * 16000).toInt().coerceIn(-32768, 32767).toShort()
+          }
+        }
+        playPcm(buffer)
+      } catch (e: Exception) {
+        Log.e("SoundSynth", "Error in dog bark: ${e.message}")
+      }
+    }
+  }
+
+  /**
+   * Âm thanh mèo con kêu ngọt ngào ("Meo meo~"):
+   */
+  fun playCatMeow() {
+    scope.launch {
+      try {
+        val duration = 0.38
+        val totalSamples = (sampleRate * duration).toInt()
+        val buffer = ShortArray(totalSamples)
+        for (i in 0 until totalSamples) {
+          val t = i.toDouble() / sampleRate
+          val progress = t / duration
+          // Slide from 560Hz up to 740Hz then down to 440Hz
+          val freq = if (progress < 0.45) {
+            560.0 + (progress / 0.45) * 180.0
+          } else {
+            740.0 - ((progress - 0.45) / 0.55) * 300.0
+          }
+          val env = sin(PI * progress) * exp(-1.5 * progress)
+          val sampleVal = (sin(2.0 * PI * freq * t) * 0.70 + sin(4.0 * PI * freq * t) * 0.30) * env
+          buffer[i] = (sampleVal * 14000).toInt().coerceIn(-32768, 32767).toShort()
+        }
+        playPcm(buffer)
+      } catch (e: Exception) {
+        Log.e("SoundSynth", "Error in cat meow: ${e.message}")
+      }
+    }
+  }
+
+  /**
+   * Âm thanh chú vịt quạc quạc ("Quạc quạc"):
+   */
+  fun playDuckQuack() {
+    scope.launch {
+      try {
+        val duration = 0.25
+        val totalSamples = (sampleRate * duration).toInt()
+        val buffer = ShortArray(totalSamples)
+        for (i in 0 until totalSamples) {
+          val t = i.toDouble() / sampleRate
+          val tremolo = 1.0 + 0.35 * sin(2.0 * PI * 22.0 * t)
+          val env = sin(PI * (t / duration)) * exp(-3.0 * (t / duration))
+          val freq = 420.0 - 50.0 * (t / duration)
+          val sampleVal = sin(2.0 * PI * freq * t) * tremolo * env
+          buffer[i] = (sampleVal * 15000).toInt().coerceIn(-32768, 32767).toShort()
+        }
+        playPcm(buffer)
+      } catch (e: Exception) {
+        Log.e("SoundSynth", "Error in duck quack: ${e.message}")
+      }
+    }
+  }
+
+  /**
+   * Âm thanh đoàn tàu xình xịch ("Xình xịch xình xịch"):
+   */
+  fun playTrainChug() {
+    scope.launch {
+      try {
+        val chugCount = 3
+        val chugDur = 0.09
+        val gap = 0.08
+        val totalDuration = chugCount * (chugDur + gap) + 0.15
+        val totalSamples = (sampleRate * totalDuration).toInt()
+        val buffer = ShortArray(totalSamples)
+
+        for (chug in 0 until chugCount) {
+          val start = (chug * (chugDur + gap) * sampleRate).toInt()
+          val chugSamples = (chugDur * sampleRate).toInt()
+          for (i in 0 until chugSamples) {
+            val target = start + i
+            if (target >= totalSamples) break
+            val t = i.toDouble() / sampleRate
+            val env = exp(-20.0 * t)
+            val freq = 140.0 + (i % 3) * 35.0
+            val sampleVal = sin(2.0 * PI * freq * t) * env
+            buffer[target] = (sampleVal * 16000).toInt().coerceIn(-32768, 32767).toShort()
+          }
+        }
+        playPcm(buffer)
+      } catch (e: Exception) {
+        Log.e("SoundSynth", "Error in train chug: ${e.message}")
+      }
+    }
+  }
+
+  /**
+   * Âm thanh chuông xe đạp ("Kính coong!"):
+   */
+  fun playBicycleBell() {
+    scope.launch {
+      try {
+        val bellNotes = listOf(2093.00, 2489.02) // C7, D#7
+        val noteDur = 0.08
+        val totalDuration = noteDur * 2 + 0.35
+        val totalSamples = (sampleRate * totalDuration).toInt()
+        val buffer = ShortArray(totalSamples)
+
+        bellNotes.forEachIndexed { idx, freq ->
+          val start = (idx * noteDur * sampleRate).toInt()
+          val len = (0.28 * sampleRate).toInt()
+          for (i in 0 until len) {
+            val target = start + i
+            if (target >= totalSamples) break
+            val t = i.toDouble() / sampleRate
+            val env = exp(-14.0 * t)
+            val sampleVal = sin(2.0 * PI * freq * t) * env
+            buffer[target] = (buffer[target] + (sampleVal * 15000).toInt().toShort()).coerceIn(-32768, 32767).toShort()
+          }
+        }
+        playPcm(buffer)
+      } catch (e: Exception) {
+        Log.e("SoundSynth", "Error in bicycle bell: ${e.message}")
+      }
+    }
+  }
+
+  /**
+   * Âm thanh máy bay vút bay ("Vù vù~"):
+   */
+  fun playAirplaneWhoosh() {
+    scope.launch {
+      try {
+        val duration = 0.35
+        val totalSamples = (sampleRate * duration).toInt()
+        val buffer = ShortArray(totalSamples)
+        for (i in 0 until totalSamples) {
+          val t = i.toDouble() / sampleRate
+          val progress = t / duration
+          val freq = 220.0 + progress * 260.0
+          val env = sin(PI * progress)
+          val sampleVal = (sin(2.0 * PI * freq * t) * 0.8 + sin(3.0 * PI * freq * t) * 0.2) * env
+          buffer[i] = (sampleVal * 13000).toInt().coerceIn(-32768, 32767).toShort()
+        }
+        playPcm(buffer)
+      } catch (e: Exception) {
+        Log.e("SoundSynth", "Error in airplane whoosh: ${e.message}")
+      }
+    }
+  }
+
   // ==================== BGM (BACKGROUND MUSIC LULLABY) ====================
   private var bgmTrack: AudioTrack? = null
   private var isBgmRunning = false

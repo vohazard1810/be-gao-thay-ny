@@ -6,8 +6,10 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -62,9 +64,12 @@ fun ColoringScreen(
 ) {
   val templates = remember {
     listOf(
-      ColoringTemplate("begao", "Bé Gạo Xinh", "Bé gái má phúng phính tóc ngắn cài hoa", "🌸", Color(0xFFFFB2C9)),
-      ColoringTemplate("thobong", "Thỏ Bông Nhỏ", "Bạn thỏ bông trắng áo len tím", "🐰", Color(0xFFCE93D8)),
-      ColoringTemplate("socnau", "Sóc Nâu Ngoan", "Bạn sóc nâu thích ăn hạt dẻ", "🐿️", Color(0xFFFFCC80))
+      ColoringTemplate("begao", "Bé Gạo", "Bé gái má phúng phính tóc ngắn cài hoa", "🌸", Color(0xFFFFB2C9)),
+      ColoringTemplate("thobong", "Thỏ Bông", "Bạn thỏ bông trắng áo len tím", "🐰", Color(0xFFCE93D8)),
+      ColoringTemplate("socnau", "Sóc Nâu", "Bạn sóc nâu thích ăn hạt dẻ", "🐿️", Color(0xFFFFCC80)),
+      ColoringTemplate("cundom", "Cún Đốm", "Bạn cún đốm mắt trái mặc yếm xanh", "🐶", Color(0xFF90CAF9)),
+      ColoringTemplate("meomay", "Mèo Mây", "Bạn mèo mây xám thắt nơ xinh", "🐱", Color(0xFFF48FB1)),
+      ColoringTemplate("vitmo", "Vịt Mơ", "Bạn vịt lông vàng bơi lội dưới ao", "🐥", Color(0xFFFFF59D))
     )
   }
 
@@ -111,6 +116,7 @@ fun ColoringScreen(
         Row(
           modifier = Modifier
             .fillMaxWidth()
+            .horizontalScroll(rememberScrollState())
             .padding(horizontal = 14.dp),
           horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -125,7 +131,6 @@ fun ColoringScreen(
               ),
               shadowElevation = if (isSelected) 3.dp else 1.dp,
               modifier = Modifier
-                .weight(1f)
                 .clip(RoundedCornerShape(18.dp))
                 .clickable {
                   if (selectedTemplateIndex != index) {
@@ -137,18 +142,18 @@ fun ColoringScreen(
                 }
             ) {
               Row(
-                modifier = Modifier.padding(vertical = 8.dp, horizontal = 6.dp),
+                modifier = Modifier.padding(vertical = 8.dp, horizontal = 12.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
               ) {
                 Text(text = t.iconEmoji, fontSize = 18.sp)
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(modifier = Modifier.width(6.dp))
                 Text(
                   text = t.titleVi,
                   style = MaterialTheme.typography.labelMedium.copy(
                     fontWeight = FontWeight.Bold,
                     color = if (isSelected) Color(0xFFB45309) else TextDark,
-                    fontSize = 11.5.sp
+                    fontSize = 12.sp
                   ),
                   maxLines = 1
                 )
@@ -386,7 +391,7 @@ fun ColoringScreen(
                   drawPath(vestPath, color = strokeColor, style = strokeStyle)
                 }
 
-                else -> {
+                "socnau" -> {
                   // Sóc Nâu cute squirrel:
                   // Head
                   drawCircle(
@@ -408,6 +413,116 @@ fun ColoringScreen(
                   // Eyes
                   drawCircle(color = strokeColor, radius = w * 0.022f, center = Offset(w * 0.40f, h * 0.40f))
                   drawCircle(color = strokeColor, radius = w * 0.022f, center = Offset(w * 0.52f, h * 0.40f))
+                }
+
+                "cundom" -> {
+                  // Cún Đốm: Puppy with eye patch & floppy ears
+                  // Floppy ears
+                  drawOval(
+                    color = Color(0xFFD7CCC8),
+                    topLeft = Offset(w * 0.18f, h * 0.30f),
+                    size = androidx.compose.ui.geometry.Size(w * 0.15f, h * 0.26f)
+                  )
+                  drawOval(
+                    color = Color(0xFFD7CCC8),
+                    topLeft = Offset(w * 0.67f, h * 0.30f),
+                    size = androidx.compose.ui.geometry.Size(w * 0.15f, h * 0.26f)
+                  )
+                  // Head
+                  drawCircle(
+                    color = strokeColor,
+                    radius = w * 0.22f,
+                    center = Offset(w * 0.50f, h * 0.40f),
+                    style = strokeStyle
+                  )
+                  // Distinct brown patch over left eye
+                  drawCircle(
+                    color = Color(0xFFD7CCC8),
+                    radius = w * 0.065f,
+                    center = Offset(w * 0.41f, h * 0.38f)
+                  )
+                  // Eyes
+                  drawCircle(color = strokeColor, radius = w * 0.022f, center = Offset(w * 0.41f, h * 0.38f))
+                  drawCircle(color = strokeColor, radius = w * 0.022f, center = Offset(w * 0.59f, h * 0.38f))
+                  // Cute black button nose
+                  drawCircle(color = strokeColor, radius = w * 0.020f, center = Offset(w * 0.50f, h * 0.46f))
+                  // Blue overalls body
+                  val bodyPath = Path().apply {
+                    moveTo(w * 0.34f, h * 0.62f)
+                    lineTo(w * 0.66f, h * 0.62f)
+                    lineTo(w * 0.70f, h * 0.86f)
+                    lineTo(w * 0.30f, h * 0.86f)
+                    close()
+                  }
+                  drawPath(bodyPath, color = strokeColor, style = strokeStyle)
+                }
+
+                "meomay" -> {
+                  // Mèo Mây: Kitten with cute ears and bow
+                  // Triangle ears
+                  val leftEar = Path().apply {
+                    moveTo(w * 0.32f, h * 0.32f)
+                    lineTo(w * 0.28f, h * 0.16f)
+                    lineTo(w * 0.44f, h * 0.24f)
+                    close()
+                  }
+                  val rightEar = Path().apply {
+                    moveTo(w * 0.68f, h * 0.32f)
+                    lineTo(w * 0.72f, h * 0.16f)
+                    lineTo(w * 0.56f, h * 0.24f)
+                    close()
+                  }
+                  drawPath(leftEar, color = strokeColor, style = strokeStyle)
+                  drawPath(rightEar, color = strokeColor, style = strokeStyle)
+                  // Head
+                  drawCircle(
+                    color = strokeColor,
+                    radius = w * 0.21f,
+                    center = Offset(w * 0.50f, h * 0.42f),
+                    style = strokeStyle
+                  )
+                  // Pale green bow on right ear
+                  drawCircle(color = Color(0xFFA5D6A7), radius = w * 0.038f, center = Offset(w * 0.68f, h * 0.24f))
+                  // Eyes
+                  drawCircle(color = strokeColor, radius = w * 0.022f, center = Offset(w * 0.42f, h * 0.40f))
+                  drawCircle(color = strokeColor, radius = w * 0.022f, center = Offset(w * 0.58f, h * 0.40f))
+                  // Tiny nose
+                  drawCircle(color = Color(0xFFFF8DA1), radius = w * 0.015f, center = Offset(w * 0.50f, h * 0.46f))
+                  // Whiskers
+                  drawLine(strokeColor, Offset(w * 0.28f, h * 0.45f), Offset(w * 0.38f, h * 0.45f), strokeWidth = 3f)
+                  drawLine(strokeColor, Offset(w * 0.62f, h * 0.45f), Offset(w * 0.72f, h * 0.45f), strokeWidth = 3f)
+                }
+
+                else -> {
+                  // Vịt Mơ: Yellow duckling floating on pond
+                  // Head
+                  drawCircle(
+                    color = strokeColor,
+                    radius = w * 0.18f,
+                    center = Offset(w * 0.46f, h * 0.36f),
+                    style = strokeStyle
+                  )
+                  // Cute orange beak
+                  drawOval(
+                    color = Color(0xFFFFAB40),
+                    topLeft = Offset(w * 0.24f, h * 0.35f),
+                    size = androidx.compose.ui.geometry.Size(w * 0.14f, h * 0.08f)
+                  )
+                  // Eye
+                  drawCircle(color = strokeColor, radius = w * 0.022f, center = Offset(w * 0.43f, h * 0.34f))
+                  // Body
+                  drawOval(
+                    color = strokeColor,
+                    topLeft = Offset(w * 0.30f, h * 0.52f),
+                    size = androidx.compose.ui.geometry.Size(w * 0.42f, h * 0.28f),
+                    style = strokeStyle
+                  )
+                  // Pond water ripples
+                  val wavePath = Path().apply {
+                    moveTo(w * 0.18f, h * 0.84f)
+                    cubicTo(w * 0.35f, h * 0.88f, w * 0.50f, h * 0.80f, w * 0.82f, h * 0.84f)
+                  }
+                  drawPath(wavePath, color = Color(0xFF4FC3F7), style = strokeStyle)
                 }
               }
             }

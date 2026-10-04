@@ -30,6 +30,7 @@ class ExampleRobolectricTest {
     assertTrue(flashcards.any { it.category == CategoryType.FRUITS })
     assertTrue(flashcards.any { it.category == CategoryType.COLORS })
     assertTrue(flashcards.any { it.category == CategoryType.LETTERS_NUMBERS })
+    assertTrue(flashcards.any { it.category == CategoryType.VEHICLES })
   }
 
   @Test

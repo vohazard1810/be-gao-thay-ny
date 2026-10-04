@@ -41,6 +41,7 @@ fun GameHubScreen(
   onOpenStory: () -> Unit,
   onOpenStickerBook: () -> Unit,
   onOpenColoring: () -> Unit = {},
+  onOpenSoundQuiz: () -> Unit = {},
   onReplaySpeech: () -> Unit,
   onHomeClick: () -> Unit,
   modifier: Modifier = Modifier
@@ -229,6 +230,17 @@ fun GameHubScreen(
             accentColor = Color(0xFFEC407A),
             testTag = "hub_coloring_btn",
             onClick = onOpenColoring
+          )
+
+          // Game 6: Đoán Âm Thanh Vui Nhộn
+          HubGameItemCard(
+            title = "6. Đoán Âm Thanh 🎵",
+            subtitle = "Lắng nghe tiếng kêu các bạn muôn loài",
+            badgeText = "VUI TAI 🎶",
+            color = Color(0xFFF3E5F5),
+            accentColor = Color(0xFFAB47BC),
+            testTag = "hub_sound_quiz_btn",
+            onClick = onOpenSoundQuiz
           )
         }
 

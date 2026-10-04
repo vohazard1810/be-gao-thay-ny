@@ -20,6 +20,7 @@ import com.example.ui.screens.GameHubScreen
 import com.example.ui.screens.HomeScreen
 import com.example.ui.screens.MemoryMatchScreen
 import com.example.ui.screens.QuizGameScreen
+import com.example.ui.screens.SoundQuizScreen
 import com.example.ui.screens.StickerBookScreen
 import com.example.ui.screens.StoryMenuScreen
 import com.example.ui.screens.StorytellingScreen
@@ -64,6 +65,9 @@ fun ToddlerAppNavigation(
 
   val quizQuestions by viewModel.quizQuestions.collectAsStateWithLifecycle()
   val quizIndex by viewModel.quizIndex.collectAsStateWithLifecycle()
+
+  val soundQuizQuestions by viewModel.soundQuizQuestions.collectAsStateWithLifecycle()
+  val soundQuizIndex by viewModel.soundQuizIndex.collectAsStateWithLifecycle()
 
   val memoryCards by viewModel.memoryCards.collectAsStateWithLifecycle()
   val matchedPairsCount by viewModel.matchedPairsCount.collectAsStateWithLifecycle()
@@ -168,6 +172,7 @@ fun ToddlerAppNavigation(
           onOpenStory = { viewModel.openStoryMenu() },
           onOpenStickerBook = { viewModel.openStickerBook() },
           onOpenColoring = { viewModel.openColoring() },
+          onOpenSoundQuiz = { viewModel.openSoundQuiz() },
           onReplaySpeech = { viewModel.openGameHub() },
           onHomeClick = { viewModel.navigateToHome() }
         )
@@ -206,6 +211,22 @@ fun ToddlerAppNavigation(
           onBrushStroke = { viewModel.onBrushStroke() },
           onCompleteColoring = { viewModel.onCompleteColoring() },
           onReplaySpeech = { viewModel.onTeacherTapGeneral() },
+          onHomeClick = { viewModel.navigateToHome() }
+        )
+      }
+
+      is ScreenDestination.SoundQuiz -> {
+        val currentQ = soundQuizQuestions.getOrElse(soundQuizIndex) { soundQuizQuestions.first() }
+        SoundQuizScreen(
+          question = currentQ,
+          questionIndex = soundQuizIndex,
+          totalQuestions = soundQuizQuestions.size,
+          totalStars = totalStars,
+          isSpeaking = isSpeaking,
+          showCelebration = showCelebration,
+          onPlaySound = { viewModel.playSoundQuizCurrentAudio() },
+          onSelectOption = { viewModel.answerSoundQuiz(it) },
+          onReplaySpeech = { viewModel.replaySoundQuizSpeech() },
           onHomeClick = { viewModel.navigateToHome() }
         )
       }

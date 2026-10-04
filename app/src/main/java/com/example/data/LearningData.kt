@@ -34,7 +34,9 @@ object LearningData {
     SubCategory("sub_water", CategoryType.ANIMALS, "Dưới Nước", "🐬", Color(0xFF81D4FA)),
     // Letters and numbers
     SubCategory("sub_alphabet", CategoryType.LETTERS_NUMBERS, "Bảng Chữ Cái", "🔤", Color(0xFFFFAB91)),
-    SubCategory("sub_numbers", CategoryType.LETTERS_NUMBERS, "Bảng Số Đếm", "🔢", Color(0xFFCE93D8))
+    SubCategory("sub_numbers", CategoryType.LETTERS_NUMBERS, "Bảng Số Đếm", "🔢", Color(0xFFCE93D8)),
+    // Vehicles
+    SubCategory("sub_vehicles", CategoryType.VEHICLES, "Xe Cộ", "🚗", Color(0xFFFFCC80))
   )
 
   // ==================== ALL FLASHCARD ITEMS ====================
@@ -1467,6 +1469,118 @@ object LearningData {
         FlashcardOption("1", "Số 1", "1", null, false),
         FlashcardOption("0", "Số 0", "0", null, false)
       )
+    ),
+
+    // ----------------------------------------------------
+    // 5. VEHICLES - PHƯƠNG TIỆN GIAO THÔNG (XE CỘ)
+    // ----------------------------------------------------
+    FlashcardItem(
+      id = "vehicle_car",
+      category = CategoryType.VEHICLES,
+      subCategoryId = "sub_vehicles",
+      nameVi = "Ô Tô Đỏ",
+      pronunciationVi = "Xe ô tô đỏ",
+      emoji = "🚗",
+      photoUrl = "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=500&auto=format&fit=crop&q=80",
+      soundEffectVi = "Pim pim pim!",
+      funFactVi = "Xe ô tô có 4 bánh tròn xoe bon bon chở bé đi chơi!",
+      cardColor = Color(0xFFFFCDD2),
+      questionVi = "Xe nào kêu pim pim chạy trên đường hả bé?",
+      distractors = listOf(
+        FlashcardOption("car", "Ô Tô Đỏ", "🚗", "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=500&auto=format&fit=crop&q=80", true),
+        FlashcardOption("bus", "Xe Buýt", "🚌", "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=500&auto=format&fit=crop&q=80", false),
+        FlashcardOption("bicycle", "Xe Đạp", "🚲", "https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=500&auto=format&fit=crop&q=80", false)
+      )
+    ),
+    FlashcardItem(
+      id = "vehicle_bus",
+      category = CategoryType.VEHICLES,
+      subCategoryId = "sub_vehicles",
+      nameVi = "Xe Buýt Vàng",
+      pronunciationVi = "Xe buýt trường học",
+      emoji = "🚌",
+      photoUrl = "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=500&auto=format&fit=crop&q=80",
+      soundEffectVi = "Bíp bíp bíp!",
+      funFactVi = "Xe buýt to lớn đưa đón các bạn nhỏ đến trường mỗi ngày!",
+      cardColor = Color(0xFFFFF9C4),
+      questionVi = "Xe buýt vàng đón bé đi đâu nhỉ?",
+      distractors = listOf(
+        FlashcardOption("bus", "Xe Buýt Vàng", "🚌", "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=500&auto=format&fit=crop&q=80", true),
+        FlashcardOption("car", "Ô Tô Đỏ", "🚗", "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=500&auto=format&fit=crop&q=80", false),
+        FlashcardOption("plane", "Máy Bay", "✈️", "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=500&auto=format&fit=crop&q=80", false)
+      )
+    ),
+    FlashcardItem(
+      id = "vehicle_train",
+      category = CategoryType.VEHICLES,
+      subCategoryId = "sub_vehicles",
+      nameVi = "Tàu Hỏa",
+      pronunciationVi = "Đoàn tàu hỏa dài",
+      emoji = "🚂",
+      photoUrl = "https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=500&auto=format&fit=crop&q=80",
+      soundEffectVi = "Xình xịch xình xịch!",
+      funFactVi = "Đoàn tàu dài có nhiều toa tàu chạy xình xịch trên đường ray!",
+      cardColor = Color(0xFFE1BEE7),
+      questionVi = "Xe nào chạy trên đường ray kêu xình xịch hả bé?",
+      distractors = listOf(
+        FlashcardOption("train", "Tàu Hỏa", "🚂", "https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=500&auto=format&fit=crop&q=80", true),
+        FlashcardOption("car", "Ô Tô", "🚗", "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=500&auto=format&fit=crop&q=80", false),
+        FlashcardOption("boat", "Thuyền Buồm", "⛵", "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500&auto=format&fit=crop&q=80", false)
+      )
+    ),
+    FlashcardItem(
+      id = "vehicle_plane",
+      category = CategoryType.VEHICLES,
+      subCategoryId = "sub_vehicles",
+      nameVi = "Máy Bay",
+      pronunciationVi = "Máy bay trên trời",
+      emoji = "✈️",
+      photoUrl = "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=500&auto=format&fit=crop&q=80",
+      soundEffectVi = "Vù vù vù!",
+      funFactVi = "Máy bay có đôi cánh bạc bay vút lên bầu trời xanh cùng mây trắng!",
+      cardColor = Color(0xFFBBDEFB),
+      questionVi = "Phương tiện nào bay lượn trên bầu trời xanh?",
+      distractors = listOf(
+        FlashcardOption("plane", "Máy Bay", "✈️", "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=500&auto=format&fit=crop&q=80", true),
+        FlashcardOption("bus", "Xe Buýt", "🚌", "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=500&auto=format&fit=crop&q=80", false),
+        FlashcardOption("bicycle", "Xe Đạp", "🚲", "https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=500&auto=format&fit=crop&q=80", false)
+      )
+    ),
+    FlashcardItem(
+      id = "vehicle_bicycle",
+      category = CategoryType.VEHICLES,
+      subCategoryId = "sub_vehicles",
+      nameVi = "Xe Đạp",
+      pronunciationVi = "Chiếc xe đạp nhỏ",
+      emoji = "🚲",
+      photoUrl = "https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=500&auto=format&fit=crop&q=80",
+      soundEffectVi = "Kính coong kính coong!",
+      funFactVi = "Xe đạp có bàn đạp và chuông kêu kính coong vui tai!",
+      cardColor = Color(0xFFC8E6C9),
+      questionVi = "Xe nào có chuông kêu kính coong bé đạp bằng chân?",
+      distractors = listOf(
+        FlashcardOption("bicycle", "Xe Đạp", "🚲", "https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=500&auto=format&fit=crop&q=80", true),
+        FlashcardOption("car", "Ô Tô", "🚗", "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=500&auto=format&fit=crop&q=80", false),
+        FlashcardOption("train", "Tàu Hỏa", "🚂", "https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=500&auto=format&fit=crop&q=80", false)
+      )
+    ),
+    FlashcardItem(
+      id = "vehicle_boat",
+      category = CategoryType.VEHICLES,
+      subCategoryId = "sub_vehicles",
+      nameVi = "Thuyền Buồm",
+      pronunciationVi = "Chiếc thuyền buồm",
+      emoji = "⛵",
+      photoUrl = "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500&auto=format&fit=crop&q=80",
+      soundEffectVi = "Dập dềnh dập dềnh!",
+      funFactVi = "Thuyền buồm giương cánh buồm trắng lướt sóng trên mặt nước!",
+      cardColor = Color(0xFFB2EBF2),
+      questionVi = "Phương tiện nào giương buồm lướt sóng trên mặt biển?",
+      distractors = listOf(
+        FlashcardOption("boat", "Thuyền Buồm", "⛵", "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500&auto=format&fit=crop&q=80", true),
+        FlashcardOption("plane", "Máy Bay", "✈️", "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=500&auto=format&fit=crop&q=80", false),
+        FlashcardOption("car", "Ô Tô", "🚗", "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=500&auto=format&fit=crop&q=80", false)
+      )
     )
   )
 
@@ -1882,6 +1996,14 @@ object LearningData {
       "num_3" -> "Số 3. Ba quả táo đỏ."
       "num_4" -> "Số 4. Bốn chú bướm xinh."
       "num_5" -> "Số 5. Năm ngôi sao sáng."
+
+      "vehicle_car" -> "Ô tô đỏ. Xe ô tô bốn bánh bon bon trên đường."
+      "vehicle_bus" -> "Xe buýt vàng. Xe buýt đón các bạn nhỏ đến trường."
+      "vehicle_train" -> "Tàu hỏa. Đoàn tàu dài xình xịch trên đường ray."
+      "vehicle_plane" -> "Máy bay. Máy bay bay lượn trên bầu trời xanh."
+      "vehicle_bicycle" -> "Xe đạp. Bé đạp xe hai bánh dạo chơi công viên."
+      "vehicle_boat" -> "Thuyền buồm. Thuyền buồm lướt sóng trên mặt biển."
+
       else -> {
         val name = formatCleanName(card.nameVi)
         if (card.category == CategoryType.ANIMALS && card.soundEffectVi.isNotBlank()) {
@@ -1926,6 +2048,13 @@ object LearningData {
       "water_clownfish" -> "Cá hề bơi lội tung tăng trong san hô!"
       "water_penguin" -> "Chim cánh cụt đi lạch bạch trên băng!"
 
+      "vehicle_car" -> "Còi xe ô tô: Pim pim pim!"
+      "vehicle_bus" -> "Còi xe buýt: Bíp bíp bíp!"
+      "vehicle_train" -> "Tiếng tàu hỏa: Xình xịch xình xịch!"
+      "vehicle_plane" -> "Tiếng máy bay: Vù vù vù!"
+      "vehicle_bicycle" -> "Chuông xe đạp: Kính coong kính coong!"
+      "vehicle_boat" -> "Tiếng thuyền lướt sóng: Dập dềnh dập dềnh!"
+
       else -> {
         if (card.category == CategoryType.ANIMALS && card.soundEffectVi.isNotBlank()) {
           "${formatCleanName(card.nameVi)}: ${card.soundEffectVi}"
@@ -1944,4 +2073,86 @@ object LearningData {
     val name = formatCleanName(card.nameVi)
     return "Đúng rồi! Đây là $name!"
   }
+
+  // ==================== BỘ CÂU ĐỐ ÂM THANH MUÔN LOÀI ====================
+  val soundQuizQuestions: List<SoundQuizQuestion> = listOf(
+    SoundQuizQuestion(
+      id = "sound_q_dog",
+      soundKey = "dog",
+      promptVi = "Bé lắng nghe xem tiếng sủa này là của bạn nào nhé?",
+      answerNameVi = "Chú Cún Đốm",
+      soundDescriptionVi = "Gâu gâu!",
+      praiseVi = "Hoan hô bé! Chính là bạn Cún Đốm sủa gâu gâu vẫy đuôi mừng!",
+      options = listOf(
+        SoundQuizOption("dog", "Chú Cún Đốm", "🐶", true),
+        SoundQuizOption("cat", "Mèo Mây", "🐱", false),
+        SoundQuizOption("duck", "Vịt Mơ", "🦆", false)
+      )
+    ),
+    SoundQuizQuestion(
+      id = "sound_q_cat",
+      soundKey = "cat",
+      promptVi = "Tiếng kêu ngọt ngào này là của ai nhỉ?",
+      answerNameVi = "Mèo Mây",
+      soundDescriptionVi = "Meo meo~",
+      praiseVi = "Chính xác rồi bé ơi! Bạn Mèo Mây kêu meo meo nũng nịu!",
+      options = listOf(
+        SoundQuizOption("cat", "Mèo Mây", "🐱", true),
+        SoundQuizOption("dog", "Cún Đốm", "🐶", false),
+        SoundQuizOption("chicken", "Gà Trống", "🐔", false)
+      )
+    ),
+    SoundQuizQuestion(
+      id = "sound_q_duck",
+      soundKey = "duck",
+      promptVi = "Bạn nào bơi dưới ao kêu vui tai thế này?",
+      answerNameVi = "Vịt Mơ",
+      soundDescriptionVi = "Quạc quạc!",
+      praiseVi = "Bé giỏi quá! Bạn Vịt Mơ bơi lội và kêu quạc quạc!",
+      options = listOf(
+        SoundQuizOption("duck", "Vịt Mơ", "🦆", true),
+        SoundQuizOption("bird", "Chim Non", "🐦", false),
+        SoundQuizOption("pig", "Bé Heo", "🐷", false)
+      )
+    ),
+    SoundQuizQuestion(
+      id = "sound_q_car",
+      soundKey = "car",
+      promptVi = "Tiếng còi pim pim này là của xe nào đang chạy tới?",
+      answerNameVi = "Xe Ô Tô Đỏ",
+      soundDescriptionVi = "Pim pim!",
+      praiseVi = "Đúng boong luôn! Xe ô tô đỏ chạy bon bon trên đường phố!",
+      options = listOf(
+        SoundQuizOption("car", "Xe Ô Tô Đỏ", "🚗", true),
+        SoundQuizOption("train", "Tàu Hỏa", "🚂", false),
+        SoundQuizOption("bicycle", "Xe Đạp", "🚲", false)
+      )
+    ),
+    SoundQuizQuestion(
+      id = "sound_q_train",
+      soundKey = "train",
+      promptVi = "Đoàn xe dài nào chạy trên đường ray kêu xình xịch thế này?",
+      answerNameVi = "Đoàn Tàu Hỏa",
+      soundDescriptionVi = "Xình xịch xình xịch!",
+      praiseVi = "Tuyệt vời lắm bé! Đoàn tàu hỏa dài chở khách đi chơi xa!",
+      options = listOf(
+        SoundQuizOption("train", "Đoàn Tàu Hỏa", "🚂", true),
+        SoundQuizOption("bus", "Xe Buýt", "🚌", false),
+        SoundQuizOption("plane", "Máy Bay", "✈️", false)
+      )
+    ),
+    SoundQuizQuestion(
+      id = "sound_q_bicycle",
+      soundKey = "bicycle",
+      promptVi = "Tiếng chuông kính coong này là của chiếc xe nào nhỉ?",
+      answerNameVi = "Chiếc Xe Đạp",
+      soundDescriptionVi = "Kính coong!",
+      praiseVi = "Bé thật thông minh! Chiếc xe đạp hai bánh bé đạp dạo chơi công viên!",
+      options = listOf(
+        SoundQuizOption("bicycle", "Chiếc Xe Đạp", "🚲", true),
+        SoundQuizOption("car", "Xe Ô Tô", "🚗", false),
+        SoundQuizOption("boat", "Thuyền Buồm", "⛵", false)
+      )
+    )
+  )
 }

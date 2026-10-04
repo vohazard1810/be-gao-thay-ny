@@ -198,6 +198,30 @@ class VoiceManager(private val context: Context) {
     soundSynth.playColorBrushSound()
   }
 
+  fun playDogBark() {
+    soundSynth.playDogBark()
+  }
+
+  fun playCatMeow() {
+    soundSynth.playCatMeow()
+  }
+
+  fun playDuckQuack() {
+    soundSynth.playDuckQuack()
+  }
+
+  fun playTrainChug() {
+    soundSynth.playTrainChug()
+  }
+
+  fun playBicycleBell() {
+    soundSynth.playBicycleBell()
+  }
+
+  fun playAirplaneWhoosh() {
+    soundSynth.playAirplaneWhoosh()
+  }
+
   fun shutdown() {
     try {
       tts?.stop()
